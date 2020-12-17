@@ -8,8 +8,8 @@ public class PoCTest {
 
     @Test
     public void test() throws Exception {
-        CertificateDownloader certDownloader = new CertificateDownloader();
-        Certificate[] certs = certDownloader.getServerCertificates("https://www.amazon.com", true);
+        CertificateDownloader certDownloader = new CertificateDownloader(true);
+        Certificate[] certs = certDownloader.getServerCertificates("https://www.amazon.com");
         TruststoreFormat truststoreFormat = TruststoreFormat.JKS;
         String filename = "truststore";
         String password = "changeit";

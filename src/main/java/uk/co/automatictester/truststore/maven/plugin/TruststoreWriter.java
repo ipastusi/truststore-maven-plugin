@@ -31,6 +31,8 @@ public class TruststoreWriter {
         FileOutputStream outputStream = new FileOutputStream(file);
         keyStore.store(outputStream, password.toCharArray());
         outputStream.close();
+        String message = String.format("Total of %d certificates saved to %s", keyStore.size(), file);
+        System.out.println(message);
     }
 
     private void logCertDetails(Certificate cert) {
