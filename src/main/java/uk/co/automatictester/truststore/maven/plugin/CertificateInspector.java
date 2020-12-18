@@ -1,19 +1,19 @@
 package uk.co.automatictester.truststore.maven.plugin;
 
-import javax.security.auth.x500.X500Principal;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
 public class CertificateInspector {
 
-    private final X509Certificate x509cert;
-
-    public CertificateInspector(Certificate cert) {
-        this.x509cert = (X509Certificate) cert;
+    private CertificateInspector() {
     }
 
-    public String getSubjectDN() {
-        X500Principal subject = x509cert.getSubjectX500Principal();
-        return subject.getName();
+    public static String getDetails(Certificate cert) {
+        X509Certificate x509cert = (X509Certificate) cert;
+        String subject = x509cert.getSubjectX500Principal().getName();
+        String notBefore = x509cert.getNotBefore().toString();
+        String notAfter = x509cert.getNotAfter().toString();
+        return String.format("Subject: %s\nNot valid before: %s\nNot valid after: %s",
+                subject, notBefore, notAfter);
     }
 }

@@ -36,8 +36,7 @@ public class TruststoreWriter {
     }
 
     private void logCertDetails(Certificate cert) {
-        CertificateInspector certInspector = new CertificateInspector(cert);
-        String message = String.format("Certificate Subject DN: %s", certInspector.getSubjectDN());
-        System.out.println(message);
+        String details = CertificateInspector.getDetails(cert);
+        System.out.println(details + "\n");
     }
 }
