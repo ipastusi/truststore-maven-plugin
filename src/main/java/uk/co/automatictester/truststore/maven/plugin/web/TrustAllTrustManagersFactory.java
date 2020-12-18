@@ -1,4 +1,4 @@
-package uk.co.automatictester.truststore.maven.plugin;
+package uk.co.automatictester.truststore.maven.plugin.web;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;

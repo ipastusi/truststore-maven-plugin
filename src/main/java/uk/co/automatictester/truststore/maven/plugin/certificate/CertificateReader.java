@@ -1,4 +1,4 @@
-package uk.co.automatictester.truststore.maven.plugin;
+package uk.co.automatictester.truststore.maven.plugin.certificate;
 
 import java.io.IOException;
 import java.io.InputStream;

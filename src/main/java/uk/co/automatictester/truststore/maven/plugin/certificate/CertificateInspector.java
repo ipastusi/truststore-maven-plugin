@@ -1,4 +1,4 @@
-package uk.co.automatictester.truststore.maven.plugin;
+package uk.co.automatictester.truststore.maven.plugin.certificate;
 
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;

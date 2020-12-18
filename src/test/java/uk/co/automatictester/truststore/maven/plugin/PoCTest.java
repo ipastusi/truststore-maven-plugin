@@ -1,12 +1,24 @@
 package uk.co.automatictester.truststore.maven.plugin;
 
 import org.testng.annotations.Test;
+import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateDownloader;
+import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateReader;
+import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
+import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreWriter;
 
 import java.security.cert.Certificate;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class PoCTest {
+
+    // TODO:
+    // read PEM
+    // read DER
+    // test JKS
+    // test P12
+    // download secure
+    // download insecure
 
     @Test
     public void test() throws Exception {
@@ -18,10 +30,10 @@ public class PoCTest {
         Certificate[] allCerts = Stream.concat(Arrays.stream(certs), Stream.of(pemCert, derCert))
                 .toArray(Certificate[]::new);
 
-        TruststoreFormat truststoreFormat = TruststoreFormat.JKS;
-        String filename = "truststore";
+        TruststoreFormat format = TruststoreFormat.JKS;
+        String file = "target/truststore.jks";
         String password = "changeit";
-        TruststoreWriter truststoreWriter = new TruststoreWriter(truststoreFormat, filename, password);
+        TruststoreWriter truststoreWriter = new TruststoreWriter(format, file, password);
         truststoreWriter.write(allCerts);
     }
 }

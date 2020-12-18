@@ -1,4 +1,4 @@
-package uk.co.automatictester.truststore.maven.plugin;
+package uk.co.automatictester.truststore.maven.plugin.web;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
