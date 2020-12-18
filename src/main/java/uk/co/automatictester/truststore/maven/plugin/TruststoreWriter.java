@@ -20,10 +20,10 @@ public class TruststoreWriter {
         String format = truststoreFormat.toString();
         KeyStore keyStore = KeyStore.getInstance(format);
         keyStore.load(null, null);
-        for (int i = 0; i < certs.length; i++) {
-            Certificate cert = certs[i];
-            logCertDetails(cert);
-            String alias = String.format("cert_%d", i);
+        for (Certificate cert : certs) {
+            CertificateInspector certInspector = new CertificateInspector(cert);
+            logCertDetails(certInspector);
+            String alias = String.format("subject: '%s'", certInspector.getSubject());
             keyStore.setCertificateEntry(alias, cert);
         }
         String extension = truststoreFormat.extension();
@@ -35,8 +35,11 @@ public class TruststoreWriter {
         System.out.println(message);
     }
 
-    private void logCertDetails(Certificate cert) {
-        String details = CertificateInspector.getDetails(cert);
-        System.out.println(details + "\n");
+    private void logCertDetails(CertificateInspector certInspector) {
+        String details = String.format("%-18s %s\n%-18s %s\n%-18s %s\n",
+                "Subject:", certInspector.getSubject(),
+                "Not valid before:", certInspector.getNotValidBefore(),
+                "Not valid after:", certInspector.getNotValidAfter());
+        System.out.println(details);
     }
 }

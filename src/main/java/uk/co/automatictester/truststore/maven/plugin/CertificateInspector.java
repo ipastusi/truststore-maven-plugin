@@ -5,15 +5,24 @@ import java.security.cert.X509Certificate;
 
 public class CertificateInspector {
 
-    private CertificateInspector() {
+    private final Certificate cert;
+
+    public CertificateInspector(Certificate cert) {
+        this.cert = cert;
     }
 
-    public static String getDetails(Certificate cert) {
+    public String getSubject() {
         X509Certificate x509cert = (X509Certificate) cert;
-        String subject = x509cert.getSubjectX500Principal().getName();
-        String notBefore = x509cert.getNotBefore().toString();
-        String notAfter = x509cert.getNotAfter().toString();
-        return String.format("Subject: %s\nNot valid before: %s\nNot valid after: %s",
-                subject, notBefore, notAfter);
+        return x509cert.getSubjectX500Principal().getName();
+    }
+
+    public String getNotValidBefore() {
+        X509Certificate x509cert = (X509Certificate) cert;
+        return x509cert.getNotBefore().toString();
+    }
+
+    public String getNotValidAfter() {
+        X509Certificate x509cert = (X509Certificate) cert;
+        return x509cert.getNotAfter().toString();
     }
 }
