@@ -277,9 +277,16 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>org.hamcrest</groupId>
-         <artifactId>hamcrest-all</artifactId>
-         <version>1.3</version>
+         <groupId>org.assertj</groupId>
+         <artifactId>assertj-core</artifactId>
+         <version>3.18.1</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.bouncycastle</groupId>
+         <!-- TODO: version & artifact name -->
+         <artifactId>bcpkix-jdk15on</artifactId>
+         <version>1.66</version>
          <scope>test</scope>
       </dependency>
    </dependencies>

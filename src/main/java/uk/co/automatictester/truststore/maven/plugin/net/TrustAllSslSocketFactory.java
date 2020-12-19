@@ -1,4 +1,4 @@
-package uk.co.automatictester.truststore.maven.plugin.web;
+package uk.co.automatictester.truststore.maven.plugin.net;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;

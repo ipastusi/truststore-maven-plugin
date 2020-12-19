@@ -1,6 +1,6 @@
 package uk.co.automatictester.truststore.maven.plugin.certificate;
 
-import uk.co.automatictester.truststore.maven.plugin.web.HttpsURLConnectionFactory;
+import uk.co.automatictester.truststore.maven.plugin.net.HttpsURLConnectionFactory;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;

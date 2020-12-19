@@ -13,14 +13,11 @@ import java.util.stream.Stream;
 public class PoCTest {
 
     // TODO:
-    // read PEM
-    // read DER
-    // test JKS
-    // test P12
-    // download secure
-    // download insecure
+    // download secure - wiremock
+    // download insecure - wiremock
+    // IT with wiremock https
 
-    @Test
+    @Test(enabled = false)
     public void test() throws Exception {
         CertificateDownloader certDownloader = new CertificateDownloader(true);
         Certificate[] certs = certDownloader.getServerCertificates("https://www.amazon.com");

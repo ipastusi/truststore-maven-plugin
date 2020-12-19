@@ -1,5 +1,6 @@
 package uk.co.automatictester.truststore.maven.plugin.certificate;
 
+import java.math.BigInteger;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
@@ -9,6 +10,13 @@ public class CertificateInspector {
 
     public CertificateInspector(Certificate cert) {
         this.cert = cert;
+    }
+
+    public String getSerialNumber() {
+        X509Certificate x509cert = (X509Certificate) cert;
+        BigInteger serialNumberAsBigInt = x509cert.getSerialNumber();
+        String serialNumberAsString = serialNumberAsBigInt.toString(16);
+        return serialNumberAsString.replaceAll("(?<=..)(..)", ":$1");
     }
 
     public String getSubject() {
