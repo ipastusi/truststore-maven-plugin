@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import java.net.ServerSocket;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,9 +33,9 @@ public class CertificateDownloaderTest {
         int httpsPort = server.httpsPort();
         String url = String.format("https://localhost:%d", httpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
-        Certificate[] certs = certDownloader.getServerCertificates(url);
+        List<Certificate> certs = certDownloader.getServerCertificates(url);
         assertThat(certs).hasSize(1);
-        assertThat(((X509Certificate) certs[0]).getSerialNumber().toString()).isEqualTo("495529551");
+        assertThat(((X509Certificate) certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = ".*Connection refused.*")
@@ -42,7 +43,7 @@ public class CertificateDownloaderTest {
         int incorrectHttpsPort = server.httpsPort() - 1;
         String url = String.format("https://localhost:%d", incorrectHttpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
-        Certificate[] certs = certDownloader.getServerCertificates(url);
+        certDownloader.getServerCertificates(url);
     }
 
     @AfterClass

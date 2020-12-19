@@ -5,6 +5,9 @@ import uk.co.automatictester.truststore.maven.plugin.net.HttpsURLConnectionFacto
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CertificateDownloader {
 
@@ -16,7 +19,7 @@ public class CertificateDownloader {
         this.skipHostnameVerification = skipHostnameVerification;
     }
 
-    public Certificate[] getServerCertificates(String url) {
+    public List<Certificate> getServerCertificates(String url) {
         HttpsURLConnection httpsUrlConnection = HttpsURLConnectionFactory.createInstance(url, trustAllCerts, skipHostnameVerification);
         Certificate[] certs;
         try {
@@ -25,6 +28,6 @@ public class CertificateDownloader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return certs;
+        return Arrays.asList(certs);
     }
 }

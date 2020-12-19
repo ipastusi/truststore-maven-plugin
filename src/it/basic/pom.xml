@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <groupId>uk.co.automatictester</groupId>
+   <artifactId>truststore-maven-plugin-it</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <description>Basic integration test</description>
+   <modelVersion>4.0.0</modelVersion>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+   </properties>
+
+   <build>
+      <plugins>
+
+         <plugin>
+            <groupId>@project.groupId@</groupId>
+            <artifactId>@project.artifactId@</artifactId>
+            <version>@project.version@</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>generate-truststore</goal>
+                  </goals>
+                  <phase>pre-integration-test</phase>
+                  <configuration>
+                     <truststoreFormat>JKS</truststoreFormat>
+                     <truststoreFile>truststore.jks</truststoreFile>
+                     <truststorePassword>changeit</truststorePassword>
+                     <trustAllCerts>false</trustAllCerts>
+                     <skipHostnameVerification>false</skipHostnameVerification>
+                     <certificates>
+                        <certificate>certs/apache-org-chain-1.pem</certificate>
+                        <certificate>certs/apache-org-chain-2.pem</certificate>
+                        <certificate>certs/apache-org-chain-3.pem</certificate>
+                     </certificates>
+                     <urls>
+                        <url>https://www.amazon.com</url>
+                     </urls>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+      </plugins>
+   </build>
+</project>

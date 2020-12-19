@@ -5,6 +5,7 @@ import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateInsp
 import java.io.FileOutputStream;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
+import java.util.List;
 
 public class TruststoreWriter {
 
@@ -18,7 +19,7 @@ public class TruststoreWriter {
         this.password = password;
     }
 
-    public void write(Certificate[] certs) throws Exception {
+    public void write(List<Certificate> certs) throws Exception {
         String format = this.format.toString();
         KeyStore keyStore = KeyStore.getInstance(format);
         keyStore.load(null, null);

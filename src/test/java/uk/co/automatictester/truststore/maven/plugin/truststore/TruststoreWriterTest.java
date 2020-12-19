@@ -8,6 +8,8 @@ import uk.co.automatictester.truststore.maven.plugin.testutil.TestCertificateGen
 
 import java.io.File;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat.JKS;
 import static uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat.PKCS12;
@@ -36,7 +38,9 @@ public class TruststoreWriterTest {
     @Test(dataProvider = "trustoreFormats")
     public void write(TruststoreFormat format) throws Exception {
         Certificate cert = TestCertificateGenerator.generate();
-        Certificate[] certs = {cert};
+        List<Certificate> certs = new ArrayList<Certificate>() {{
+            add(cert);
+        }};
 
         String password = "changeit";
         TruststoreWriter truststoreWriter = new TruststoreWriter(format, file, password);
