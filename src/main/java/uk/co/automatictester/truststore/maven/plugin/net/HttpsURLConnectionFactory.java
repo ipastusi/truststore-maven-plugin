@@ -11,7 +11,7 @@ public class HttpsURLConnectionFactory {
     private HttpsURLConnectionFactory() {
     }
 
-    public static HttpsURLConnection createInstance(String url, boolean trustAll) {
+    public static HttpsURLConnection createInstance(String url, boolean trustAllCerts, boolean skipHostnameVerification) {
         URLConnection urlConnection;
         try {
             URL serverUrl = new URL(url);
@@ -20,9 +20,12 @@ public class HttpsURLConnectionFactory {
             throw new RuntimeException(e);
         }
         HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
-        if (trustAll) {
+        if (trustAllCerts) {
             SSLSocketFactory sslSocketFactory = TrustAllSslSocketFactory.createInstance();
             httpsUrlConnection.setSSLSocketFactory(sslSocketFactory);
+        }
+        if (skipHostnameVerification) {
+            httpsUrlConnection.setHostnameVerifier((hostname, sslSession) -> true);
         }
         return httpsUrlConnection;
     }

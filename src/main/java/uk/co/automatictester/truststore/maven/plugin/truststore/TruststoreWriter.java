@@ -25,7 +25,7 @@ public class TruststoreWriter {
         for (Certificate cert : certs) {
             CertificateInspector certInspector = new CertificateInspector(cert);
             logCertDetails(certInspector);
-            String alias = String.format("subject: '%s'", certInspector.getSerialNumber());
+            String alias = certInspector.getSerialNumber();
             keyStore.setCertificateEntry(alias, cert);
         }
         FileOutputStream outputStream = new FileOutputStream(file);
