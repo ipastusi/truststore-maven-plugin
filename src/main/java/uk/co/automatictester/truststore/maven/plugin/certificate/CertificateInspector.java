@@ -5,6 +5,7 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class CertificateInspector {
 
@@ -41,6 +42,7 @@ public class CertificateInspector {
     private String formatDate(Date date) {
         String pattern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         return dateFormat.format(date);
     }
 }
