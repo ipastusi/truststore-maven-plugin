@@ -30,11 +30,11 @@ public class CertificateInspectorTest {
 
     @Test
     public void testGetNotValidBefore() {
-        assertThat(certInspector.getNotValidBefore()).isEqualTo("Fri Jan 01 01:00:00 CET 2021");
+        assertThat(certInspector.getNotValidBefore()).isEqualTo("2021-01-01 01:00:00");
     }
 
     @Test
     public void testGetNotValidAfter() {
-        assertThat(certInspector.getNotValidAfter()).isEqualTo("Wed Jan 01 01:00:00 CET 2025");
+        assertThat(certInspector.getNotValidAfter()).isEqualTo("2025-01-01 01:00:00");
     }
 }

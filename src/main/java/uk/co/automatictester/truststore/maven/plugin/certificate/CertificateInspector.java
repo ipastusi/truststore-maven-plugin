@@ -3,6 +3,8 @@ package uk.co.automatictester.truststore.maven.plugin.certificate;
 import java.math.BigInteger;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CertificateInspector {
 
@@ -26,11 +28,19 @@ public class CertificateInspector {
 
     public String getNotValidBefore() {
         X509Certificate x509cert = (X509Certificate) cert;
-        return x509cert.getNotBefore().toString();
+        Date date = x509cert.getNotBefore();
+        return formatDate(date);
     }
 
     public String getNotValidAfter() {
         X509Certificate x509cert = (X509Certificate) cert;
-        return x509cert.getNotAfter().toString();
+        Date date = x509cert.getNotAfter();
+        return formatDate(date);
+    }
+
+    private String formatDate(Date date) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(date);
     }
 }
