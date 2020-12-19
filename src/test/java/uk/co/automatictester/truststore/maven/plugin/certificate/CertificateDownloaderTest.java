@@ -20,7 +20,10 @@ public class CertificateDownloaderTest {
 
     @BeforeClass
     public void setUp() throws Exception {
-        int httpsPort = new ServerSocket(0).getLocalPort();
+        ServerSocket serverSocket = new ServerSocket(0);
+        int httpsPort = serverSocket.getLocalPort();
+        serverSocket.close();
+        
         WireMockConfiguration options = options()
                 .httpDisabled(true)
                 .httpsPort(httpsPort);
