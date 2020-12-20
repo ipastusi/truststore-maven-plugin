@@ -57,7 +57,7 @@ pipeline {
         stage('Release artefacts') {
             when {
                 expression {
-                    "${params.RELEASE}".toBoolean() && "${env.BRANCH_NAME}" == "main"
+                    "${params.RELEASE}".toBoolean() && "${env.BRANCH_NAME}" == "master"
                 }
             }
             steps {
@@ -75,12 +75,12 @@ pipeline {
         stage('Push release to origin') {
             when {
                 expression {
-                    "${params.RELEASE}".toBoolean() && "${env.BRANCH_NAME}" == "main"
+                    "${params.RELEASE}".toBoolean() && "${env.BRANCH_NAME}" == "master"
                 }
             }
             steps {
                 sshagent(['github-creds']) {
-                    sh "git push --set-upstream origin main; git push --tags"
+                    sh "git push --set-upstream origin master; git push --tags"
                 }
             }
         }
