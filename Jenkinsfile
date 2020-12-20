@@ -43,11 +43,6 @@ pipeline {
             steps {
                 sh './mvnw clean verify'
             }
-            post {
-                always {
-                    junit 'target/**/TEST-*.xml'
-                }
-            }
         }
         stage('Tag release') {
             steps {
