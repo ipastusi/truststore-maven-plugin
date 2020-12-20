@@ -46,4 +46,12 @@ public class TruststoreWriterTest {
         TruststoreWriter truststoreWriter = new TruststoreWriter(format, file, password);
         truststoreWriter.write(certs);
     }
+
+    @Test
+    public void writeNoCerts() throws Exception {
+        List<Certificate> certs = new ArrayList<>();
+        String password = "changeit";
+        TruststoreWriter truststoreWriter = new TruststoreWriter(PKCS12, file, password);
+        truststoreWriter.write(certs);
+    }
 }

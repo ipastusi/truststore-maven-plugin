@@ -25,7 +25,7 @@ public class TestCertificateGenerator {
         X500Name name = getX500Name();
         KeyPair keyPair = generateRsaKeyPair();
         Date validityDate = new Date(1735689600000L);
-        BigInteger serialNumber = BigInteger.valueOf(1234567890);
+        BigInteger serialNumber = BigInteger.valueOf(31700122);
         String signatureAlgorithm = "SHA256withRSAandMGF1";
 
         X509CertificateHolder certificateHolder = getCertificateHolder(
@@ -50,8 +50,8 @@ public class TestCertificateGenerator {
 
     private static X500Name getX500Name() {
         return new X500NameBuilder(BCStyle.INSTANCE)
-                .addRDN(BCStyle.C, "UK")
-                .addRDN(BCStyle.L, "London")
+                .addRDN(BCStyle.C, "My Country")
+                .addRDN(BCStyle.L, "My Location")
                 .addRDN(BCStyle.O, "My Org")
                 .addRDN(BCStyle.CN, "My Name")
                 .build();

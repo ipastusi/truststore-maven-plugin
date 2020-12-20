@@ -20,12 +20,12 @@ public class CertificateInspectorTest {
 
     @Test
     public void serialName() {
-        assertThat(certInspector.getSerialNumber()).isEqualTo("49:96:02:d2");
+        assertThat(certInspector.getSerialNumber()).isEqualTo("01:e3:b4:9a");
     }
 
     @Test
     public void testGetSubject() {
-        assertThat(certInspector.getSubject()).isEqualTo("CN=My Name,O=My Org,L=London,C=UK");
+        assertThat(certInspector.getSubject()).isEqualTo("CN=My Name,O=My Org,L=My Location,C=My Country");
     }
 
     @Test

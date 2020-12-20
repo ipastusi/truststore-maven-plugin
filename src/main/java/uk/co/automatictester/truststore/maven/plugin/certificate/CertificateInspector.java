@@ -19,6 +19,9 @@ public class CertificateInspector {
         X509Certificate x509cert = (X509Certificate) cert;
         BigInteger serialNumberAsBigInt = x509cert.getSerialNumber();
         String serialNumberAsString = serialNumberAsBigInt.toString(16);
+        if (serialNumberAsString.length() % 2 == 1) {
+            serialNumberAsString = String.format("0%s", serialNumberAsString);
+        }
         return serialNumberAsString.replaceAll("(?<=..)(..)", ":$1");
     }
 

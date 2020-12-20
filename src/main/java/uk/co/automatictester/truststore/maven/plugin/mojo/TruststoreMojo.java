@@ -41,11 +41,7 @@ public class TruststoreMojo extends ConfigurationMojo {
     private void createTruststore() throws MojoExecutionException {
         TruststoreWriter truststoreWriter = new TruststoreWriter(truststoreFormat, truststoreFile, truststorePassword);
         try {
-            if (certs.isEmpty()) {
-                getLog().info("Truststore not generated: no certificates to store");
-            } else {
-                truststoreWriter.write(certs);
-            }
+            truststoreWriter.write(certs);
         } catch (Exception e) {
             throw new MojoExecutionException("Error writing truststore: ", e);
         }

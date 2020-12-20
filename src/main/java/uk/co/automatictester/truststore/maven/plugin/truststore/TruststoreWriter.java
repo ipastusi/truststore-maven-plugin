@@ -20,6 +20,10 @@ public class TruststoreWriter {
     }
 
     public void write(List<Certificate> certs) throws Exception {
+        if (certs.isEmpty()) {
+            System.out.println("Truststore not generated: no certificates to store");
+            return;
+        }
         String format = this.format.toString();
         KeyStore keyStore = KeyStore.getInstance(format);
         keyStore.load(null, null);
