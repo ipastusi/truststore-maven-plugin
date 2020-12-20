@@ -17,17 +17,18 @@ public class CertificateInspector {
 
     public String getSerialNumber() {
         X509Certificate x509cert = (X509Certificate) cert;
-        BigInteger serialNumberAsBigInt = x509cert.getSerialNumber();
-        String serialNumberAsString = serialNumberAsBigInt.toString(16);
-        if (serialNumberAsString.length() % 2 == 1) {
-            serialNumberAsString = String.format("0%s", serialNumberAsString);
-        }
-        return serialNumberAsString.replaceAll("(?<=..)(..)", ":$1");
+        BigInteger serialNumber = x509cert.getSerialNumber();
+        return bigIntToHexString(serialNumber);
     }
 
     public String getSubject() {
         X509Certificate x509cert = (X509Certificate) cert;
         return x509cert.getSubjectX500Principal().getName();
+    }
+
+    public String getIssuer() {
+        X509Certificate x509cert = (X509Certificate) cert;
+        return x509cert.getIssuerX500Principal().getName();
     }
 
     public String getNotValidBefore() {
@@ -40,6 +41,14 @@ public class CertificateInspector {
         X509Certificate x509cert = (X509Certificate) cert;
         Date date = x509cert.getNotAfter();
         return formatDate(date);
+    }
+
+    private String bigIntToHexString(BigInteger number) {
+        String numberAsString = number.toString(16);
+        if (numberAsString.length() % 2 == 1) {
+            numberAsString = String.format("0%s", numberAsString);
+        }
+        return numberAsString.replaceAll("(?<=..)(..)", ":$1");
     }
 
     private String formatDate(Date date) {

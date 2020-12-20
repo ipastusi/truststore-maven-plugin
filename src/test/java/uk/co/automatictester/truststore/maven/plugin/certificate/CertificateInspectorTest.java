@@ -29,6 +29,11 @@ public class CertificateInspectorTest {
     }
 
     @Test
+    public void testGetIssuer() {
+        assertThat(certInspector.getIssuer()).isEqualTo("CN=My Name,O=My Org,L=My Location,C=My Country");
+    }
+
+    @Test
     public void testGetNotValidBefore() {
         assertThat(certInspector.getNotValidBefore()).isEqualTo("2021-01-01 00:00:00");
     }

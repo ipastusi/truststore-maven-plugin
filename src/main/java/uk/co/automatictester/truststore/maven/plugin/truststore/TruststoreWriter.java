@@ -41,11 +41,12 @@ public class TruststoreWriter {
     }
 
     private void logCertDetails(CertificateInspector certInspector) {
-        String details = String.format("%-18s %s\n%-18s %s\n%-18s %s\n%-18s %s\n",
+        String details = String.format("%-18s %s\n%-18s %s\n%-18s %s\n%-18s %s and %s (GMT)\n",
                 "Serial number: ", certInspector.getSerialNumber(),
                 "Subject:", certInspector.getSubject(),
-                "Not valid before:", certInspector.getNotValidBefore(),
-                "Not valid after:", certInspector.getNotValidAfter());
+                "Issuer:", certInspector.getIssuer(),
+                "Valid between: ", certInspector.getNotValidBefore(),
+                certInspector.getNotValidAfter());
         System.out.println(details);
     }
 }
