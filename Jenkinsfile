@@ -45,7 +45,7 @@ pipeline {
             }
             post {
                 always {
-                    jacoco execPattern: '**/jacoco*.exec'
+                    junit 'target/**/TEST-*.xml'
                 }
             }
         }
