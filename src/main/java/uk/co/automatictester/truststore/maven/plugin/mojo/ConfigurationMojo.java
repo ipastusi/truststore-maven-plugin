@@ -11,42 +11,42 @@ abstract class ConfigurationMojo extends AbstractMojo {
     /**
      * Truststore format: JKS or PKCS12. Default: JKS.
      */
-    @Parameter(property = "truststoreFormat", defaultValue = "JKS")
+    @Parameter(property = "truststore.format", defaultValue = "JKS")
     protected TruststoreFormat truststoreFormat;
 
     /**
      * Truststore filename.
      */
-    @Parameter(property = "truststoreFile")
+    @Parameter(property = "truststore.file")
     protected String truststoreFile;
 
     /**
      * Password for created truststore. Default: changeit.
      */
-    @Parameter(property = "truststorePassword", defaultValue = "changeit")
+    @Parameter(property = "truststore.password", defaultValue = "changeit")
     protected String truststorePassword;
 
     /**
      * Set to true to trust server certificate when downloading certificates.
      */
-    @Parameter(property = "trustAllCertificates", defaultValue = "false")
+    @Parameter(property = "truststore.trustAllCertificates", defaultValue = "false")
     protected boolean trustAllCerts;
 
     /**
      * Set to true to skip hostname verification when downloading certificates.
      */
-    @Parameter(property = "skipHostnameVerification", defaultValue = "false")
+    @Parameter(property = "truststore.skipHostnameVerification", defaultValue = "false")
     protected boolean skipHostnameVerification;
 
     /**
      * List of files with certificates to use.
      */
-    @Parameter(property = "certificates")
+    @Parameter(property = "truststore.certificates")
     protected List<String> certificates;
 
     /**
      * List of URLs to download the certificates from.
      */
-    @Parameter(property = "urls")
+    @Parameter(property = "truststore.urls")
     protected List<String> urls;
 }

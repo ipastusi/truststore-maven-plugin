@@ -22,18 +22,18 @@ Sample execution log for the plugin configured to generate truststore only using
 ```
 Serial number:     05:f9:90:3b:91:2f:1a:00:9c:ad:c8:06:65:2b:da:18
 Subject:           CN=www.amazon.com,O=Amazon.com\, Inc.,L=Seattle,ST=Washington,C=US
-Not valid before:  2020-07-13 00:00:00
-Not valid after:   2021-07-10 12:00:00
+Issuer:            CN=DigiCert Global CA G2,O=DigiCert Inc,C=US
+Valid between:     2020-07-13 00:00:00 and 2021-07-10 12:00:00 (GMT)
 
 Serial number:     0c:8e:e0:c9:0d:6a:89:15:88:04:06:1e:e2:41:f9:af
 Subject:           CN=DigiCert Global CA G2,O=DigiCert Inc,C=US
-Not valid before:  2013-08-01 12:00:00
-Not valid after:   2028-08-01 12:00:00
+Issuer:            CN=DigiCert Global Root G2,OU=www.digicert.com,O=DigiCert Inc,C=US
+Valid between:     2013-08-01 12:00:00 and 2028-08-01 12:00:00 (GMT)
 
 Serial number:     63:18:0d:38:fb:80:97:78:a9:d0:35:a3:16:18:f8:40
 Subject:           CN=DigiCert Global Root G2,OU=www.digicert.com,O=DigiCert Inc,C=US
-Not valid before:  2017-11-06 00:00:00
-Not valid after:   2022-11-05 23:59:59
+Issuer:            CN=VeriSign Class 3 Public Primary Certification Authority - G5,OU=(c) 2006 VeriSign\, Inc. - For authorized use only,OU=VeriSign Trust Network,O=VeriSign\, Inc.,C=US
+Valid between:     2017-11-06 00:00:00 and 2022-11-05 23:59:59 (GMT)
 
 Total of 3 certificates saved to target/truststore.jks
 ```
@@ -59,32 +59,39 @@ Total of 3 certificates saved to target/truststore.jks
          <configuration>
             
             <!-- Truststore format: JKS or PKCS12. Default: JKS -->
+            <!-- Property equivalent: truststore.format -->
             <truststoreFormat>PKCS12</truststoreFormat>
             
             <!-- Truststore filename -->
+            <!-- Property equivalent: truststore.file -->
             <truststoreFile>target/truststore.p12</truststoreFile>
             
-            <!-- Password for created truststore. Default: changeit -->
+            <!-- Truststore password. Default: changeit -->
+            <!-- Property equivalent: truststore.password -->
             <truststorePassword>topsecret</truststorePassword>
             
-            <!-- Relevant only when specifying 'urls' -->
-            <!-- Set to true to trust server certificate when downloading certificates. Default: false -->
-            <trustAllCertificates>true</trustAllCertificates>
-            
-            <!-- Relevant only when specifying 'urls' -->
-            <!-- Set to true to skip hostname verification when downloading certificates. Default: false -->
-            <skipHostnameVerification>true</skipHostnameVerification>
-            
             <!-- List of files with certificates to use. Optional -->
+            <!-- Property equivalent: truststore.certificates -->
             <certificates>
                <certificate>certs/cert-to-add.pem</certificate>
                <certificate>certs/cert-to-add.der</certificate>
             </certificates>
             
             <!-- List of URLs to download the certificates from. Optional -->
+            <!-- Property equivalent: truststore.urls -->
             <urls>
                <url>https://www.example.com</url>
             </urls>
+            
+            <!-- Relevant only when specifying 'urls' -->
+            <!-- Set to true to trust server certificate when downloading certificates. Default: false -->
+            <!-- Property equivalent: truststore.trustAllCertificates -->
+            <trustAllCertificates>true</trustAllCertificates>
+            
+            <!-- Relevant only when specifying 'urls' -->
+            <!-- Set to true to skip hostname verification when downloading certificates. Default: false -->
+            <!-- Property equivalent: truststore.skipHostnameVerification -->
+            <skipHostnameVerification>true</skipHostnameVerification>
             
          </configuration>
       </execution>

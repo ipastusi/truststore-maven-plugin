@@ -37,7 +37,7 @@ public class CertificateDownloaderTest {
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
         List<X509Certificate> certs = certDownloader.getServerCertificates(url);
         assertThat(certs).hasSize(1);
-        assertThat(((X509Certificate) certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
+        assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = ".*Connection refused.*")
