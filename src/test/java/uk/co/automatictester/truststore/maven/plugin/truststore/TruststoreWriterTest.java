@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import uk.co.automatictester.truststore.maven.plugin.testutil.TestCertificateGenerator;
 
 import java.io.File;
-import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +37,8 @@ public class TruststoreWriterTest {
 
     @Test(dataProvider = "trustoreFormats")
     public void write(TruststoreFormat format) throws Exception {
-        Certificate cert = TestCertificateGenerator.generate();
-        List<Certificate> certs = new ArrayList<Certificate>() {{
+        X509Certificate cert = TestCertificateGenerator.generate();
+        List<X509Certificate> certs = new ArrayList<X509Certificate>() {{
             add(cert);
         }};
 
@@ -49,7 +49,7 @@ public class TruststoreWriterTest {
 
     @Test
     public void writeNoCerts() throws Exception {
-        List<Certificate> certs = new ArrayList<>();
+        List<X509Certificate> certs = new ArrayList<>();
         String password = "changeit";
         TruststoreWriter truststoreWriter = new TruststoreWriter(PKCS12, file, password);
         truststoreWriter.write(certs);

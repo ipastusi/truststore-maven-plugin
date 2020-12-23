@@ -4,7 +4,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import uk.co.automatictester.truststore.maven.plugin.testutil.TestCertificateGenerator;
 
-import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,7 +14,7 @@ public class CertificateInspectorTest {
 
     @BeforeClass
     public void setUp() throws Exception {
-        Certificate cert = TestCertificateGenerator.generate();
+        X509Certificate cert = TestCertificateGenerator.generate();
         certInspector = new CertificateInspector(cert);
     }
 

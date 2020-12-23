@@ -1,7 +1,6 @@
 package uk.co.automatictester.truststore.maven.plugin.certificate;
 
 import java.math.BigInteger;
-import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,37 +8,32 @@ import java.util.TimeZone;
 
 public class CertificateInspector {
 
-    private final Certificate cert;
+    private final X509Certificate cert;
 
-    public CertificateInspector(Certificate cert) {
+    public CertificateInspector(X509Certificate cert) {
         this.cert = cert;
     }
 
     public String getSerialNumber() {
-        X509Certificate x509cert = (X509Certificate) cert;
-        BigInteger serialNumber = x509cert.getSerialNumber();
+        BigInteger serialNumber = cert.getSerialNumber();
         return bigIntToHexString(serialNumber);
     }
 
     public String getSubject() {
-        X509Certificate x509cert = (X509Certificate) cert;
-        return x509cert.getSubjectX500Principal().getName();
+        return cert.getSubjectX500Principal().getName();
     }
 
     public String getIssuer() {
-        X509Certificate x509cert = (X509Certificate) cert;
-        return x509cert.getIssuerX500Principal().getName();
+        return cert.getIssuerX500Principal().getName();
     }
 
     public String getNotValidBefore() {
-        X509Certificate x509cert = (X509Certificate) cert;
-        Date date = x509cert.getNotBefore();
+        Date date = cert.getNotBefore();
         return formatDate(date);
     }
 
     public String getNotValidAfter() {
-        X509Certificate x509cert = (X509Certificate) cert;
-        Date date = x509cert.getNotAfter();
+        Date date = cert.getNotAfter();
         return formatDate(date);
     }
 

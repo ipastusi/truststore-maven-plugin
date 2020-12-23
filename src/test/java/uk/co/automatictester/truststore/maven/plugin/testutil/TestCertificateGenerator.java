@@ -15,13 +15,13 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.Date;
 
 public class TestCertificateGenerator {
 
-    public static Certificate generate() throws Exception {
+    public static X509Certificate generate() throws Exception {
         X500Name name = getX500Name();
         KeyPair keyPair = generateRsaKeyPair();
         Date validityDate = new Date(1735689600000L);

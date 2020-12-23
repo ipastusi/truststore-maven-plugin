@@ -4,8 +4,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 
-import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 abstract class ConfigurationMojo extends AbstractMojo {

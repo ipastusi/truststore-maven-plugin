@@ -7,14 +7,14 @@ import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateDown
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateReader;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreWriter;
 
-import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Mojo(name = "generate-truststore", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
 public class TruststoreMojo extends ConfigurationMojo {
 
-    private final List<Certificate> certs = new ArrayList<>();
+    private final List<X509Certificate> certs = new ArrayList<>();
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -25,15 +25,15 @@ public class TruststoreMojo extends ConfigurationMojo {
 
     private void loadFileSystemCerts() {
         for (String certificateFile : certificates) {
-            Certificate newCert = CertificateReader.read(certificateFile);
-            certs.add(newCert);
+            List<X509Certificate> newCerts = CertificateReader.read(certificateFile);
+            certs.addAll(newCerts);
         }
     }
 
     private void loadWebCerts() {
         CertificateDownloader certDownloader = new CertificateDownloader(trustAllCerts, skipHostnameVerification);
         for (String url : urls) {
-            List<Certificate> newCerts = certDownloader.getServerCertificates(url);
+            List<X509Certificate> newCerts = certDownloader.getServerCertificates(url);
             certs.addAll(newCerts);
         }
     }

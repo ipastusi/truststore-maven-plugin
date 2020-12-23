@@ -4,7 +4,7 @@ import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateInsp
 
 import java.io.FileOutputStream;
 import java.security.KeyStore;
-import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.util.List;
 
 public class TruststoreWriter {
@@ -19,7 +19,7 @@ public class TruststoreWriter {
         this.password = password;
     }
 
-    public void write(List<Certificate> certs) throws Exception {
+    public void write(List<X509Certificate> certs) throws Exception {
         if (certs.isEmpty()) {
             System.out.println("Truststore not generated: no certificates to store");
             return;
@@ -27,7 +27,7 @@ public class TruststoreWriter {
         String format = this.format.toString();
         KeyStore keyStore = KeyStore.getInstance(format);
         keyStore.load(null, null);
-        for (Certificate cert : certs) {
+        for (X509Certificate cert : certs) {
             CertificateInspector certInspector = new CertificateInspector(cert);
             logCertDetails(certInspector);
             String alias = certInspector.getSerialNumber();

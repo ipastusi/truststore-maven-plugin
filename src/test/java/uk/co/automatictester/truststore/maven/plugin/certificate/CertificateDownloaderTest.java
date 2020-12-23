@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.net.ServerSocket;
-import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class CertificateDownloaderTest {
         ServerSocket serverSocket = new ServerSocket(0);
         int httpsPort = serverSocket.getLocalPort();
         serverSocket.close();
-        
+
         WireMockConfiguration options = options()
                 .httpDisabled(true)
                 .httpsPort(httpsPort);
@@ -36,7 +35,7 @@ public class CertificateDownloaderTest {
         int httpsPort = server.httpsPort();
         String url = String.format("https://localhost:%d", httpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
-        List<Certificate> certs = certDownloader.getServerCertificates(url);
+        List<X509Certificate> certs = certDownloader.getServerCertificates(url);
         assertThat(certs).hasSize(1);
         assertThat(((X509Certificate) certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
     }
