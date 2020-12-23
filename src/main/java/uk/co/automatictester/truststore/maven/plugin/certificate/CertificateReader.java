@@ -18,10 +18,10 @@ public class CertificateReader {
         try (InputStream inputStream = new FileInputStream(sourceFile)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             certs.addAll((List<X509Certificate>) certificateFactory.generateCertificates(inputStream));
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading file: " + file, e);
-        } catch (CertificateException e) {
-            throw new RuntimeException("Error reading certificate: " + file, e);
+        } catch (IOException | CertificateException e) {
+            String cause = e.getMessage();
+            String errorMessage = String.format("Error reading file %s: %s", file, cause);
+            throw new RuntimeException(errorMessage, e);
         }
         return certs;
     }
