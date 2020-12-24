@@ -2,8 +2,10 @@ package uk.co.automatictester.truststore.maven.plugin.mojo;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import uk.co.automatictester.truststore.maven.plugin.config.TruststoresPropertyParser;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 abstract class ConfigurationMojo extends AbstractMojo {
@@ -54,5 +56,18 @@ abstract class ConfigurationMojo extends AbstractMojo {
      * List of files with truststores to use.
      */
     @Parameter
-    protected List<Truststore> truststores;
+    private List<Truststore> truststores;
+
+    @Parameter(property = "truststore.truststores")
+    private String truststoresProperty;
+
+    protected List<Truststore> getTruststores() {
+        if (truststores != null) {
+            return truststores;
+        } else if (truststoresProperty != null) {
+            return TruststoresPropertyParser.parse(truststoresProperty);
+        } else {
+            return new ArrayList<>();
+        }
+    }
 }

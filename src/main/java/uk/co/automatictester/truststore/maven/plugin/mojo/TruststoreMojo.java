@@ -32,13 +32,12 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     private void loadFileSystemTruststores() {
-        if (truststores != null) {
-            for (Truststore sourceTruststore : truststores) {
-                String file = sourceTruststore.getFile();
-                String password = sourceTruststore.getPassword();
-                List<X509Certificate> newCerts = TruststoreReader.read(file, password);
-                certs.addAll(newCerts);
-            }
+        List<Truststore> truststores = getTruststores();
+        for (Truststore sourceTruststore : truststores) {
+            String file = sourceTruststore.getFile();
+            String password = sourceTruststore.getPassword();
+            List<X509Certificate> newCerts = TruststoreReader.read(file, password);
+            certs.addAll(newCerts);
         }
     }
 

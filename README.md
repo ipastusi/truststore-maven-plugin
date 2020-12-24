@@ -40,7 +40,7 @@ Total of 3 certificates saved to target/truststore.jks
 
 ## Quick start guide
 
-- Add this plugin to your **pom.xml**:
+Add this plugin to your **pom.xml**:
 
 ```
 <plugin>
@@ -78,17 +78,14 @@ Total of 3 certificates saved to target/truststore.jks
             </certificates>
             
             <!-- List of files with source truststores to use. Optional -->
+            <!-- Property equivalent: truststore.truststores -->
             <truststores>
                <truststore>
-                  <file>truststores/private_key_only.p12</file>
+                  <file>truststores/truststore-1.p12</file>
                   <password>changeit</password>
                </truststore>
                <truststore>
-                  <file>truststores/aws_amazon_com.p12</file>
-                  <password>changeit</password>
-               </truststore>
-               <truststore>
-                  <file>truststores/www_github_com.jks</file>
+                  <file>truststores/truststore-2.jks</file>
                   <password>topsecret</password>
                </truststore>
             </truststores>
@@ -114,6 +111,18 @@ Total of 3 certificates saved to target/truststore.jks
       </execution>
    </executions>
 </plugin>
+```
+
+## Special cases
+
+There is one caveat regarding the use of `truststore.truststores` property. There is no documented way to pass a list of
+complex objects to a Maven plugin other than using `<configuration>...</configuration>` section. In order to be able to
+pass them as a property, either on command line or using `<properties>...</properties>` section in your **pom.xml**, a
+custom solution has been implemented. You can specify value of `truststore.truststores` property using the following
+syntax:
+
+```
+[file=truststores/truststore-1.p12,password=changeit],[file=truststores/truststore-2.jks,password=topsecret]
 ```
 
 ## Required Java version
