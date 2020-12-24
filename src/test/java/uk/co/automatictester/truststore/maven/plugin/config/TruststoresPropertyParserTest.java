@@ -12,7 +12,7 @@ public class TruststoresPropertyParserTest {
     @Test
     public void testParseSingle() {
         String property = "[file=truststores/truststore-1.p12,password=changeit]";
-        List<Truststore> truststores = TruststoresPropertyParser.parse(property);
+        List<Truststore> truststores = new TruststoresPropertyParser().parse(property);
         assertThat(truststores.size()).isEqualTo(1);
 
         Truststore t1 = new Truststore("truststores/truststore-1.p12", "changeit");
@@ -22,7 +22,7 @@ public class TruststoresPropertyParserTest {
     @Test
     public void testParseMultiple() {
         String property = "[file=truststores/truststore-1.p12,password=changeit],[file=truststores/truststore-2.jks,password=topsecret]";
-        List<Truststore> truststores = TruststoresPropertyParser.parse(property);
+        List<Truststore> truststores = new TruststoresPropertyParser().parse(property);
         assertThat(truststores.size()).isEqualTo(2);
 
         Truststore t1 = new Truststore("truststores/truststore-1.p12", "changeit");
@@ -35,6 +35,6 @@ public class TruststoresPropertyParserTest {
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Malformed property 'truststore.truststores': .*")
     public void testParseMalformed() {
         String property = "[file=truststores/truststore-1.p12,pass=changeit]";
-        TruststoresPropertyParser.parse(property);
+        new TruststoresPropertyParser().parse(property);
     }
 }
