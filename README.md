@@ -43,7 +43,7 @@ Total of 3 certificates saved to target/truststore.jks
 
 Add this plugin to your **pom.xml**:
 
-```
+```xml
 <plugin>
    <groupId>uk.co.automatictester</groupId>
    <artifactId>truststore-maven-plugin</artifactId>
