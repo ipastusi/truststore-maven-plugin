@@ -11,7 +11,8 @@ This plugin generates Java truststore in either JKS or PKCS12 format. Truststore
 
 - X.509 certificates stored on disk - both PEM and DER formats are supported,
 - or X.509 certificates downloaded at runtime from servers using provided URLs,
-- or both.
+- or already existing truststores stored on disk - both JKS and PKCS12 formats are supported,
+- or any combination of the above.
 
 Option to download certificates dynamically is particularly handy when the server(s) certificates expire frequently, or
 you don't know the server(s) you need the certificates from until you run the Maven build.
