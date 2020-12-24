@@ -63,7 +63,7 @@ Add this plugin to your **pom.xml**:
             <!-- Property equivalent: truststore.format -->
             <truststoreFormat>PKCS12</truststoreFormat>
             
-            <!-- Truststore filename -->
+            <!-- Truststore filename. Required -->
             <!-- Property equivalent: truststore.file -->
             <truststoreFile>target/truststore.p12</truststoreFile>
             
