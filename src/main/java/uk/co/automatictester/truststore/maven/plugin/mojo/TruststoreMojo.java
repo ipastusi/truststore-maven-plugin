@@ -1,6 +1,5 @@
 package uk.co.automatictester.truststore.maven.plugin.mojo;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateDownloader;
@@ -17,7 +16,7 @@ public class TruststoreMojo extends ConfigurationMojo {
     private final List<X509Certificate> certs = new ArrayList<>();
 
     @Override
-    public void execute() throws MojoExecutionException {
+    public void execute() {
         loadFileSystemCerts();
         loadWebCerts();
         createTruststore();
@@ -38,12 +37,8 @@ public class TruststoreMojo extends ConfigurationMojo {
         }
     }
 
-    private void createTruststore() throws MojoExecutionException {
+    private void createTruststore() {
         TruststoreWriter truststoreWriter = new TruststoreWriter(truststoreFormat, truststoreFile, truststorePassword);
-        try {
-            truststoreWriter.write(certs);
-        } catch (Exception e) {
-            throw new MojoExecutionException("Error writing truststore: ", e);
-        }
+        truststoreWriter.write(certs);
     }
 }

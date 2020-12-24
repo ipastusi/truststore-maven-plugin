@@ -12,6 +12,9 @@ import java.util.List;
 
 public class CertificateReader {
 
+    private CertificateReader() {
+    }
+
     public static List<X509Certificate> read(String file) {
         List<X509Certificate> certs = new ArrayList<>();
         File sourceFile = new File(file);

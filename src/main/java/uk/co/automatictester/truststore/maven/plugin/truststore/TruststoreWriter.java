@@ -3,7 +3,11 @@ package uk.co.automatictester.truststore.maven.plugin.truststore;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateInspector;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
@@ -19,25 +23,32 @@ public class TruststoreWriter {
         this.password = password;
     }
 
-    public void write(List<X509Certificate> certs) throws Exception {
+    public void write(List<X509Certificate> certs) {
         if (certs.isEmpty()) {
             System.out.println("Truststore not generated: no certificates to store");
             return;
         }
-        String format = this.format.toString();
-        KeyStore keyStore = KeyStore.getInstance(format);
-        keyStore.load(null, null);
-        for (X509Certificate cert : certs) {
-            CertificateInspector certInspector = new CertificateInspector(cert);
-            logCertDetails(certInspector);
-            String alias = certInspector.getSerialNumber();
-            keyStore.setCertificateEntry(alias, cert);
+        KeyStore keyStore = populateKeyStore(certs);
+        saveKeyStore(keyStore);
+    }
+
+    private KeyStore populateKeyStore(List<X509Certificate> certs) {
+        KeyStore keyStore;
+        try {
+            keyStore = KeyStore.getInstance(format.toString());
+            keyStore.load(null, null);
+            for (X509Certificate cert : certs) {
+                CertificateInspector certInspector = new CertificateInspector(cert);
+                logCertDetails(certInspector);
+                String alias = certInspector.getSerialNumber();
+                keyStore.setCertificateEntry(alias, cert);
+            }
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
+            String cause = e.getMessage();
+            String errorMessage = String.format("Error building truststore: %s", cause);
+            throw new RuntimeException(errorMessage, e);
         }
-        FileOutputStream outputStream = new FileOutputStream(file);
-        keyStore.store(outputStream, password.toCharArray());
-        outputStream.close();
-        String message = String.format("Total of %d certificates saved to %s", keyStore.size(), file);
-        System.out.println(message);
+        return keyStore;
     }
 
     private void logCertDetails(CertificateInspector certInspector) {
@@ -48,5 +59,17 @@ public class TruststoreWriter {
                 "Valid between: ", certInspector.getNotValidBefore(),
                 certInspector.getNotValidAfter());
         System.out.println(details);
+    }
+
+    private void saveKeyStore(KeyStore keyStore) {
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+            keyStore.store(outputStream, password.toCharArray());
+            String message = String.format("Total of %d certificates saved to %s", keyStore.size(), file);
+            System.out.println(message);
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
+            String cause = e.getMessage();
+            String errorMessage = String.format("Error writing file %s: %s", file, cause);
+            throw new RuntimeException(errorMessage, e);
+        }
     }
 }
