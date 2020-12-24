@@ -19,7 +19,7 @@ abstract class ConfigurationMojo extends AbstractMojo {
     /**
      * Truststore filename.
      */
-    @Parameter(property = "truststore.file")
+    @Parameter(property = "truststore.file", required = true)
     protected String truststoreFile;
 
     /**
