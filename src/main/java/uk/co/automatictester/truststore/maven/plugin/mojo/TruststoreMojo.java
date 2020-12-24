@@ -4,6 +4,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateDownloader;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateReader;
+import uk.co.automatictester.truststore.maven.plugin.config.URLValidator;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreReader;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreWriter;
 
@@ -43,7 +44,9 @@ public class TruststoreMojo extends ConfigurationMojo {
 
     private void loadWebCerts() {
         CertificateDownloader certDownloader = new CertificateDownloader(trustAllCerts, skipHostnameVerification);
+        URLValidator URLValidator = new URLValidator();
         for (String url : urls) {
+            URLValidator.validate(url);
             List<X509Certificate> newCerts = certDownloader.getServerCertificates(url);
             certs.addAll(newCerts);
         }
