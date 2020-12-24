@@ -77,10 +77,27 @@ Total of 3 certificates saved to target/truststore.jks
                <certificate>certs/cert-to-add.der</certificate>
             </certificates>
             
+            <!-- List of files with source truststores to use. Optional -->
+            <truststores>
+               <truststore>
+                  <file>truststores/private_key_only.p12</file>
+                  <password>changeit</password>
+               </truststore>
+               <truststore>
+                  <file>truststores/aws_amazon_com.p12</file>
+                  <password>changeit</password>
+               </truststore>
+               <truststore>
+                  <file>truststores/www_github_com.jks</file>
+                  <password>topsecret</password>
+               </truststore>
+            </truststores>
+            
             <!-- List of URLs to download the certificates from. Optional -->
             <!-- Property equivalent: truststore.urls -->
             <urls>
                <url>https://www.example.com</url>
+               <url>https://www.another.com</url>
             </urls>
             
             <!-- Relevant only when specifying 'urls' -->

@@ -49,4 +49,10 @@ abstract class ConfigurationMojo extends AbstractMojo {
      */
     @Parameter(property = "truststore.urls")
     protected List<String> urls;
+
+    /**
+     * List of files with truststores to use.
+     */
+    @Parameter
+    protected List<Truststore> truststores;
 }

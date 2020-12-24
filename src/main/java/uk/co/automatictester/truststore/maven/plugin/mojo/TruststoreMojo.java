@@ -4,6 +4,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateDownloader;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateReader;
+import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreReader;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreWriter;
 
 import java.security.cert.X509Certificate;
@@ -18,6 +19,7 @@ public class TruststoreMojo extends ConfigurationMojo {
     @Override
     public void execute() {
         loadFileSystemCerts();
+        loadFileSystemTruststores();
         loadWebCerts();
         createTruststore();
     }
@@ -26,6 +28,17 @@ public class TruststoreMojo extends ConfigurationMojo {
         for (String certificateFile : certificates) {
             List<X509Certificate> newCerts = CertificateReader.read(certificateFile);
             certs.addAll(newCerts);
+        }
+    }
+
+    private void loadFileSystemTruststores() {
+        if (truststores != null) {
+            for (Truststore sourceTruststore : truststores) {
+                String file = sourceTruststore.getFile();
+                String password = sourceTruststore.getPassword();
+                List<X509Certificate> newCerts = TruststoreReader.read(file, password);
+                certs.addAll(newCerts);
+            }
         }
     }
 
