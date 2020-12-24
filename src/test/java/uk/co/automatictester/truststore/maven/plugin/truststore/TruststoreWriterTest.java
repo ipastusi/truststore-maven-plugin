@@ -18,8 +18,8 @@ public class TruststoreWriterTest {
 
     private String file;
 
-    @DataProvider(name = "trustoreFormats")
-    public Object[][] trustoreFormats() {
+    @DataProvider(name = "truststoreFormats")
+    public Object[][] truststoreFormats() {
         return new TruststoreFormat[][]{
                 {PKCS12},
                 {JKS},
@@ -35,7 +35,7 @@ public class TruststoreWriterTest {
         new File(file).deleteOnExit();
     }
 
-    @Test(dataProvider = "trustoreFormats")
+    @Test(dataProvider = "truststoreFormats")
     public void write(TruststoreFormat format) throws Exception {
         X509Certificate cert = TestCertificateGenerator.generate();
         List<X509Certificate> certs = new ArrayList<X509Certificate>() {{
@@ -48,7 +48,7 @@ public class TruststoreWriterTest {
     }
 
     @Test
-    public void writeNoCerts() throws Exception {
+    public void writeNoCerts() {
         List<X509Certificate> certs = new ArrayList<>();
         String password = "changeit";
         TruststoreWriter truststoreWriter = new TruststoreWriter(PKCS12, file, password);
