@@ -14,12 +14,15 @@ EXPECTED_OUTPUT=(
   "05:57:c8:0b:28:26:83:a1:7b:0a:11:44:93:29:6b:79"
 )
 
-for entry in "${EXPECTED_OUTPUT[@]}"; do
-  result=$(keytool -list -keystore target/truststore.p12 -storepass topsecret | grep -q "${entry}" && echo 1 || echo 0)
-  if [ "${result}" != "1" ]; then
-    echo "Expected output '${entry}' not found"
+RESULT=$(keytool -list -keystore target/truststore.p12 -storepass topsecret)
+
+for ENTRY in "${EXPECTED_OUTPUT[@]}"; do
+  FOUND=$(echo "${RESULT}" | grep -q "${ENTRY}" && echo 1 || echo 0)
+
+  if [ "${FOUND}" != "1" ]; then
+    echo "Expected output '${ENTRY}' not found"
     exit 1
   else
-    echo "Expected output '${entry}' found"
+    echo "Expected output '${ENTRY}' found"
   fi
 done
