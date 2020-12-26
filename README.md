@@ -11,7 +11,8 @@ This plugin generates Java truststore in either JKS or PKCS12 format. Truststore
 
 - X.509 certificates downloaded at runtime from servers using provided URLs,
 - or X.509 certificates stored on disk - both PEM and DER formats are supported,
-- or already existing truststores stored on disk - both JKS and PKCS12 formats are supported,
+- or X.509 certificates extracted from existing truststores stored on disk - truststores in both JKS and PKCS12 formats
+  are supported,
 - or any combination of the above.
 
 Option to download certificates dynamically is particularly handy when the server(s) certificates expire frequently, or
@@ -53,31 +54,31 @@ Add this plugin to your **pom.xml**:
          <goals>
             <goal>generate-truststore</goal>
          </goals>
-         
+
          <!-- Maven lifecycle phase when this plugin should run -->
          <phase>pre-integration-test</phase>
-         
+
          <configuration>
-            
+
             <!-- Truststore format: JKS or PKCS12. Default: JKS -->
             <!-- Property equivalent: truststore.format -->
             <truststoreFormat>PKCS12</truststoreFormat>
-            
+
             <!-- Truststore filename. Required -->
             <!-- Property equivalent: truststore.file -->
             <truststoreFile>target/truststore.p12</truststoreFile>
-            
+
             <!-- Truststore password. Default: changeit -->
             <!-- Property equivalent: truststore.password -->
             <truststorePassword>topsecret</truststorePassword>
-            
+
             <!-- List of files with certificates to use. Optional -->
             <!-- Property equivalent: truststore.certificates -->
             <certificates>
                <certificate>certs/cert-to-add.pem</certificate>
                <certificate>certs/cert-to-add.der</certificate>
             </certificates>
-            
+
             <!-- List of files with source truststores to use. Optional -->
             <!-- Property equivalent: truststore.truststores -->
             <truststores>
@@ -90,24 +91,24 @@ Add this plugin to your **pom.xml**:
                   <password>topsecret</password>
                </truststore>
             </truststores>
-            
+
             <!-- List of URLs to download the certificates from. Optional -->
             <!-- Property equivalent: truststore.urls -->
             <urls>
                <url>https://www.example.com</url>
                <url>https://www.another.com</url>
             </urls>
-            
+
             <!-- Relevant only when specifying 'urls' -->
             <!-- Set to true to trust server certificate when downloading certificates. Default: false -->
             <!-- Property equivalent: truststore.trustAllCertificates -->
             <trustAllCertificates>true</trustAllCertificates>
-            
+
             <!-- Relevant only when specifying 'urls' -->
             <!-- Set to true to skip hostname verification when downloading certificates. Default: false -->
             <!-- Property equivalent: truststore.skipHostnameVerification -->
             <skipHostnameVerification>true</skipHostnameVerification>
-            
+
          </configuration>
       </execution>
    </executions>
