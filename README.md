@@ -126,7 +126,7 @@ syntax:
 [file=truststores/truststore-1.p12,password=changeit],[file=truststores/truststore-2.jks,password=topsecret]
 ```
 
-## Required Java version
+## Supported Java version
 
 Truststore Maven Plugin is tested against a broad range of Java versions.
 See [Travis CI config](https://github.com/automatictester/truststore-maven-plugin/blob/master/.travis.yml) for details.
