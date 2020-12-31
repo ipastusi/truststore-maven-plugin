@@ -18,7 +18,7 @@ This plugin generates Java truststore in either JKS or PKCS12 format. Truststore
 Option to download certificates dynamically is particularly handy when the server(s) certificates expire frequently, or
 you don't know the server(s) you need the certificates from until you run the Maven build.
 
-Sample execution log for the plugin configured to generate truststore only using certificates downloaded from
+Sample execution log for the plugin configured to generate truststore only using leaf certificate downloaded from
 `https://www.amazon.com`:
 
 ```
@@ -27,17 +27,7 @@ Subject:           CN=www.amazon.com,O=Amazon.com\, Inc.,L=Seattle,ST=Washington
 Issuer:            CN=DigiCert Global CA G2,O=DigiCert Inc,C=US
 Valid between:     2020-07-13 00:00:00 and 2021-07-10 12:00:00 (GMT)
 
-Serial number:     0c:8e:e0:c9:0d:6a:89:15:88:04:06:1e:e2:41:f9:af
-Subject:           CN=DigiCert Global CA G2,O=DigiCert Inc,C=US
-Issuer:            CN=DigiCert Global Root G2,OU=www.digicert.com,O=DigiCert Inc,C=US
-Valid between:     2013-08-01 12:00:00 and 2028-08-01 12:00:00 (GMT)
-
-Serial number:     63:18:0d:38:fb:80:97:78:a9:d0:35:a3:16:18:f8:40
-Subject:           CN=DigiCert Global Root G2,OU=www.digicert.com,O=DigiCert Inc,C=US
-Issuer:            CN=VeriSign Class 3 Public Primary Certification Authority - G5,OU=(c) 2006 VeriSign\, Inc. - For authorized use only,OU=VeriSign Trust Network,O=VeriSign\, Inc.,C=US
-Valid between:     2017-11-06 00:00:00 and 2022-11-05 23:59:59 (GMT)
-
-Total of 3 certificates saved to target/truststore.jks
+Total of 1 certificates saved to target/truststore.jks
 ```
 
 ## Quick start guide
