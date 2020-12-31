@@ -109,6 +109,11 @@ Add this plugin to your **pom.xml**:
             <!-- Property equivalent: truststore.skipHostnameVerification -->
             <skipHostnameVerification>true</skipHostnameVerification>
 
+            <!-- Relevant only when specifying 'urls' -->
+            <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->
+            <!-- Property equivalent: truststore.includeCertificates -->
+            <includeCertificates>LEAF</includeCertificates>
+
          </configuration>
       </execution>
    </executions>

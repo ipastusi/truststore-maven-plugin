@@ -42,6 +42,7 @@
                      <urls>
                         <url>https://www.google.com</url>
                      </urls>
+                     <includeCertificates>LEAF</includeCertificates>
                   </configuration>
                </execution>
             </executions>

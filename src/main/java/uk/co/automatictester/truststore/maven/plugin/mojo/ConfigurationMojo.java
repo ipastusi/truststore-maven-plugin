@@ -2,6 +2,7 @@ package uk.co.automatictester.truststore.maven.plugin.mojo;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import uk.co.automatictester.truststore.maven.plugin.certificate.IncludeCertificates;
 import uk.co.automatictester.truststore.maven.plugin.config.TruststoreSelector;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 
@@ -38,6 +39,12 @@ abstract class ConfigurationMojo extends AbstractMojo {
      */
     @Parameter(property = "truststore.skipHostnameVerification", defaultValue = "false")
     protected boolean skipHostnameVerification;
+
+    /**
+     * Which certificates to download: ALL, LEAF, CA. Default: ALL.
+     */
+    @Parameter(property = "truststore.includeCertificates", defaultValue = "ALL")
+    protected IncludeCertificates includeCertificates;
 
     /**
      * List of files with certificates to use.
