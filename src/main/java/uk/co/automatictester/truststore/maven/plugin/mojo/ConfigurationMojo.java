@@ -32,7 +32,7 @@ abstract class ConfigurationMojo extends AbstractMojo {
      * Set to true to trust server certificate when downloading certificates.
      */
     @Parameter(property = "truststore.trustAllCertificates", defaultValue = "false")
-    protected boolean trustAllCerts;
+    protected boolean trustAllCertificates;
 
     /**
      * Set to true to skip hostname verification when downloading certificates.

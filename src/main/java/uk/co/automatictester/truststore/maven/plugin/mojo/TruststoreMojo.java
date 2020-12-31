@@ -44,7 +44,7 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     private void loadWebCerts() {
-        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCerts, skipHostnameVerification);
+        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
         URLValidator URLValidator = new URLValidator();
         CertificateFilter certFilter = new CertificateFilter(includeCertificates);
         for (String url : urls) {
