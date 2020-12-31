@@ -15,8 +15,8 @@ This plugin generates Java truststore in either JKS or PKCS12 format. Truststore
   are supported,
 - or any combination of the above.
 
-Option to download certificates dynamically is particularly handy when the server(s) certificates expire frequently, or
-you don't know the server(s) you need the certificates from until you run the Maven build.
+Option to download certificates dynamically is particularly handy when the certificates expire frequently, or you don't
+know the server(s) you need the certificates from until you run the Maven build.
 
 Sample execution log for the plugin configured to generate truststore only using leaf certificate downloaded from
 `https://www.amazon.com`:
