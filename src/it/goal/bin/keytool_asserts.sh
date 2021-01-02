@@ -11,7 +11,7 @@ EXPECTED_OUTPUT=(
 RESULT=$(keytool -list -keystore goal_truststore.jks -storepass changeit)
 
 for ENTRY in "${EXPECTED_OUTPUT[@]}"; do
-  FOUND=$(echo "${RESULT}" | grep -q "${ENTRY}" && echo 1 || echo 0)
+  FOUND=$(echo "${RESULT}" | grep -iq "${ENTRY}" && echo 1 || echo 0)
 
   if [ "${FOUND}" != "1" ]; then
     echo "Expected output '${ENTRY}' not found"
