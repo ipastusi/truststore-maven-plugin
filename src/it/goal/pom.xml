@@ -6,7 +6,7 @@
    <groupId>uk.co.automatictester</groupId>
    <artifactId>truststore-maven-plugin-it</artifactId>
    <version>1.0.0-SNAPSHOT</version>
-   <description>properties integration test</description>
+   <description>plugin:goal integration test</description>
    <modelVersion>4.0.0</modelVersion>
 
    <properties>
@@ -21,14 +21,6 @@
             <groupId>@project.groupId@</groupId>
             <artifactId>@project.artifactId@</artifactId>
             <version>@project.version@</version>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>generate-truststore</goal>
-                  </goals>
-                  <phase>pre-integration-test</phase>
-               </execution>
-            </executions>
          </plugin>
 
          <plugin>

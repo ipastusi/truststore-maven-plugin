@@ -6,7 +6,7 @@
    <groupId>uk.co.automatictester</groupId>
    <artifactId>truststore-maven-plugin-it</artifactId>
    <version>1.0.0-SNAPSHOT</version>
-   <description>Basic integration test</description>
+   <description>basic integration test</description>
    <modelVersion>4.0.0</modelVersion>
 
    <properties>
