@@ -51,26 +51,26 @@ Add this plugin to your **pom.xml**:
          <configuration>
 
             <!-- Truststore format: JKS or PKCS12. Default: JKS -->
-            <!-- Property equivalent: truststore.format -->
+            <!-- User property: truststore.format -->
             <truststoreFormat>PKCS12</truststoreFormat>
 
             <!-- Truststore filename. Required -->
-            <!-- Property equivalent: truststore.file -->
+            <!-- User property: truststore.file -->
             <truststoreFile>target/truststore.p12</truststoreFile>
 
             <!-- Truststore password. Default: changeit -->
-            <!-- Property equivalent: truststore.password -->
+            <!-- User property: truststore.password -->
             <truststorePassword>topsecret</truststorePassword>
 
             <!-- List of files with certificates to use. Optional -->
-            <!-- Property equivalent: truststore.certificates -->
+            <!-- User property: truststore.certificates -->
             <certificates>
                <certificate>certs/cert-to-add.pem</certificate>
                <certificate>certs/cert-to-add.der</certificate>
             </certificates>
 
             <!-- List of files with source truststores to use. Optional -->
-            <!-- Property equivalent: truststore.truststores -->
+            <!-- User property: truststore.truststores -->
             <truststores>
                <truststore>
                   <file>truststores/truststore-1.p12</file>
@@ -83,7 +83,7 @@ Add this plugin to your **pom.xml**:
             </truststores>
 
             <!-- List of URLs to download the certificates from. Optional -->
-            <!-- Property equivalent: truststore.urls -->
+            <!-- User property: truststore.urls -->
             <urls>
                <url>https://www.example.com</url>
                <url>https://www.another.com</url>
@@ -91,17 +91,17 @@ Add this plugin to your **pom.xml**:
 
             <!-- Relevant only when specifying 'urls' -->
             <!-- Set to true to trust server certificate when downloading certificates. Default: false -->
-            <!-- Property equivalent: truststore.trustAllCertificates -->
+            <!-- User property: truststore.trustAllCertificates -->
             <trustAllCertificates>true</trustAllCertificates>
 
             <!-- Relevant only when specifying 'urls' -->
             <!-- Set to true to skip hostname verification when downloading certificates. Default: false -->
-            <!-- Property equivalent: truststore.skipHostnameVerification -->
+            <!-- User property: truststore.skipHostnameVerification -->
             <skipHostnameVerification>true</skipHostnameVerification>
 
             <!-- Relevant only when specifying 'urls' -->
             <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->
-            <!-- Property equivalent: truststore.includeCertificates -->
+            <!-- User property: truststore.includeCertificates -->
             <includeCertificates>LEAF</includeCertificates>
 
          </configuration>
@@ -110,7 +110,7 @@ Add this plugin to your **pom.xml**:
 </plugin>
 ```
 
-## Special cases
+## Note on using user properties
 
 There is one caveat regarding the use of `truststore.truststores` property. There is no documented way to pass a list of
 complex objects to a Maven plugin other than using `<configuration>...</configuration>` section. In order to be able to
