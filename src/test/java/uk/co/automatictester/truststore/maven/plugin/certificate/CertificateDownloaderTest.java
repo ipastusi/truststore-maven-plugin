@@ -1,38 +1,38 @@
 package uk.co.automatictester.truststore.maven.plugin.certificate;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import uk.co.automatictester.truststore.maven.plugin.testutil.HttpsServer;
 
-import java.net.ServerSocket;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CertificateDownloaderTest {
 
-    private WireMockServer server;
-
-    @BeforeClass
-    public void setUp() throws Exception {
-        ServerSocket serverSocket = new ServerSocket(0);
-        int httpsPort = serverSocket.getLocalPort();
-        serverSocket.close();
-
-        WireMockConfiguration options = options()
-                .httpDisabled(true)
-                .httpsPort(httpsPort);
-        server = new WireMockServer(options);
-        server.start();
-    }
+    private HttpsServer server;
 
     @Test
     public void getServerCertificates() {
-        int httpsPort = server.httpsPort();
+        server = new HttpsServer();
+        int httpsPort = server.port();
+
+        System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock.p12");
+        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+
+        String url = String.format("https://localhost:%d", httpsPort);
+        CertificateDownloader certDownloader = new CertificateDownloader(false, true);
+        List<X509Certificate> certs = certDownloader.getServerCertificates(url);
+        assertThat(certs).hasSize(1);
+        assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
+    }
+
+    @Test
+    public void getServerCertificatesTrustAll() {
+        server = new HttpsServer();
+        int httpsPort = server.port();
+
         String url = String.format("https://localhost:%d", httpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
         List<X509Certificate> certs = certDownloader.getServerCertificates(url);
@@ -41,15 +41,74 @@ public class CertificateDownloaderTest {
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = ".*Connection refused.*")
-    public void getServerCertificatesError() {
-        int incorrectHttpsPort = server.httpsPort() - 1;
+    public void getServerCertificatesConnectionError() {
+        server = new HttpsServer();
+        int incorrectHttpsPort = server.port() - 1;
+
         String url = String.format("https://localhost:%d", incorrectHttpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
         certDownloader.getServerCertificates(url);
     }
 
-    @AfterClass
-    public void tearDown() {
+    @Test
+    public void getServerCertificatesWithClientAuthAndTrustStore() {
+        server = new HttpsServer(true);
+        int httpsPort = server.port();
+
+        System.setProperty("javax.net.ssl.keyStore", "src/test/resources/keystores/keystore.p12");
+        System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
+        System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock.p12");
+        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+
+        String url = String.format("https://localhost:%d", httpsPort);
+        CertificateDownloader certDownloader = new CertificateDownloader(false, true);
+        List<X509Certificate> certs = certDownloader.getServerCertificates(url);
+        assertThat(certs).hasSize(1);
+        assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
+    }
+
+    @Test
+    public void getServerCertificatesWithClientAuthAndTrustAll() {
+        server = new HttpsServer(true);
+        int httpsPort = server.port();
+
+        System.setProperty("javax.net.ssl.keyStore", "src/test/resources/keystores/keystore.jks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
+
+        String url = String.format("https://localhost:%d", httpsPort);
+        CertificateDownloader certDownloader = new CertificateDownloader(true, true);
+        List<X509Certificate> certs = certDownloader.getServerCertificates(url);
+        assertThat(certs).hasSize(1);
+        assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
+    }
+
+    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = ".* unable to find valid certification path to requested target")
+    public void getServerCertificatesWithClientAuthNoKeyStore() {
+        server = new HttpsServer(true);
+        int httpsPort = server.port();
+
+        String url = String.format("https://localhost:%d", httpsPort);
+        CertificateDownloader certDownloader = new CertificateDownloader(false, true);
+        certDownloader.getServerCertificates(url);
+    }
+
+    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "java.net.SocketException: Connection reset")
+    public void getServerCertificatesWithClientAuthNoKeyStoreAndTrustAll() {
+        server = new HttpsServer(true);
+        int httpsPort = server.port();
+
+        String url = String.format("https://localhost:%d", httpsPort);
+        CertificateDownloader certDownloader = new CertificateDownloader(true, true);
+        certDownloader.getServerCertificates(url);
+    }
+
+    @AfterMethod
+    public void stopServer() {
+        System.clearProperty("javax.net.ssl.keyStore");
+        System.clearProperty("javax.net.ssl.keyStorePassword");
+        System.clearProperty("javax.net.ssl.trustStore");
+        System.clearProperty("javax.net.ssl.trustStorePassword");
+
         server.stop();
     }
 }

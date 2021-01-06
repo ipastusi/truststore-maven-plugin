@@ -6,7 +6,7 @@ import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateDown
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateFilter;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateReader;
 import uk.co.automatictester.truststore.maven.plugin.config.URLValidator;
-import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreReader;
+import uk.co.automatictester.truststore.maven.plugin.keystore.KeyStoreReader;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreWriter;
 
 import java.security.cert.X509Certificate;
@@ -38,7 +38,7 @@ public class TruststoreMojo extends ConfigurationMojo {
         for (Truststore sourceTruststore : truststores) {
             String file = sourceTruststore.getFile();
             String password = sourceTruststore.getPassword();
-            List<X509Certificate> newCerts = TruststoreReader.read(file, password);
+            List<X509Certificate> newCerts = KeyStoreReader.readCertificates(file, password);
             certs.addAll(newCerts);
         }
     }

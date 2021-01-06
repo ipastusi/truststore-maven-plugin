@@ -1,4 +1,4 @@
-package uk.co.automatictester.truststore.maven.plugin.truststore;
+package uk.co.automatictester.truststore.maven.plugin.keystore;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,17 +11,17 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class TruststoreReader {
+public class KeyStoreReader {
 
-    private TruststoreReader() {
+    private KeyStoreReader() {
     }
 
-    public static List<X509Certificate> read(String file, String password) {
-        KeyStore keyStore = loadKeyStore(file, password);
+    public static List<X509Certificate> readCertificates(String file, String password) {
+        KeyStore keyStore = readKeyStore(file, password);
         return extractCertificates(keyStore);
     }
 
-    private static KeyStore loadKeyStore(String file, String password) {
+    public static KeyStore readKeyStore(String file, String password) {
         KeyStore keyStore;
         try (FileInputStream inputStream = new FileInputStream(file)) {
             keyStore = KeyStore.getInstance("JKS");

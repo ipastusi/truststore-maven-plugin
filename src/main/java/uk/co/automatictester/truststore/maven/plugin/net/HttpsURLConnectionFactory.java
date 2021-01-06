@@ -20,13 +20,14 @@ public class HttpsURLConnectionFactory {
             throw new RuntimeException(e);
         }
         HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
-        if (trustAllCerts) {
-            SSLSocketFactory sslSocketFactory = TrustAllSslSocketFactory.createInstance();
-            httpsUrlConnection.setSSLSocketFactory(sslSocketFactory);
-        }
+
+        SSLSocketFactory sslSocketFactory = ConfigurableSSLSocketFactory.createInstance(trustAllCerts);
+        httpsUrlConnection.setSSLSocketFactory(sslSocketFactory);
+
         if (skipHostnameVerification) {
             httpsUrlConnection.setHostnameVerifier((hostname, sslSession) -> true);
         }
+
         return httpsUrlConnection;
     }
 }

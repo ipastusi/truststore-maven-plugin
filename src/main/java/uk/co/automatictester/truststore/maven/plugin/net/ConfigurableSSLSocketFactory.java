@@ -8,18 +8,18 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class TrustAllSslSocketFactory {
+public class ConfigurableSSLSocketFactory {
 
-    private TrustAllSslSocketFactory() {
+    private ConfigurableSSLSocketFactory() {
     }
 
-    public static SSLSocketFactory createInstance() {
-        KeyManager[] keyManager = null;
-        TrustManager[] trustManagers = TrustAllTrustManagersFactory.createInstance();
+    public static SSLSocketFactory createInstance(boolean trustAllCerts) {
+        KeyManager[] keyManagers = KeyManagersFactory.createInstance();
+        TrustManager[] trustManagers = TrustManagersFactory.createInstance(trustAllCerts);
         SSLContext sslContext;
         try {
             sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(keyManager, trustManagers, new SecureRandom());
+            sslContext.init(keyManagers, trustManagers, new SecureRandom());
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             throw new RuntimeException(e);
         }
