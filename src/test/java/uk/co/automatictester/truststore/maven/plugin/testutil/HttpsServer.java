@@ -42,7 +42,7 @@ public class HttpsServer {
     private WireMockConfiguration addClientAuth(WireMockConfiguration config) {
         return config
                 .needClientAuth(true)
-                .trustStorePath("src/test/resources/truststore/client_auth.p12")
+                .trustStorePath("src/test/resources/truststore/client_auth_cert.p12")
                 .trustStorePassword("changeit")
                 .trustStoreType("PKCS12");
     }

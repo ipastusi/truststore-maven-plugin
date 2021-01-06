@@ -18,7 +18,7 @@ public class CertificateDownloaderTest {
         server = new HttpsServer();
         int httpsPort = server.port();
 
-        System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock.p12");
+        System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_builtin_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         String url = String.format("https://localhost:%d", httpsPort);
@@ -55,9 +55,9 @@ public class CertificateDownloaderTest {
         server = new HttpsServer(true);
         int httpsPort = server.port();
 
-        System.setProperty("javax.net.ssl.keyStore", "src/test/resources/keystores/keystore.p12");
+        System.setProperty("javax.net.ssl.keyStore", "src/test/resources/keystores/client_auth_key_cert.p12");
         System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
-        System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock.p12");
+        System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_builtin_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         String url = String.format("https://localhost:%d", httpsPort);
@@ -72,7 +72,7 @@ public class CertificateDownloaderTest {
         server = new HttpsServer(true);
         int httpsPort = server.port();
 
-        System.setProperty("javax.net.ssl.keyStore", "src/test/resources/keystores/keystore.jks");
+        System.setProperty("javax.net.ssl.keyStore", "src/test/resources/keystores/client_auth_key_cert.jks");
         System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
 
         String url = String.format("https://localhost:%d", httpsPort);

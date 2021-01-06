@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <groupId>uk.co.automatictester</groupId>
+   <artifactId>truststore-maven-plugin-it</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <description>client authentication integration test</description>
+   <modelVersion>4.0.0</modelVersion>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+   </properties>
+
+   <build>
+      <plugins>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+               <source>1.8</source>
+               <target>1.8</target>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>uk.co.automatictester</groupId>
+            <artifactId>wiremock-maven-plugin</artifactId>
+            <version>7.0.0</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+                  <phase>pre-integration-test</phase>
+                  <configuration>
+                     <params>--https-port=8081 \
+                        --disable-http \
+                        --https-keystore=src/test/resources/server/keystore/wiremock_server_key_cert.p12 \
+                        --keystore-type=PKCS12 \
+                        --keystore-password=changeit \
+                        --key-manager-password=changeit \
+                        --https-require-client-cert \
+                        --https-truststore=src/test/resources/server/truststore/client_auth_cert.p12 \
+                        --truststore-type=PKCS12 \
+                        --truststore-password=changeit \
+                        --verbose</params>
+                  </configuration>
+               </execution>
+            </executions>
+            <dependencies>
+               <dependency>
+                  <groupId>com.github.tomakehurst</groupId>
+                  <artifactId>wiremock</artifactId>
+                  <version>2.27.2</version>
+               </dependency>
+            </dependencies>
+         </plugin>
+
+         <plugin>
+            <groupId>@project.groupId@</groupId>
+            <artifactId>@project.artifactId@</artifactId>
+            <version>@project.version@</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>generate-truststore</goal>
+                  </goals>
+                  <phase>pre-integration-test</phase>
+                  <configuration>
+                     <truststoreFile>target/truststore.jks</truststoreFile>
+                     <urls>
+                        <url>https://localhost:8081</url>
+                     </urls>
+                     <trustAllCertificates>true</trustAllCertificates>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+               <execution>
+                  <id>keytool-check</id>
+                  <phase>integration-test</phase>
+                  <configuration>
+                     <executable>bash</executable>
+                     <arguments>
+                        <argument>bin/keytool_asserts.sh</argument>
+                     </arguments>
+                  </configuration>
+                  <goals>
+                     <goal>exec</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+      </plugins>
+   </build>
+
+</project>

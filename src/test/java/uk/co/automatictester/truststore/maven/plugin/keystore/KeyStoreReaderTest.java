@@ -15,8 +15,8 @@ public class KeyStoreReaderTest {
     @DataProvider(name = "keyStoreFiles")
     public Object[][] keyStoreFiles() {
         return new String[][]{
-                {"src/test/resources/keystores/keystore.jks"},
-                {"src/test/resources/keystores/keystore.p12"},
+                {"src/test/resources/keystores/client_auth_key_cert.jks"},
+                {"src/test/resources/keystores/client_auth_key_cert.p12"},
         };
     }
 
