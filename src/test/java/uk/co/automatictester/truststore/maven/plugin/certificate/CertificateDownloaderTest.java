@@ -92,16 +92,6 @@ public class CertificateDownloaderTest {
         certDownloader.getServerCertificates(url);
     }
 
-    @Test(expectedExceptions = RuntimeException.class)
-    public void getServerCertificatesWithClientAuthNoKeyStoreAndTrustAll() {
-        server = new HttpsServer(true);
-        int httpsPort = server.port();
-
-        String url = String.format("https://localhost:%d", httpsPort);
-        CertificateDownloader certDownloader = new CertificateDownloader(true, true);
-        certDownloader.getServerCertificates(url);
-    }
-
     @AfterMethod
     public void stopServer() {
         System.clearProperty("javax.net.ssl.keyStore");
