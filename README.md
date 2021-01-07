@@ -1,6 +1,5 @@
 # Truststore Maven Plugin
 
-[![Build Status](https://travis-ci.com/automatictester/truststore-maven-plugin.svg?branch=master)](https://travis-ci.com/automatictester/truststore-maven-plugin)
 [![Central status](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin)
 
 Generate Java truststore as part of Maven lifecycle.
