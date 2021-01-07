@@ -122,7 +122,9 @@ However, you may prefer to set `trustAllCertificates` to `true` instead.
 
 If you want, you can define a keystore to use with `javax.net.ssl.keyStore` and `javax.net.ssl.keyStorePassword`. This
 may be required to download the certificates if the server is configured to require client authentication and terminate
-TLS handshake if the client doesn't provide an acceptable certificate.
+TLS handshake if the client doesn't provide a certificate. Please note this is no longer the case with Java versions 11
+and above. These versions will let you download server certificates even if the server is configured to require client
+authentication and client doesn't provide a certificate.
 
 ## Loading certificates from existing truststores
 
