@@ -140,5 +140,4 @@ solution has been implemented. You can specify value of `truststore.truststores`
 
 ## Supported Java versions
 
-Truststore Maven Plugin is tested against a broad range of Java versions.
-See [Travis CI config](https://github.com/automatictester/truststore-maven-plugin/blob/master/.travis.yml) for details.
+Truststore Maven Plugin is tested against Java versions 8 to 14.
