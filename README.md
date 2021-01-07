@@ -35,6 +35,7 @@ Total of 1 certificates saved to target/truststore.jks
 Add this plugin to your **pom.xml**:
 
 ```xml
+
 <plugin>
    <groupId>uk.co.automatictester</groupId>
    <artifactId>truststore-maven-plugin</artifactId>
@@ -110,13 +111,27 @@ Add this plugin to your **pom.xml**:
 </plugin>
 ```
 
-## Note on using user properties
+## Downloading certificates
 
-There is one caveat regarding the use of `truststore.truststores` property. There is no documented way to pass a list of
-complex objects to a Maven plugin other than using `<configuration>...</configuration>` section. In order to be able to
-pass them as a property, either on command line or using `<properties>...</properties>` section in your **pom.xml**, a
-custom solution has been implemented. You can specify value of `truststore.truststores` property using the following
-syntax:
+When downloading certificates at runtime from servers, standard Java PKI rules apply:
+
+- Default truststore is used
+- No keystore is used
+
+If you want, you can override default truststore with `javax.net.ssl.trustStore` and `javax.net.ssl.trustStorePassword`.
+However, you may prefer to set `trustAllCertificates` to `true` instead.
+
+If you want, you can define a keystore to use with `javax.net.ssl.keyStore` and `javax.net.ssl.keyStorePassword`. This
+may be required to download the certificates if the server is configured to require client authentication and terminate
+TLS handshake if the client doesn't provide an acceptable certificate.
+
+## Loading certificates from existing truststores
+
+There may be reasons for you to pass a list of source truststores with a user property rather than define it
+using `<truststores>...</truststores>` in `<configuration>...</configuration>` section as documented above. There is no
+documented way to pass a list of complex objects to a Maven plugin as a user property. In order to be able to pass them
+as a property, either on command line or using `<properties>...</properties>` section in your **pom.xml**, a custom
+solution has been implemented. You can specify value of `truststore.truststores` property using the following syntax:
 
 ```
 [file=truststores/truststore-1.p12,password=changeit],[file=truststores/truststore-2.jks,password=topsecret]
