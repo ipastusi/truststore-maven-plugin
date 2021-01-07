@@ -92,7 +92,7 @@ public class CertificateDownloaderTest {
         certDownloader.getServerCertificates(url);
     }
 
-    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "java.net.SocketException: Connection reset")
+    @Test(expectedExceptions = RuntimeException.class)
     public void getServerCertificatesWithClientAuthNoKeyStoreAndTrustAll() {
         server = new HttpsServer(true);
         int httpsPort = server.port();
