@@ -9,7 +9,9 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TruststoreWriter {
 
@@ -28,11 +30,16 @@ public class TruststoreWriter {
             System.out.println("Truststore not generated: no certificates to store");
             return;
         }
-        KeyStore keyStore = populateKeyStore(certs);
+        Set<X509Certificate> deduplicatedCerts = deduplicateCerts(certs);
+        KeyStore keyStore = populateKeyStore(deduplicatedCerts);
         saveKeyStore(keyStore);
     }
 
-    private KeyStore populateKeyStore(List<X509Certificate> certs) {
+    private Set<X509Certificate> deduplicateCerts(List<X509Certificate> certs) {
+        return new HashSet<>(certs);
+    }
+
+    private KeyStore populateKeyStore(Set<X509Certificate> certs) {
         KeyStore keyStore;
         try {
             keyStore = KeyStore.getInstance(format.toString());
