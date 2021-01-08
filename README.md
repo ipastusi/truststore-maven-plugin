@@ -112,18 +112,26 @@ Add this plugin to your **pom.xml**:
 
 ## Downloading certificates
 
-When downloading certificates at runtime from servers, standard Java PKI rules apply:
+#### Default settings
+
+When downloading certificates from servers, standard Java PKI rules apply:
 
 - Default truststore is used
-- No keystore is used
+- Empty keystore is used
 
-If you want, you can override default truststore with `javax.net.ssl.trustStore` and `javax.net.ssl.trustStorePassword`.
-However, you may prefer to set `trustAllCertificates` to `true` instead.
+You might have already customised these settings with global `~/.mavenrc` or project-level `.mvn/jvm.config`.
 
-If you want, you can define a keystore to use with `javax.net.ssl.keyStore` and `javax.net.ssl.keyStorePassword`. This
-may be required to download the certificates if the server is configured to require client authentication and terminate
-TLS handshake if the client doesn't provide a certificate. Please note this is no longer the case with Java versions 11
-and above. These versions will let you download server certificates even if the server is configured to require client
+#### Using custom truststore
+
+You can override default truststore with `javax.net.ssl.trustStore` and `javax.net.ssl.trustStorePassword`. However, you
+may prefer to set `trustAllCertificates` to `true` instead.
+
+#### Using custom keystore
+
+You can override default keystore with `javax.net.ssl.keyStore` and `javax.net.ssl.keyStorePassword`. This may be
+required to download the certificates if the server is configured to require client authentication and terminate TLS
+handshake if the client doesn't provide a certificate. Please note this is no longer the case with Java versions 11 and
+above. These versions will let you download server certificates even if the server is configured to require client
 authentication and client doesn't provide a certificate.
 
 ## Loading certificates from existing truststores
