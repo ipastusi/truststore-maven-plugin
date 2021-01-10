@@ -26,6 +26,8 @@ public class CertificateDownloader {
             certs = (X509Certificate[]) httpsUrlConnection.getServerCertificates();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            httpsUrlConnection.disconnect();
         }
         return Arrays.asList(certs);
     }
