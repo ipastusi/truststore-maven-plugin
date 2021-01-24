@@ -57,7 +57,8 @@ pipeline {
             }
             steps {
                 withCredentials([string(credentialsId: 'gpg-passphrase', variable: 'GPGPP')]) {
-                    sh "./mvnw clean deploy -P release -Dgpg.passphrase=${GPGPP} -DskipTests -Dinvoker.skip=true"
+                    sh 'echo SKIP'
+//                    sh "./mvnw clean deploy -P release -Dgpg.passphrase=${GPGPP} -DskipTests -Dinvoker.skip=true"
                 }
             }
         }
