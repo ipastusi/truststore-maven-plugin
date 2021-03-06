@@ -4,6 +4,21 @@
 
 Generate Java truststore as part of Maven lifecycle.
 
+## Why use this plugin
+
+In addition to providing common truststore-related features, this plugin was explicitly designed to support the
+following use case:
+
+- You need to implement integration tests in Java which will interact with web services over HTTPS.
+- These web services use certificates issued by CAs which root certificates are not included in your default truststore.
+- You could manually generate a truststore now and in the future, when one of the certificates expire, or you need to
+  interact with yet another web service.
+- However, you want to have these situations handled automatically for you.
+
+This is where this plugin comes into play. You provide a list of HTTPS URLs, the plugin performs TLS handshake with each
+of them, grabs the certificates sent as part of these handshakes and uses them to generate the truststore. You can then
+use that truststore in your integration tests.
+
 ## How it works
 
 This plugin generates Java truststore in either JKS or PKCS12 format. Truststore can be generated from:
@@ -13,9 +28,6 @@ This plugin generates Java truststore in either JKS or PKCS12 format. Truststore
 - or X.509 certificates extracted from existing truststores stored on disk - truststores in both JKS and PKCS12 formats
   are supported,
 - or any combination of the above.
-
-Option to download certificates dynamically is particularly handy when the certificates expire frequently, or you don't
-know the server(s) you need the certificates from until you run the Maven build.
 
 Sample execution log for the plugin configured to generate truststore only using leaf certificate downloaded from
 `https://www.amazon.com`:
