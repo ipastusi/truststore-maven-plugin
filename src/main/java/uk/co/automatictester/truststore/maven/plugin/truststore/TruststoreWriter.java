@@ -11,6 +11,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class TruststoreWriter {
@@ -59,12 +60,24 @@ public class TruststoreWriter {
     }
 
     private void logCertDetails(CertificateInspector certInspector) {
-        String details = String.format("%-18s %s\n%-18s %s\n%-18s %s\n%-18s %s and %s (GMT)\n",
-                "Serial number: ", certInspector.getSerialNumber(),
-                "Subject:", certInspector.getSubject(),
-                "Issuer:", certInspector.getIssuer(),
-                "Valid between: ", certInspector.getNotValidBefore(),
-                certInspector.getNotValidAfter());
+        Optional<String> subjectAltNames = certInspector.getSubjectAlternativeNames();
+        String details;
+        if (subjectAltNames.isPresent()) {
+            details = String.format("%-20s %s\n%-20s %s\n%-20s %s\n%-20s %s\n%-20s %s and %s (GMT)\n",
+                    "Serial number: ", certInspector.getSerialNumber(),
+                    "Subject:", certInspector.getSubject(),
+                    "Subject Alt Names:", subjectAltNames.get(),
+                    "Issuer:", certInspector.getIssuer(),
+                    "Valid between: ", certInspector.getNotValidBefore(),
+                    certInspector.getNotValidAfter());
+        } else {
+            details = String.format("%-20s %s\n%-20s %s\n%-20s %s\n%-20s %s and %s (GMT)\n",
+                    "Serial number: ", certInspector.getSerialNumber(),
+                    "Subject:", certInspector.getSubject(),
+                    "Issuer:", certInspector.getIssuer(),
+                    "Valid between: ", certInspector.getNotValidBefore(),
+                    certInspector.getNotValidAfter());
+        }
         System.out.println(details);
     }
 

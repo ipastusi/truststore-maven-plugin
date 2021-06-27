@@ -3,10 +3,13 @@ package uk.co.automatictester.truststore.maven.plugin.testutil;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralNames;
+import org.bouncycastle.cert.CertIOException;
 import org.bouncycastle.cert.X509CertificateHolder;
-import org.bouncycastle.cert.X509v1CertificateBuilder;
+import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.cert.jcajce.JcaX509v1CertificateBuilder;
+import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
@@ -21,7 +24,7 @@ import java.util.Date;
 
 public class TestCertificateGenerator {
 
-    public static X509Certificate generate() throws Exception {
+    public static X509Certificate generate(GeneralNames subjectAltNames) throws Exception {
         X500Name name = getX500Name();
         KeyPair keyPair = generateRsaKeyPair();
         Date validityDate = new Date(1735689600000L);
@@ -33,7 +36,8 @@ public class TestCertificateGenerator {
                 keyPair,
                 validityDate,
                 serialNumber,
-                signatureAlgorithm
+                signatureAlgorithm,
+                subjectAltNames
         );
 
         return new JcaX509CertificateConverter()
@@ -58,13 +62,17 @@ public class TestCertificateGenerator {
     }
 
     private static X509CertificateHolder getCertificateHolder(X500Name name, KeyPair keyPair, Date validityDate,
-                                                              BigInteger serialNumber, String signatureAlgorithm)
-            throws OperatorCreationException {
+                                                              BigInteger serialNumber, String signatureAlgorithm,
+                                                              GeneralNames subjectAltNames)
+            throws OperatorCreationException, CertIOException {
         Date now = new Date(1609459200000L);
 
-        X509v1CertificateBuilder certificateBuilder = new JcaX509v1CertificateBuilder(
+        X509v3CertificateBuilder certificateBuilder = new JcaX509v3CertificateBuilder(
                 name, serialNumber, now, validityDate, name, keyPair.getPublic()
         );
+        if (subjectAltNames != null) {
+            certificateBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
+        }
 
         ContentSigner contentSigner = new JcaContentSignerBuilder(signatureAlgorithm)
                 .setProvider(new BouncyCastleProvider())

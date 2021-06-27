@@ -1,10 +1,10 @@
 package uk.co.automatictester.truststore.maven.plugin.certificate;
 
 import java.math.BigInteger;
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.*;
 
 public class CertificateInspector {
 
@@ -35,6 +35,30 @@ public class CertificateInspector {
     public String getNotValidAfter() {
         Date date = cert.getNotAfter();
         return formatDate(date);
+    }
+
+    public Optional<String> getSubjectAlternativeNames() {
+        String subjectAltNameString = "";
+        try {
+            Collection<List<?>> subjectAltNames = cert.getSubjectAlternativeNames();
+            if (subjectAltNames != null) {
+                StringBuilder subjectAltNamesBuilder = new StringBuilder();
+                for (List<?> subjectAltName : subjectAltNames) {
+                    subjectAltNamesBuilder.append(subjectAltName.get(1));
+                    subjectAltNamesBuilder.append(", ");
+                }
+                int length = subjectAltNamesBuilder.length();
+                subjectAltNamesBuilder.delete(length - 2, length);
+                subjectAltNameString = subjectAltNamesBuilder.toString();
+            }
+        } catch (CertificateParsingException e) {
+            System.out.println("Error reading subject alternative names");
+        }
+        if (subjectAltNameString.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(subjectAltNameString);
+        }
     }
 
     private String bigIntToHexString(BigInteger number) {
