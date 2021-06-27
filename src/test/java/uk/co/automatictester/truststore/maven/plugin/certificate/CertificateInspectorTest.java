@@ -20,8 +20,7 @@ public class CertificateInspectorTest {
 
     @BeforeClass
     public void setUp() throws Exception {
-        GeneralNames subjectAltNames = null;
-        X509Certificate cert = TestCertificateGenerator.generate(subjectAltNames);
+        X509Certificate cert = TestCertificateGenerator.generateV1();
         certInspector = new CertificateInspector(cert);
     }
 
@@ -61,7 +60,7 @@ public class CertificateInspectorTest {
             add(new GeneralName(GeneralName.dNSName, "apache.org"));
         }};
         GeneralNames subjectAltNames = GeneralNames.getInstance(new DERSequence(altNames.toArray(new GeneralName[]{})));
-        X509Certificate cert = TestCertificateGenerator.generate(subjectAltNames);
+        X509Certificate cert = TestCertificateGenerator.generateV3(subjectAltNames);
         certInspector = new CertificateInspector(cert);
 
         assertThat(certInspector.getSubjectAlternativeNames()).isEqualTo(Optional.of("apache.org"));
@@ -74,7 +73,7 @@ public class CertificateInspectorTest {
             add(new GeneralName(GeneralName.dNSName, "example.com"));
         }};
         GeneralNames subjectAltNames = GeneralNames.getInstance(new DERSequence(altNames.toArray(new GeneralName[]{})));
-        X509Certificate cert = TestCertificateGenerator.generate(subjectAltNames);
+        X509Certificate cert = TestCertificateGenerator.generateV3(subjectAltNames);
         certInspector = new CertificateInspector(cert);
 
         assertThat(certInspector.getSubjectAlternativeNames()).isEqualTo(Optional.of("*.example.com, example.com"));
@@ -87,7 +86,7 @@ public class CertificateInspectorTest {
             add(new GeneralName(GeneralName.iPAddress, "127.0.0.1"));
         }};
         GeneralNames subjectAltNames = GeneralNames.getInstance(new DERSequence(altNames.toArray(new GeneralName[]{})));
-        X509Certificate cert = TestCertificateGenerator.generate(subjectAltNames);
+        X509Certificate cert = TestCertificateGenerator.generateV3(subjectAltNames);
         certInspector = new CertificateInspector(cert);
 
         assertThat(certInspector.getSubjectAlternativeNames()).isEqualTo(Optional.of("localhost, 127.0.0.1"));

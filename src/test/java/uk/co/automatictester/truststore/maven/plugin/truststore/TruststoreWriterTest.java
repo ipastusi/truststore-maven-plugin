@@ -1,7 +1,6 @@
 package uk.co.automatictester.truststore.maven.plugin.truststore;
 
 import org.assertj.core.util.Files;
-import org.bouncycastle.asn1.x509.GeneralNames;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,8 +37,7 @@ public class TruststoreWriterTest {
 
     @Test(dataProvider = "truststoreFormats")
     public void write(TruststoreFormat format) throws Exception {
-        GeneralNames subjectAltNames = null;
-        X509Certificate cert = TestCertificateGenerator.generate(subjectAltNames);
+        X509Certificate cert = TestCertificateGenerator.generateV1();
         List<X509Certificate> certs = new ArrayList<X509Certificate>() {{
             add(cert);
         }};
