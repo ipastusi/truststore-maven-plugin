@@ -33,10 +33,11 @@ Sample execution log for the plugin configured to generate truststore only using
 `https://www.amazon.com`:
 
 ```
-Serial number:     05:f9:90:3b:91:2f:1a:00:9c:ad:c8:06:65:2b:da:18
-Subject:           CN=www.amazon.com,O=Amazon.com\, Inc.,L=Seattle,ST=Washington,C=US
-Issuer:            CN=DigiCert Global CA G2,O=DigiCert Inc,C=US
-Valid between:     2020-07-13 00:00:00 and 2021-07-10 12:00:00 (GMT)
+Serial number:       06:01:5d:8f:e3:6b:77:ab:df:66:b9:90:48:7e:da:40
+Subject:             CN=www.amazon.com
+Subject Alt Names:   amazon.com, amzn.com, uedata.amazon.com, us.amazon.com, www.amazon.com, www.amzn.com, corporate.amazon.com, buybox.amazon.com, iphone.amazon.com, yp.amazon.com, home.amazon.com, origin-www.amazon.com, buckeye-retail-website.amazon.com, huddles.amazon.com, p-nt-www-amazon-com-kalias.amazon.com, p-yo-www-amazon-com-kalias.amazon.com, p-y3-www-amazon-com-kalias.amazon.com
+Issuer:              CN=DigiCert Global CA G2,O=DigiCert Inc,C=US
+Valid between:       2021-04-19 00:00:00 and 2022-04-11 23:59:59 (GMT)
 
 Total of 1 certificates saved to target/truststore.jks
 ```
