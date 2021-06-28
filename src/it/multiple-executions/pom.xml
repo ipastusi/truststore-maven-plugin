@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <groupId>uk.co.automatictester</groupId>
+   <artifactId>truststore-maven-plugin-it</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <description>multiple executions integration test</description>
+   <modelVersion>4.0.0</modelVersion>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+   </properties>
+
+   <build>
+      <plugins>
+
+         <plugin>
+            <groupId>@project.groupId@</groupId>
+            <artifactId>@project.artifactId@</artifactId>
+            <version>@project.version@</version>
+            <executions>
+               <execution>
+                  <id>execution-1</id>
+                  <goals>
+                     <goal>generate-truststore</goal>
+                  </goals>
+                  <phase>pre-integration-test</phase>
+                  <configuration>
+                     <truststoreFormat>PKCS12</truststoreFormat>
+                     <truststoreFile>target/truststore-1.p12</truststoreFile>
+                     <truststorePassword>changeit</truststorePassword>
+                     <certificates>
+                        <certificate>certs/apache-org-chain-1.pem</certificate>
+                     </certificates>
+                     <urls>
+                        <url>https://www.google.com</url>
+                     </urls>
+                     <includeCertificates>LEAF</includeCertificates>
+                  </configuration>
+               </execution>
+               <execution>
+                  <id>execution-2</id>
+                  <goals>
+                     <goal>generate-truststore</goal>
+                  </goals>
+                  <phase>pre-integration-test</phase>
+                  <configuration>
+                     <truststoreFormat>JKS</truststoreFormat>
+                     <truststoreFile>target/truststore-2.jks</truststoreFile>
+                     <truststorePassword>topsecret</truststorePassword>
+                     <certificates>
+                        <certificate>certs/apache-org-chain-2.pem</certificate>
+                     </certificates>
+                     <urls>
+                        <url>https://akamai.com</url>
+                     </urls>
+                     <includeCertificates>LEAF</includeCertificates>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+               <execution>
+                  <id>keytool-check-1</id>
+                  <phase>integration-test</phase>
+                  <configuration>
+                     <executable>bash</executable>
+                     <arguments>
+                        <argument>bin/keytool_asserts_1.sh</argument>
+                     </arguments>
+                  </configuration>
+                  <goals>
+                     <goal>exec</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>keytool-check-2</id>
+                  <phase>integration-test</phase>
+                  <configuration>
+                     <executable>bash</executable>
+                     <arguments>
+                        <argument>bin/keytool_asserts_2.sh</argument>
+                     </arguments>
+                  </configuration>
+                  <goals>
+                     <goal>exec</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+      </plugins>
+   </build>
+</project>
