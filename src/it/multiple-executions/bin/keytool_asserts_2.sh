@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 EXPECTED_OUTPUT=(
-  "Keystore type: JKS"
+  "Keystore type: jks"
   "Your keystore contains 2 entries"
   "7d:5b:51:26:b4:76:ba:11:db:74:16:0b:bc:53:0d:a7"
 )
@@ -9,7 +9,7 @@ EXPECTED_OUTPUT=(
 RESULT=$(keytool -list -keystore target/truststore-2.jks -storepass topsecret)
 
 for ENTRY in "${EXPECTED_OUTPUT[@]}"; do
-  FOUND=$(echo "${RESULT}" | grep -q "${ENTRY}" && echo 1 || echo 0)
+  FOUND=$(echo "${RESULT}" | grep -iq "${ENTRY}" && echo 1 || echo 0)
 
   if [ "${FOUND}" != "1" ]; then
     echo "Expected output '${ENTRY}' not found"

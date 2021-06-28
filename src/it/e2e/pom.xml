@@ -38,9 +38,9 @@
                   </goals>
                   <phase>pre-integration-test</phase>
                   <configuration>
-                     <truststoreFile>target/truststore_www_google_com.jks</truststoreFile>
+                     <truststoreFile>target/truststore_www_amazon_com.jks</truststoreFile>
                      <urls>
-                        <url>https://www.google.com</url>
+                        <url>https://www.amazon.com</url>
                      </urls>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>

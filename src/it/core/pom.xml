@@ -52,7 +52,7 @@
                      </certificates>
                      <urls>
                         <url>https://www.amazon.com</url>
-                        <url>https://www.theguardian.com</url>
+                        <url>https://www.akamai.com</url>
                      </urls>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>

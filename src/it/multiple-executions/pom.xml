@@ -36,7 +36,7 @@
                         <certificate>certs/apache-org-chain-1.pem</certificate>
                      </certificates>
                      <urls>
-                        <url>https://www.google.com</url>
+                        <url>https://www.amazon.com</url>
                      </urls>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>
