@@ -117,6 +117,10 @@ Add this plugin to your **pom.xml**:
             <!-- User property: truststore.includeCertificates -->
             <includeCertificates>LEAF</includeCertificates>
 
+           <!-- Set to true to skip plugin execution. Default: false -->
+           <!-- User property: truststore.skip -->
+           <skip>true</skip>
+
          </configuration>
       </execution>
    </executions>
