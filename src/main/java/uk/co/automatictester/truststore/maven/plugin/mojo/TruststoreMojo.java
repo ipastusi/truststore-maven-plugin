@@ -20,6 +20,11 @@ public class TruststoreMojo extends ConfigurationMojo {
 
     @Override
     public void execute() {
+        if (skip) {
+            getLog().info("Requested to skip Truststore Maven Plugin execution");
+            return;
+        }
+
         loadFileSystemCerts();
         loadFileSystemTruststores();
         loadWebCerts();

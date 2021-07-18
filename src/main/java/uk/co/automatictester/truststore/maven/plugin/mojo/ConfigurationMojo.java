@@ -59,6 +59,12 @@ abstract class ConfigurationMojo extends AbstractMojo {
     protected List<String> urls;
 
     /**
+     * Set to true to skip plugin execution.
+     */
+    @Parameter(property = "truststore.skip", defaultValue = "false")
+    protected boolean skip;
+
+    /**
      * List of files with truststores to use.
      */
     @Parameter
