@@ -95,6 +95,12 @@ Add this plugin to your **pom.xml**:
                </truststore>
             </truststores>
 
+           <!-- Set to true to load certificates from the default truststore in either -->
+           <!-- <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts -->
+           <!-- (in this order) -->
+           <!-- User property: truststore.includeDefaultTruststore -->
+           <includeDefaultTruststore>true</includeDefaultTruststore>
+
             <!-- List of URLs to download the certificates from. Optional -->
             <!-- User property: truststore.urls -->
             <urls>
@@ -116,6 +122,10 @@ Add this plugin to your **pom.xml**:
             <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->
             <!-- User property: truststore.includeCertificates -->
             <includeCertificates>LEAF</includeCertificates>
+
+           <!-- Set to true to skip plugin execution. Default: false -->
+           <!-- User property: truststore.skip -->
+           <skip>true</skip>
 
          </configuration>
       </execution>
