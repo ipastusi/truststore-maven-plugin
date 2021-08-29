@@ -95,6 +95,12 @@ Add this plugin to your **pom.xml**:
                </truststore>
             </truststores>
 
+           <!-- Set to true to load certificates from the default truststore in either 
+           &lt;java.home&gt;/lib/security/jssecacerts or &lt;java.home&gt;/lib/security/cacerts -->
+           <!-- (in this order) -->
+           <!-- User property: truststore.includeDefaultTruststore -->
+           <includeDefaultTruststore>true</includeDefaultTruststore>
+
             <!-- List of URLs to download the certificates from. Optional -->
             <!-- User property: truststore.urls -->
             <urls>
