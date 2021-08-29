@@ -48,7 +48,9 @@ public class TruststoreWriter {
             for (X509Certificate cert : certs) {
                 CertificateInspector certInspector = new CertificateInspector(cert);
                 logCertDetails(certInspector);
-                String alias = certInspector.getSerialNumber();
+                String issuer = certInspector.getIssuer();
+                String serialNumber = certInspector.getSerialNumber();
+                String alias = String.format("%s - %s", issuer, serialNumber);
                 keyStore.setCertificateEntry(alias, cert);
             }
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
