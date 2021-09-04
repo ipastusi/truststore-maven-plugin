@@ -2,7 +2,7 @@
 
 [![Central status](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin)
 
-Generate Java truststore as part of Maven lifecycle.
+Generate JKS and PKCS12 truststores as part of Maven lifecycle.
 
 ## Why use this plugin
 
@@ -21,7 +21,7 @@ use that truststore in your integration tests.
 
 ## How it works
 
-This plugin generates Java truststore in either JKS or PKCS12 format. Truststore can be generated from:
+This plugin generates truststores in either JKS or PKCS12 format. Truststore can be generated from:
 
 - X.509 certificates downloaded at runtime from servers using provided URLs,
 - or X.509 certificates stored on disk - both PEM and DER formats are supported,
