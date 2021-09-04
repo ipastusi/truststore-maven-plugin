@@ -2,7 +2,7 @@
 
 [![Central status](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin)
 
-Generate JKS and PKCS12 truststores as part of Maven lifecycle.
+Maven plugin for generating JKS and PKCS12 truststores.
 
 ## Why use this plugin
 
