@@ -1,5 +1,7 @@
 package uk.co.automatictester.truststore.maven.plugin.truststore;
 
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.assertj.core.util.Files;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -16,6 +18,7 @@ import static uk.co.automatictester.truststore.maven.plugin.truststore.Truststor
 
 public class TruststoreWriterTest {
 
+    private final Log log = new SystemStreamLog();
     private String file;
 
     @DataProvider(name = "truststoreFormats")
@@ -43,7 +46,7 @@ public class TruststoreWriterTest {
         }};
 
         String password = "changeit";
-        TruststoreWriter truststoreWriter = new TruststoreWriter(format, file, password);
+        TruststoreWriter truststoreWriter = new TruststoreWriter(log, format, file, password);
         truststoreWriter.write(certs);
     }
 
@@ -51,7 +54,7 @@ public class TruststoreWriterTest {
     public void writeNoCerts() {
         List<X509Certificate> certs = new ArrayList<>();
         String password = "changeit";
-        TruststoreWriter truststoreWriter = new TruststoreWriter(PKCS12, file, password);
+        TruststoreWriter truststoreWriter = new TruststoreWriter(log, PKCS12, file, password);
         truststoreWriter.write(certs);
     }
 }

@@ -1,6 +1,7 @@
 package uk.co.automatictester.truststore.maven.plugin.mojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateDownloader;
@@ -36,6 +37,7 @@ public class TruststoreMojo extends ConfigurationMojo {
 
     private void loadFileSystemCerts() {
         for (String certificateFile : certificates) {
+            getLog().info("Loading certificates from file: " + certificateFile);
             List<X509Certificate> newCerts = CertificateReader.read(certificateFile);
             certs.addAll(newCerts);
         }
@@ -46,6 +48,7 @@ public class TruststoreMojo extends ConfigurationMojo {
         for (Truststore sourceTruststore : truststores) {
             String file = sourceTruststore.getFile();
             String password = sourceTruststore.getPassword();
+            getLog().info("Loading certificates from truststore: " + file);
             readCertificates(file, password);
         }
     }
@@ -56,6 +59,7 @@ public class TruststoreMojo extends ConfigurationMojo {
         CertificateFilter certFilter = new CertificateFilter(includeCertificates);
         for (String url : urls) {
             URLValidator.validate(url);
+            getLog().info("Downloading certificates through TLS handshake from URL: " + url);
             List<X509Certificate> downloadedCerts = certDownloader.getServerCertificates(url);
             List<X509Certificate> filteredCerts = certFilter.filter(downloadedCerts);
             certs.addAll(filteredCerts);
@@ -69,8 +73,10 @@ public class TruststoreMojo extends ConfigurationMojo {
             String cacerts = String.format("%s/lib/security/cacerts", javaHome);
             String defaultPassword = "changeit";
             if (FileChecker.isReadableFile(jssecacerts)) {
+                getLog().info("Loading certificates from default truststore: " + jssecacerts);
                 readCertificates(jssecacerts, defaultPassword);
             } else if (FileChecker.isReadableFile(cacerts)) {
+                getLog().info("Loading certificates from default truststore: " + cacerts);
                 readCertificates(cacerts, defaultPassword);
             } else {
                 throw new MojoExecutionException("Default truststore not found");
@@ -79,13 +85,13 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     private void readCertificates(String file, String password) {
-        getLog().info("Loading certificates from " + file);
         List<X509Certificate> newCerts = KeyStoreReader.readCertificates(file, password);
         certs.addAll(newCerts);
     }
 
     private void createTruststore() {
-        TruststoreWriter truststoreWriter = new TruststoreWriter(truststoreFormat, truststoreFile, truststorePassword);
+        Log log = getLog();
+        TruststoreWriter truststoreWriter = new TruststoreWriter(log, truststoreFormat, truststoreFile, truststorePassword);
         truststoreWriter.write(certs);
     }
 }

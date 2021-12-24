@@ -1,5 +1,7 @@
 package uk.co.automatictester.truststore.maven.plugin.truststore;
 
+import lombok.RequiredArgsConstructor;
+import org.apache.maven.plugin.logging.Log;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateInspector;
 
 import java.io.FileOutputStream;
@@ -14,21 +16,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@RequiredArgsConstructor
 public class TruststoreWriter {
 
+    private final Log log;
     private final TruststoreFormat format;
     private final String file;
     private final String password;
 
-    public TruststoreWriter(TruststoreFormat format, String file, String password) {
-        this.format = format;
-        this.file = file;
-        this.password = password;
-    }
-
     public void write(List<X509Certificate> certs) {
         if (certs.isEmpty()) {
-            System.out.println("Truststore not generated: no certificates to store");
+            log.warn("Truststore not generated: no certificates to store");
             return;
         }
         Set<X509Certificate> deduplicatedCerts = deduplicateCerts(certs);
@@ -46,7 +44,7 @@ public class TruststoreWriter {
             keyStore = KeyStore.getInstance(format.toString());
             keyStore.load(null, null);
             for (X509Certificate cert : certs) {
-                CertificateInspector certInspector = new CertificateInspector(cert);
+                CertificateInspector certInspector = new CertificateInspector(log, cert);
                 logCertDetails(certInspector);
                 String issuer = certInspector.getIssuer();
                 String serialNumber = certInspector.getSerialNumber();
@@ -63,31 +61,18 @@ public class TruststoreWriter {
 
     private void logCertDetails(CertificateInspector certInspector) {
         Optional<String> subjectAltNames = certInspector.getSubjectAlternativeNames();
-        String details;
-        if (subjectAltNames.isPresent()) {
-            details = String.format("%-20s %s\n%-20s %s\n%-20s %s\n%-20s %s\n%-20s %s and %s (GMT)\n",
-                    "Serial number: ", certInspector.getSerialNumber(),
-                    "Subject:", certInspector.getSubject(),
-                    "Subject Alt Names:", subjectAltNames.get(),
-                    "Issuer:", certInspector.getIssuer(),
-                    "Valid between: ", certInspector.getNotValidBefore(),
-                    certInspector.getNotValidAfter());
-        } else {
-            details = String.format("%-20s %s\n%-20s %s\n%-20s %s\n%-20s %s and %s (GMT)\n",
-                    "Serial number: ", certInspector.getSerialNumber(),
-                    "Subject:", certInspector.getSubject(),
-                    "Issuer:", certInspector.getIssuer(),
-                    "Valid between: ", certInspector.getNotValidBefore(),
-                    certInspector.getNotValidAfter());
-        }
-        System.out.println(details);
+        log.info("Serial number:     " + certInspector.getSerialNumber());
+        log.info("Subject:           " + certInspector.getSubject());
+        subjectAltNames.ifPresent(s -> log.info("Subject Alt Names: " + s));
+        log.info("Issuer:            " + certInspector.getIssuer());
+        log.info("Valid between:     " + certInspector.getNotValidBefore()
+                + " and " + certInspector.getNotValidAfter() + " (GMT)" + System.lineSeparator());
     }
 
     private void saveKeyStore(KeyStore keyStore) {
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             keyStore.store(outputStream, password.toCharArray());
-            String message = String.format("Total of %d certificates saved to %s", keyStore.size(), file);
-            System.out.println(message);
+            log.info("Total of " + keyStore.size() + " certificates saved to: " + file);
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
             String cause = e.getMessage();
             String errorMessage = String.format("Error writing file %s: %s", file, cause);

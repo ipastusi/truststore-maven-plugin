@@ -1,5 +1,7 @@
 package uk.co.automatictester.truststore.maven.plugin.certificate;
 
+import org.apache.maven.plugin.logging.Log;
+
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
@@ -9,9 +11,11 @@ import java.util.TimeZone;
 
 public class CertificateInspector {
 
+    private final SubjectAltNameParser subjectAltNameParser;
     private final X509Certificate cert;
 
-    public CertificateInspector(X509Certificate cert) {
+    public CertificateInspector(Log log, X509Certificate cert) {
+        this.subjectAltNameParser = new SubjectAltNameParser(log);
         this.cert = cert;
     }
 
@@ -39,7 +43,7 @@ public class CertificateInspector {
     }
 
     public Optional<String> getSubjectAlternativeNames() {
-        return SubjectAltNameParser.parse(cert);
+        return subjectAltNameParser.parse(cert);
     }
 
     private String bigIntToHexString(BigInteger number) {

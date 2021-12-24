@@ -1,5 +1,7 @@
 package uk.co.automatictester.truststore.maven.plugin.certificate;
 
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
@@ -16,12 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CertificateInspectorTest {
 
+    private final Log log = new SystemStreamLog();
     private CertificateInspector certInspector;
 
     @BeforeClass
     public void setUp() throws Exception {
         X509Certificate cert = TestCertificateGenerator.generateV1();
-        certInspector = new CertificateInspector(cert);
+        certInspector = new CertificateInspector(log, cert);
     }
 
     @Test
@@ -57,7 +60,7 @@ public class CertificateInspectorTest {
         }};
         GeneralNames subjectAltNames = GeneralNames.getInstance(new DERSequence(altNames.toArray(new GeneralName[]{})));
         X509Certificate cert = TestCertificateGenerator.generateV3(subjectAltNames);
-        certInspector = new CertificateInspector(cert);
+        certInspector = new CertificateInspector(log, cert);
 
         assertThat(certInspector.getSubjectAlternativeNames()).isEqualTo(Optional.of("*.example.com, example.com"));
     }
