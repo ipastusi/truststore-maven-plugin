@@ -4,26 +4,11 @@
 
 Maven plugin for generating JKS and PKCS12 truststores.
 
-## Why use this plugin
-
-In addition to providing common truststore-related features, this plugin was explicitly designed to support the
-following use case:
-
-- You need to implement integration tests in Java which will interact with web services over HTTPS.
-- These web services use certificates issued by CAs which root certificates are not included in your default truststore.
-- You could manually generate a truststore now and in the future, when one of the certificates expire, or you need to
-  interact with yet another web service.
-- However, you want to have these situations handled automatically for you.
-
-This is where this plugin comes into play. You provide a list of HTTPS URLs, the plugin performs TLS handshake with each
-of them, grabs the certificates sent as part of these handshakes and uses them to generate the truststore. You can then
-use that truststore in your integration tests.
-
 ## How it works
 
-This plugin generates truststores in either JKS or PKCS12 format. Truststore can be generated from:
+Truststore can be generated from:
 
-- X.509 certificates downloaded at runtime from servers using provided URLs,
+- X.509 certificates sent by HTTPS servers during TLS handshakes,
 - or X.509 certificates stored on disk - both PEM and DER formats are supported,
 - or X.509 certificates extracted from existing truststores stored on disk - truststores in both JKS and PKCS12 formats
   are supported,
