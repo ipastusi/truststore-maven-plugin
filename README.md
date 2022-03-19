@@ -156,4 +156,4 @@ solution has been implemented. You can specify value of `truststore.truststores`
 
 ## Supported Java versions
 
-Truststore Maven Plugin is tested against Java versions 8 to 14.
+Truststore Maven Plugin is tested against Java LTS versions 8, 11 and 17.
