@@ -13,8 +13,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat.JKS;
-import static uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat.PKCS12;
+import static uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat.*;
+
 
 public class TruststoreWriterTest {
 
@@ -26,6 +26,7 @@ public class TruststoreWriterTest {
         return new TruststoreFormat[][]{
                 {PKCS12},
                 {JKS},
+                {BCFKS},
         };
     }
 

@@ -3,6 +3,7 @@ package uk.co.automatictester.truststore.maven.plugin.truststore;
 import lombok.RequiredArgsConstructor;
 import org.apache.maven.plugin.logging.Log;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateInspector;
+import uk.co.automatictester.truststore.maven.plugin.keystore.KeyStoreFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class TruststoreWriter {
     private KeyStore populateKeyStore(Set<X509Certificate> certs) {
         KeyStore keyStore;
         try {
-            keyStore = KeyStore.getInstance(format.toString());
+            keyStore = KeyStoreFactory.createInstance(format);
             keyStore.load(null, null);
             for (X509Certificate cert : certs) {
                 CertificateInspector certInspector = new CertificateInspector(log, cert);

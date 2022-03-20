@@ -221,6 +221,11 @@
 
    <dependencies>
       <dependency>
+         <groupId>org.bouncycastle</groupId>
+         <artifactId>bcpkix-jdk15to18</artifactId>
+         <version>1.70</version>
+      </dependency>
+      <dependency>
          <groupId>org.apache.maven</groupId>
          <artifactId>maven-plugin-api</artifactId>
          <version>3.8.4</version>
@@ -255,12 +260,6 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>org.bouncycastle</groupId>
-         <artifactId>bcpkix-jdk15to18</artifactId>
-         <version>1.69</version>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
          <groupId>com.github.tomakehurst</groupId>
          <artifactId>wiremock-jre8</artifactId>
          <version>2.32.0</version>
@@ -269,7 +268,7 @@
       <dependency>
          <groupId>org.slf4j</groupId>
          <artifactId>slf4j-simple</artifactId>
-         <version>1.7.35</version>
+         <version>1.7.36</version>
          <scope>test</scope>
       </dependency>
    </dependencies>

@@ -1,5 +1,7 @@
 package uk.co.automatictester.truststore.maven.plugin.keystore;
 
+import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.KeyStore;
@@ -17,14 +19,39 @@ public class KeyStoreReader {
     }
 
     public static List<X509Certificate> readCertificates(String file, String password) {
-        KeyStore keyStore = readKeyStore(file, password);
+        KeyStore keyStore;
+        try {
+            keyStore = readKeyStore(file, password);
+        } catch (PossibleBcfksFileException e) {
+            // this isn't very nice, but we don't have other means of detecting BCFKS keystore type
+            keyStore = readBcfksKeyStore(file, password);
+        }
         return extractCertificates(keyStore);
     }
 
     public static KeyStore readKeyStore(String file, String password) {
         KeyStore keyStore;
         try (FileInputStream inputStream = new FileInputStream(file)) {
-            keyStore = KeyStore.getInstance("JKS");
+            TruststoreFormat format = TruststoreFormat.JKS;
+            keyStore = KeyStoreFactory.createInstance(format);
+            keyStore.load(inputStream, password.toCharArray());
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
+            if (e instanceof IOException && e.getMessage().equals("Invalid keystore format")) {
+                throw new PossibleBcfksFileException();
+            } else {
+                String cause = e.getMessage();
+                String errorMessage = String.format("Error reading file %s: %s", file, cause);
+                throw new RuntimeException(errorMessage, e);
+            }
+        }
+        return keyStore;
+    }
+
+    public static KeyStore readBcfksKeyStore(String file, String password) {
+        KeyStore keyStore;
+        try (FileInputStream inputStream = new FileInputStream(file)) {
+            TruststoreFormat format = TruststoreFormat.BCFKS;
+            keyStore = KeyStoreFactory.createInstance(format);
             keyStore.load(inputStream, password.toCharArray());
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
             String cause = e.getMessage();
@@ -52,5 +79,8 @@ public class KeyStoreReader {
             throw new RuntimeException(errorMessage, e);
         }
         return certs;
+    }
+
+    static class PossibleBcfksFileException extends RuntimeException {
     }
 }

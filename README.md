@@ -2,7 +2,7 @@
 
 [![Central status](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin)
 
-Maven plugin for generating JKS and PKCS12 truststores.
+Maven plugin generating JKS, PKCS12 and BCFKS truststores.
 
 ## How it works
 
@@ -10,8 +10,8 @@ Truststore can be generated from:
 
 - X.509 certificates sent by HTTPS servers during TLS handshakes,
 - or X.509 certificates stored on disk - both PEM and DER formats are supported,
-- or X.509 certificates extracted from existing truststores stored on disk - truststores in both JKS and PKCS12 formats
-  are supported,
+- or X.509 certificates extracted from existing truststores stored on disk - truststores in JKS, PKCS12 and BCFKS
+  formats are supported,
 - or any combination of the above.
 
 Sample execution log for the plugin configured to generate truststore only using leaf certificate downloaded from
@@ -48,7 +48,7 @@ Add this plugin to your **pom.xml**:
 
          <configuration>
 
-            <!-- Truststore format: JKS or PKCS12. Default: JKS -->
+            <!-- Truststore format: JKS, PKCS12 or BCFKS. Default: JKS -->
             <!-- User property: truststore.format -->
             <truststoreFormat>PKCS12</truststoreFormat>
 
@@ -80,11 +80,11 @@ Add this plugin to your **pom.xml**:
                </truststore>
             </truststores>
 
-           <!-- Set to true to load certificates from the default truststore in either -->
-           <!-- <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts -->
-           <!-- (in this order) -->
-           <!-- User property: truststore.includeDefaultTruststore -->
-           <includeDefaultTruststore>true</includeDefaultTruststore>
+            <!-- Set to true to load certificates from the default truststore in either -->
+            <!-- <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts -->
+            <!-- (in this order) -->
+            <!-- User property: truststore.includeDefaultTruststore -->
+            <includeDefaultTruststore>true</includeDefaultTruststore>
 
             <!-- List of URLs to download the certificates from. Optional -->
             <!-- User property: truststore.urls -->
@@ -108,9 +108,9 @@ Add this plugin to your **pom.xml**:
             <!-- User property: truststore.includeCertificates -->
             <includeCertificates>LEAF</includeCertificates>
 
-           <!-- Set to true to skip plugin execution. Default: false -->
-           <!-- User property: truststore.skip -->
-           <skip>true</skip>
+            <!-- Set to true to skip plugin execution. Default: false -->
+            <!-- User property: truststore.skip -->
+            <skip>true</skip>
 
          </configuration>
       </execution>

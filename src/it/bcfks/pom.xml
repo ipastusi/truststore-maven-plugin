@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <groupId>uk.co.automatictester</groupId>
+   <artifactId>truststore-maven-plugin-it</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+   <description>BCFKS integration test</description>
+   <modelVersion>4.0.0</modelVersion>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+   </properties>
+
+   <build>
+      <plugins>
+
+         <plugin>
+            <groupId>@project.groupId@</groupId>
+            <artifactId>@project.artifactId@</artifactId>
+            <version>@project.version@</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>generate-truststore</goal>
+                  </goals>
+                  <phase>pre-integration-test</phase>
+                  <configuration>
+                     <truststoreFormat>BCFKS</truststoreFormat>
+                     <truststoreFile>target/truststore.bcfks</truststoreFile>
+                     <truststorePassword>topsecret</truststorePassword>
+                     <truststores>
+                        <truststore>
+                           <file>truststores/private_key_only.p12</file>
+                           <password>changeit</password>
+                        </truststore>
+                        <truststore>
+                           <file>truststores/aws_amazon_com.p12</file>
+                           <password>changeit</password>
+                        </truststore>
+                        <truststore>
+                           <file>truststores/www_github_com.bcfks</file>
+                           <password>topsecret</password>
+                        </truststore>
+                     </truststores>
+                     <certificates>
+                        <certificate>certs/apache-org-chain-1.pem</certificate>
+                        <certificate>certs/apache-org-chain-2.pem</certificate>
+                        <certificate>certs/apache-org-chain-3.pem</certificate>
+                     </certificates>
+                     <urls>
+                        <url>https://www.amazon.com</url>
+                        <url>https://www.akamai.com</url>
+                     </urls>
+                     <includeCertificates>LEAF</includeCertificates>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+               <execution>
+                  <id>keytool-check</id>
+                  <phase>integration-test</phase>
+                  <configuration>
+                     <executable>bash</executable>
+                     <arguments>
+                        <argument>bin/keytool_asserts.sh</argument>
+                     </arguments>
+                  </configuration>
+                  <goals>
+                     <goal>exec</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+      </plugins>
+   </build>
+</project>

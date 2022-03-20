@@ -38,6 +38,7 @@ public class KeyStoreReaderTest {
         return new String[][]{
                 {"src/test/resources/truststore/www_github_com.jks"},
                 {"src/test/resources/truststore/www_github_com.p12"},
+                {"src/test/resources/truststore/www_github_com.bcfks"},
         };
     }
 
