@@ -13,9 +13,12 @@ public class KeyStoreFactory {
 
     public static KeyStore createInstance(TruststoreFormat format) throws KeyStoreException {
         switch (format) {
+            case BKS:
+            case UBER:
             case BCFKS:
                 return KeyStore.getInstance(format.toString(), new BouncyCastleProvider());
             case JKS:
+            case JCEKS:
             case PKCS12:
                 return KeyStore.getInstance(format.toString());
             default:

@@ -16,7 +16,10 @@ public class KeyStoreFactoryTest {
     public Object[][] truststoreFormats() {
         return new Object[][]{
                 {JKS, "SUN"},
+                {JCEKS, "SunJCE"},
                 {PKCS12, "SunJSSE"},
+                {BKS, "BC"},
+                {UBER, "BC"},
                 {BCFKS, "BC"},
         };
     }

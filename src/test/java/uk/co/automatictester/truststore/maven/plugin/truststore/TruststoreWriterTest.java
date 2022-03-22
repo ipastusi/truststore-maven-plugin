@@ -24,8 +24,11 @@ public class TruststoreWriterTest {
     @DataProvider(name = "truststoreFormats")
     public Object[][] truststoreFormats() {
         return new TruststoreFormat[][]{
-                {PKCS12},
                 {JKS},
+                {JCEKS},
+                {PKCS12},
+                {BKS},
+                {UBER},
                 {BCFKS},
         };
     }
