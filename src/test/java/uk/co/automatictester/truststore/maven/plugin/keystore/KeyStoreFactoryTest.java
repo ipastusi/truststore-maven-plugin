@@ -15,9 +15,9 @@ public class KeyStoreFactoryTest {
     @DataProvider(name = "truststoreFormats")
     public Object[][] truststoreFormats() {
         return new Object[][]{
-                {JKS, "SUN"},
-                {JCEKS, "SunJCE"},
-                {PKCS12, "SunJSSE"},
+                {JKS, null},
+                {JCEKS, null},
+                {PKCS12, null},
                 {BKS, "BC"},
                 {UBER, "BC"},
                 {BCFKS, "BC"},
@@ -28,6 +28,8 @@ public class KeyStoreFactoryTest {
     public void testCreateInstance(TruststoreFormat format, String provider) throws KeyStoreException {
         KeyStore keyStore = KeyStoreFactory.createInstance(format);
         assertThat(keyStore.getType()).isEqualTo(format.toString());
-        assertThat(keyStore.getProvider().getName()).isEqualTo(provider);
+        if (provider != null) {
+            assertThat(keyStore.getProvider().getName()).isEqualTo(provider);
+        }
     }
 }
