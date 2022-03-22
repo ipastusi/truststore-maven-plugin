@@ -20,7 +20,7 @@ public abstract class KeyStoreHandler {
             keyStore = KeyStoreFactory.createInstance(format);
             keyStore.load(inputStream, password.toCharArray());
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
-            if (e instanceof IOException && e.getMessage().equals("Invalid keystore format") && next != null) {
+            if (e instanceof IOException && next != null) {
                 return next.handleRequest(file, password);
             } else {
                 String cause = e.getMessage();
