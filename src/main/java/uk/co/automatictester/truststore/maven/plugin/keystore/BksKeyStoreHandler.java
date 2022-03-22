@@ -2,12 +2,11 @@ package uk.co.automatictester.truststore.maven.plugin.keystore;
 
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 
-public class JksKeyStoreHandler extends KeyStoreHandler {
+public class BksKeyStoreHandler extends KeyStoreHandler {
 
     @Override
     public TruststoreFormat getFormat() {
-        // handles both JKS and PKCS12 truststores
-        return TruststoreFormat.JKS;
+        return TruststoreFormat.BKS;
     }
 
     @Override
