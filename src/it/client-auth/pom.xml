@@ -72,7 +72,7 @@
                   </goals>
                   <phase>pre-integration-test</phase>
                   <configuration>
-                     <truststoreFile>target/truststore.jks</truststoreFile>
+                     <truststoreFile>target/truststore.p12</truststoreFile>
                      <urls>
                         <url>https://localhost:8081</url>
                      </urls>

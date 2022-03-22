@@ -8,7 +8,7 @@ import static io.restassured.RestAssured.given;
 
 public class ApiIT {
 
-    private static final String TRUSTSTORE = "target/truststore_www_amazon_com.jks";
+    private static final String TRUSTSTORE = "target/truststore_www_amazon_com.p12";
     private static final String TRUSTSTORE_PASSWORD = "changeit";
 
     @Test

@@ -11,9 +11,9 @@ import java.util.List;
 abstract class ConfigurationMojo extends AbstractMojo {
 
     /**
-     * Truststore format: JKS, JCEKS, PKCS12, BKS, UBER or BCFKS. Default: JKS.
+     * Truststore format: JKS, JCEKS, PKCS12, BKS, UBER or BCFKS. Default: PKCS12.
      */
-    @Parameter(property = "truststore.format", defaultValue = "JKS")
+    @Parameter(property = "truststore.format", defaultValue = "PKCS12")
     protected TruststoreFormat truststoreFormat;
 
     /**
