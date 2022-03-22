@@ -33,10 +33,6 @@
                      <truststorePassword>topsecret</truststorePassword>
                      <truststores>
                         <truststore>
-                           <file>truststores/private_key_only.p12</file>
-                           <password>changeit</password>
-                        </truststore>
-                        <truststore>
                            <file>truststores/aws_amazon_com.p12</file>
                            <password>changeit</password>
                         </truststore>
@@ -45,13 +41,7 @@
                            <password>topsecret</password>
                         </truststore>
                      </truststores>
-                     <certificates>
-                        <certificate>certs/apache-org-chain-1.pem</certificate>
-                        <certificate>certs/apache-org-chain-2.pem</certificate>
-                        <certificate>certs/apache-org-chain-3.pem</certificate>
-                     </certificates>
                      <urls>
-                        <url>https://www.amazon.com</url>
                         <url>https://www.akamai.com</url>
                      </urls>
                      <includeCertificates>LEAF</includeCertificates>
