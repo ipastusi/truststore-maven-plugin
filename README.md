@@ -4,7 +4,7 @@
 [![Java](https://github.com/automatictester/truststore-maven-plugin/actions/workflows/maven.yml/badge.svg)](https://github.com/automatictester/truststore-maven-plugin/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/automatictester/truststore-maven-plugin/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/automatictester/truststore-maven-plugin/actions/workflows/codeql-analysis.yml)
 
-Maven plugin generating JKS, PKCS12 and BCFKS truststores.
+Maven plugin generating truststores in multiple formats.
 
 ## How it works
 
