@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 EXPECTED_OUTPUT=(
-  "Keystore type: jks"
+  "Keystore type: JKS"
   "Your keystore contains 2 entries"
   "7d:5b:51:26:b4:76:ba:11:db:74:16:0b:bc:53:0d:a7"
 )
