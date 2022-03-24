@@ -6,6 +6,7 @@ EXPECTED_OUTPUT=(
 )
 
 RESULT=$(keytool -list -keystore target/truststore.jks -storepass topsecret)
+echo "${RESULT}"
 
 for ENTRY in "${EXPECTED_OUTPUT[@]}"; do
   FOUND=$(echo "${RESULT}" | grep -q "${ENTRY}" && echo 1 || echo 0)
