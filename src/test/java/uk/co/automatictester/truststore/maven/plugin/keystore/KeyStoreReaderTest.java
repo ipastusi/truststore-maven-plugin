@@ -42,6 +42,7 @@ public class KeyStoreReaderTest {
                 {"src/test/resources/truststore/www_github_com.bks"},
                 {"src/test/resources/truststore/www_github_com.uber"},
                 {"src/test/resources/truststore/www_github_com.bcfks"},
+                {"src/test/resources/truststore/www_github_com.bcsfks"},
         };
     }
 

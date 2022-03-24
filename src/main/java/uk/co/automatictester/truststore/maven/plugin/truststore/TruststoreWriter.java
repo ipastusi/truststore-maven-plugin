@@ -1,9 +1,11 @@
 package uk.co.automatictester.truststore.maven.plugin.truststore;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.maven.plugin.logging.Log;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateInspector;
 import uk.co.automatictester.truststore.maven.plugin.keystore.KeyStoreFactory;
+import uk.co.automatictester.truststore.maven.plugin.mojo.CustomScryptConfig;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,6 +27,9 @@ public class TruststoreWriter {
     private final String file;
     private final String password;
 
+    @Setter
+    private CustomScryptConfig customScryptConfig;
+
     public void write(List<X509Certificate> certs) {
         if (certs.isEmpty()) {
             log.warn("Truststore not generated: no certificates to store");
@@ -43,7 +48,7 @@ public class TruststoreWriter {
         KeyStore keyStore;
         try {
             keyStore = KeyStoreFactory.createInstance(format);
-            keyStore.load(null, null);
+            keyStore = loadKeyStore(keyStore);
             for (X509Certificate cert : certs) {
                 CertificateInspector certInspector = new CertificateInspector(log, cert);
                 logCertDetails(certInspector);
@@ -58,6 +63,16 @@ public class TruststoreWriter {
             throw new RuntimeException(errorMessage, e);
         }
         return keyStore;
+    }
+
+    private KeyStore loadKeyStore(KeyStore keyStore) throws CertificateException, IOException, NoSuchAlgorithmException {
+        if (keyStore.getType().equals(TruststoreFormat.BCFKS.toString()) && customScryptConfig != null) {
+            log.info("Generating " + format + " truststore with custom Scrypt parameters");
+            return KeyStoreLoader.load(keyStore, customScryptConfig);
+        } else {
+            log.info("Generating " + format + " truststore");
+            return KeyStoreLoader.load(keyStore);
+        }
     }
 
     private void logCertDetails(CertificateInspector certInspector) {

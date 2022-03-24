@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 EXPECTED_OUTPUT=(
-  "Keystore type: PKCS12"
+  "Keystore type: JKS"
   "Your keystore contains 2 entries"
 )
 
-RESULT=$(keytool -list -keystore target/truststore.p12 -storepass topsecret)
+RESULT=$(keytool -list -keystore target/truststore.jks -storepass topsecret)
 
 for ENTRY in "${EXPECTED_OUTPUT[@]}"; do
   FOUND=$(echo "${RESULT}" | grep -q "${ENTRY}" && echo 1 || echo 0)

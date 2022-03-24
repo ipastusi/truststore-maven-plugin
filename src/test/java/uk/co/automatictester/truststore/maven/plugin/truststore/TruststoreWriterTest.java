@@ -6,6 +6,7 @@ import org.assertj.core.util.Files;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import uk.co.automatictester.truststore.maven.plugin.mojo.CustomScryptConfig;
 import uk.co.automatictester.truststore.maven.plugin.testutil.TestCertificateGenerator;
 
 import java.io.File;
@@ -51,6 +52,20 @@ public class TruststoreWriterTest {
 
         String password = "changeit";
         TruststoreWriter truststoreWriter = new TruststoreWriter(log, format, file, password);
+        truststoreWriter.write(certs);
+    }
+
+    @Test
+    public void writeCustomScryptConfig() throws Exception {
+        CustomScryptConfig config = new CustomScryptConfig(1024, 8, 1, 20);
+        X509Certificate cert = TestCertificateGenerator.generateV1();
+        List<X509Certificate> certs = new ArrayList<X509Certificate>() {{
+            add(cert);
+        }};
+
+        String password = "changeit";
+        TruststoreWriter truststoreWriter = new TruststoreWriter(log, BCFKS, file, password);
+        truststoreWriter.setCustomScryptConfig(config);
         truststoreWriter.write(certs);
     }
 

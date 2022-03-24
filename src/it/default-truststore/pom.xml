@@ -29,6 +29,13 @@
                   <phase>pre-integration-test</phase>
                   <configuration>
                      <truststoreFormat>PKCS12</truststoreFormat>
+                     <!-- Scrypt config should get ignored for non-BCFKS truststore types -->
+                     <customScryptConfig>
+                        <costParameter>2048</costParameter>
+                        <blockSize>16</blockSize>
+                        <parallelizationParameter>2</parallelizationParameter>
+                        <saltLength>20</saltLength>
+                     </customScryptConfig>
                      <truststoreFile>target/truststore.p12</truststoreFile>
                      <truststorePassword>topsecret</truststorePassword>
                      <includeDefaultTruststore>true</includeDefaultTruststore>

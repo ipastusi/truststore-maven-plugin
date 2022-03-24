@@ -10,6 +10,7 @@ import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateRead
 import uk.co.automatictester.truststore.maven.plugin.config.URLValidator;
 import uk.co.automatictester.truststore.maven.plugin.file.FileChecker;
 import uk.co.automatictester.truststore.maven.plugin.keystore.KeyStoreReader;
+import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreWriter;
 
 import java.security.cert.X509Certificate;
@@ -92,6 +93,9 @@ public class TruststoreMojo extends ConfigurationMojo {
     private void createTruststore() {
         Log log = getLog();
         TruststoreWriter truststoreWriter = new TruststoreWriter(log, truststoreFormat, truststoreFile, truststorePassword);
+        if (truststoreFormat.equals(TruststoreFormat.BCFKS) && customScryptConfig.isInitialized()) {
+            truststoreWriter.setCustomScryptConfig(customScryptConfig);
+        }
         truststoreWriter.write(certs);
     }
 }

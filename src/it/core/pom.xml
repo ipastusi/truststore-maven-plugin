@@ -28,7 +28,6 @@
                   </goals>
                   <phase>pre-integration-test</phase>
                   <configuration>
-                     <truststoreFormat>PKCS12</truststoreFormat>
                      <truststoreFile>target/truststore.p12</truststoreFile>
                      <truststorePassword>topsecret</truststorePassword>
                      <truststores>

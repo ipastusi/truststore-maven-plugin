@@ -17,6 +17,13 @@ abstract class ConfigurationMojo extends AbstractMojo {
     protected TruststoreFormat truststoreFormat;
 
     /**
+     * Custom Scrypt config. Can be optionally specified for use with BCFKS truststore.
+     * Ignored if specified for other types of truststores.
+     */
+    @Parameter(property = "truststore.customScryptConfig")
+    protected CustomScryptConfig customScryptConfig;
+
+    /**
      * Truststore filename.
      */
     @Parameter(property = "truststore.file", required = true)
