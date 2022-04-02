@@ -3,6 +3,7 @@ package uk.co.automatictester.truststore.maven.plugin.mojo;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import uk.co.automatictester.truststore.maven.plugin.certificate.IncludeCertificates;
+import uk.co.automatictester.truststore.maven.plugin.config.ScryptConfigSelector;
 import uk.co.automatictester.truststore.maven.plugin.config.TruststoreSelector;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 
@@ -20,8 +21,16 @@ abstract class ConfigurationMojo extends AbstractMojo {
      * Custom Scrypt config. Can be optionally specified for use with BCFKS truststore.
      * Ignored if specified for other types of truststores.
      */
-    @Parameter(property = "truststore.customScryptConfig")
-    protected CustomScryptConfig customScryptConfig;
+    @Parameter
+    private CustomScryptConfig scryptConfig;
+
+    @Parameter(property = "truststore.scryptConfig")
+    private String scryptConfigProperty;
+
+    protected CustomScryptConfig getScryptConfig() {
+        ScryptConfigSelector scryptConfigSelector = new ScryptConfigSelector();
+        return scryptConfigSelector.select(scryptConfig, scryptConfigProperty);
+    }
 
     /**
      * Truststore filename.

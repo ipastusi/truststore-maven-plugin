@@ -29,12 +29,12 @@
                   <phase>pre-integration-test</phase>
                   <configuration>
                      <truststoreFormat>BCFKS</truststoreFormat>
-                     <customScryptConfig>
+                     <scryptConfig>
                         <costParameter>2048</costParameter>
                         <blockSize>16</blockSize>
                         <parallelizationParameter>2</parallelizationParameter>
                         <saltLength>20</saltLength>
-                     </customScryptConfig>
+                     </scryptConfig>
                      <truststoreFile>target/truststore.bcsfks</truststoreFile>
                      <truststorePassword>topsecret</truststorePassword>
                      <truststores>

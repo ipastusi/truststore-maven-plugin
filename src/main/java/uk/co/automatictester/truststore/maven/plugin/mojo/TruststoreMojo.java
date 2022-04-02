@@ -93,8 +93,9 @@ public class TruststoreMojo extends ConfigurationMojo {
     private void createTruststore() {
         Log log = getLog();
         TruststoreWriter truststoreWriter = new TruststoreWriter(log, truststoreFormat, truststoreFile, truststorePassword);
-        if (truststoreFormat.equals(TruststoreFormat.BCFKS) && customScryptConfig.isInitialized()) {
-            truststoreWriter.setCustomScryptConfig(customScryptConfig);
+        CustomScryptConfig scryptConfig = getScryptConfig();
+        if (truststoreFormat.equals(TruststoreFormat.BCFKS) && scryptConfig.isInitialized()) {
+            truststoreWriter.setCustomScryptConfig(scryptConfig);
         }
         truststoreWriter.write(certs);
     }
