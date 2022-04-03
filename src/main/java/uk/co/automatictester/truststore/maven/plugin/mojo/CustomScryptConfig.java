@@ -19,4 +19,10 @@ public class CustomScryptConfig {
                 && parallelizationParameter != null
                 && saltLength != null;
     }
+
+    @Override
+    public String toString() {
+        return String.format("costParameter: %d, blockSize: %d, parallelizationParameter: %d, saltLength: %d",
+                costParameter, blockSize, parallelizationParameter, saltLength);
+    }
 }

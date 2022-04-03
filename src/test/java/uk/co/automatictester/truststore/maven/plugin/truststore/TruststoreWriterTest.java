@@ -65,7 +65,7 @@ public class TruststoreWriterTest {
 
         String password = "changeit";
         TruststoreWriter truststoreWriter = new TruststoreWriter(log, BCFKS, file, password);
-        truststoreWriter.setCustomScryptConfig(config);
+        truststoreWriter.setScryptConfig(config);
         truststoreWriter.write(certs);
     }
 

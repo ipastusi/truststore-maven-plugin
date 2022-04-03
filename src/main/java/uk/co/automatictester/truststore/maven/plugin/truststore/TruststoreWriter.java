@@ -28,7 +28,7 @@ public class TruststoreWriter {
     private final String password;
 
     @Setter
-    private CustomScryptConfig customScryptConfig;
+    private CustomScryptConfig scryptConfig;
 
     public void write(List<X509Certificate> certs) {
         if (certs.isEmpty()) {
@@ -66,9 +66,10 @@ public class TruststoreWriter {
     }
 
     private KeyStore loadKeyStore(KeyStore keyStore) throws CertificateException, IOException, NoSuchAlgorithmException {
-        if (keyStore.getType().equals(TruststoreFormat.BCFKS.toString()) && customScryptConfig != null) {
-            log.info("Generating " + format + " truststore with custom Scrypt parameters");
-            return KeyStoreLoader.load(keyStore, customScryptConfig);
+        if (keyStore.getType().equals(TruststoreFormat.BCFKS.toString()) && scryptConfig != null) {
+            log.info("Generating " + format + " truststore with custom Scrypt parameters:");
+            log.info(scryptConfig.toString());
+            return KeyStoreLoader.load(keyStore, scryptConfig);
         } else {
             log.info("Generating " + format + " truststore");
             return KeyStoreLoader.load(keyStore);

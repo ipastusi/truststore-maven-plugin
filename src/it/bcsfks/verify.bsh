@@ -6,7 +6,11 @@ while(scanner.hasNextLine()) {
     buildLogContent.add(scanner.nextLine());
 }
 
-boolean contentFound = buildLogContent.contains("[INFO] Generating BCFKS truststore with custom Scrypt parameters");
+List expectedBuildLogContent = new ArrayList();
+expectedBuildLogContent.add("[INFO] Generating BCFKS truststore with custom Scrypt parameters:");
+expectedBuildLogContent.add("[INFO] costParameter: 2048, blockSize: 16, parallelizationParameter: 2, saltLength: 20");
+
+boolean contentFound = buildLogContent.containsAll(expectedBuildLogContent);
 
 if (!contentFound) {
     throw new RuntimeException("Content not found!");

@@ -19,7 +19,7 @@ public class ScryptConfigPropertyParser {
     }
 
     private Matcher scryptConfigMatcher(String property) {
-        String scryptConfigRegex = "(costParameter=\\d+?,blockSize=\\d+?,parallelizationParameter=\\d+?,saltLength=\\d+?)";
+        String scryptConfigRegex = "(costParameter=\\d+?,blockSize=\\d+?,parallelizationParameter=\\d+?,saltLength=\\d+?)$";
         Pattern scryptConfigPattern = Pattern.compile(scryptConfigRegex);
         return scryptConfigPattern.matcher(property);
     }
@@ -32,10 +32,10 @@ public class ScryptConfigPropertyParser {
     }
 
     private CustomScryptConfig extractScryptConfig(Matcher detailsMatcher) {
-        int costParameter = Integer.getInteger(detailsMatcher.group(1));
-        int blockSize = Integer.getInteger(detailsMatcher.group(2));
-        int parallelizationParameter = Integer.getInteger(detailsMatcher.group(3));
-        int saltLength = Integer.getInteger(detailsMatcher.group(4));
+        int costParameter = Integer.parseInt(detailsMatcher.group(1));
+        int blockSize = Integer.parseInt(detailsMatcher.group(2));
+        int parallelizationParameter = Integer.parseInt(detailsMatcher.group(3));
+        int saltLength = Integer.parseInt(detailsMatcher.group(4));
         return new CustomScryptConfig(costParameter, blockSize, parallelizationParameter, saltLength);
     }
 }
