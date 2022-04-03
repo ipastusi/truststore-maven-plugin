@@ -29,11 +29,19 @@ public class TruststoreMojo extends ConfigurationMojo {
             return;
         }
 
+        validateScryptConfig();
         loadFileSystemCerts();
         loadFileSystemTruststores();
         loadWebCerts();
         loadDefaultTruststore();
         createTruststore();
+    }
+
+    // fail fast on incorrect config
+    private void validateScryptConfig() {
+        if (scryptConfig != null) {
+            scryptConfig.validate();
+        }
     }
 
     private void loadFileSystemCerts() {
@@ -94,7 +102,7 @@ public class TruststoreMojo extends ConfigurationMojo {
         Log log = getLog();
         TruststoreWriter truststoreWriter = new TruststoreWriter(log, truststoreFormat, truststoreFile, truststorePassword);
         CustomScryptConfig scryptConfig = getScryptConfig();
-        if (truststoreFormat.equals(TruststoreFormat.BCFKS) && scryptConfig.isInitialized()) {
+        if (truststoreFormat.equals(TruststoreFormat.BCFKS) && scryptConfig != null) {
             truststoreWriter.setScryptConfig(scryptConfig);
         }
         truststoreWriter.write(certs);

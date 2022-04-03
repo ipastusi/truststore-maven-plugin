@@ -18,7 +18,7 @@ public class ScryptConfigSelector {
         } else if (scryptConfigProperty != null) {
             return scryptConfigPropertyParser.parse(scryptConfigProperty);
         } else {
-            return new CustomScryptConfig();
+            return null;
         }
     }
 }

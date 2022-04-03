@@ -41,6 +41,6 @@ public class ScryptConfigSelectorTest {
     @Test
     public void testNoneProvided() {
         CustomScryptConfig selected = scryptConfigSelector.select(null, null);
-        assertThat(selected).isEqualTo(new CustomScryptConfig());
+        assertThat(selected).isEqualTo(null);
     }
 }

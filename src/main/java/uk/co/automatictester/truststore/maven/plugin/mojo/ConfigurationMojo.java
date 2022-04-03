@@ -22,14 +22,18 @@ abstract class ConfigurationMojo extends AbstractMojo {
      * Ignored if specified for other types of truststores.
      */
     @Parameter
-    private CustomScryptConfig scryptConfig;
+    protected CustomScryptConfig scryptConfig;
 
     @Parameter(property = "truststore.scryptConfig")
     private String scryptConfigProperty;
 
     protected CustomScryptConfig getScryptConfig() {
         ScryptConfigSelector scryptConfigSelector = new ScryptConfigSelector();
-        return scryptConfigSelector.select(scryptConfig, scryptConfigProperty);
+        CustomScryptConfig selectedConfig = scryptConfigSelector.select(scryptConfig, scryptConfigProperty);
+        if (selectedConfig != null) {
+            selectedConfig.validate();
+        }
+        return selectedConfig;
     }
 
     /**

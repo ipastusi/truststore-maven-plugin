@@ -13,7 +13,13 @@ public class CustomScryptConfig {
     private Integer parallelizationParameter;
     private Integer saltLength;
 
-    public boolean isInitialized() {
+    public void validate() {
+        if (!isComplete()) {
+            throw new RuntimeException("Incomplete Scrypt configuration: " + this);
+        }
+    }
+
+    private boolean isComplete() {
         return costParameter != null
                 && blockSize != null
                 && parallelizationParameter != null
