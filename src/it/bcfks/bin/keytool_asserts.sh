@@ -11,7 +11,7 @@ EXPECTED_OUTPUT=(
   "05:57:c8:0b:28:26:83:a1:7b:0a:11:44:93:29:6b:79"
 )
 
-RESULT=$(keytool -list -keystore target/truststore.bcfks -storetype bcfks -storepass topsecret -providerpath ../../../bin/bcprov-jdk15to18-1.70.jar -provider org.bouncycastle.jce.provider.BouncyCastleProvider)
+RESULT=$(keytool -list -keystore target/truststore.bcfks -storetype bcfks -storepass topsecret -providerpath ../../../bin/bcprov-jdk18on-1.71.jar -provider org.bouncycastle.jce.provider.BouncyCastleProvider)
 
 for ENTRY in "${EXPECTED_OUTPUT[@]}"; do
   FOUND=$(echo "${RESULT}" | grep -q "${ENTRY}" && echo 1 || echo 0)

@@ -223,8 +223,8 @@
    <dependencies>
       <dependency>
          <groupId>org.bouncycastle</groupId>
-         <artifactId>bcpkix-jdk15to18</artifactId>
-         <version>1.70</version>
+         <artifactId>bcpkix-jdk18on</artifactId>
+         <version>1.71</version>
       </dependency>
       <dependency>
          <groupId>org.apache.maven</groupId>
