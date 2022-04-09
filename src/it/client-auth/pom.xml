@@ -73,9 +73,9 @@
                   <phase>pre-integration-test</phase>
                   <configuration>
                      <truststoreFile>target/truststore.p12</truststoreFile>
-                     <urls>
-                        <url>https://localhost:8081</url>
-                     </urls>
+                     <hostPorts>
+                        <hostPort>localhost:8081</hostPort>
+                     </hostPorts>
                      <trustAllCertificates>true</trustAllCertificates>
                   </configuration>
                </execution>

@@ -44,6 +44,10 @@
                      <urls>
                         <url>https://www.akamai.com</url>
                      </urls>
+                     <!-- duplicated cert check -->
+                     <hostPorts>
+                        <hostPort>www.akamai.com:443</hostPort>
+                     </hostPorts>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>
                </execution>

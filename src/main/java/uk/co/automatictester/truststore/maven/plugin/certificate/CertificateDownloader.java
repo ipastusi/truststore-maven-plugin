@@ -14,16 +14,16 @@ import java.util.List;
 
 public class CertificateDownloader {
 
-    private final boolean trustAllCerts;
+    private final SSLSocketFactory sslSocketFactory;
     private final boolean skipHostnameVerification;
 
     public CertificateDownloader(boolean trustAllCerts, boolean skipHostnameVerification) {
-        this.trustAllCerts = trustAllCerts;
+        this.sslSocketFactory = ConfigurableSSLSocketFactory.createInstance(trustAllCerts);
         this.skipHostnameVerification = skipHostnameVerification;
     }
 
     public List<X509Certificate> getHttpsServerCertificates(String url) {
-        HttpsURLConnection httpsUrlConnection = HttpsURLConnectionFactory.createInstance(url, trustAllCerts, skipHostnameVerification);
+        HttpsURLConnection httpsUrlConnection = HttpsURLConnectionFactory.createInstance(url, sslSocketFactory, skipHostnameVerification);
         X509Certificate[] certs;
         try {
             httpsUrlConnection.connect();
@@ -37,19 +37,25 @@ public class CertificateDownloader {
     }
 
     /**
-     * Use for non-HTTPS servers only.
+     * Use for non-HTTPS servers
      */
     public List<X509Certificate> getTlsServerCertificates(String host, int port) {
-        SSLSocketFactory factory = ConfigurableSSLSocketFactory.createInstance(trustAllCerts);
         X509Certificate[] certs;
         try {
-            SSLSocket socket = (SSLSocket) factory.createSocket(host, port);
+            SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port);
             SSLSession session = socket.getSession();
-            socket.close();
+            validateSslSession(session, host, port);
             certs = (X509Certificate[]) session.getPeerCertificates();
+            socket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return Arrays.asList(certs);
+    }
+
+    private void validateSslSession(SSLSession session, String host, int port) {
+        if (!session.isValid()) {
+            throw new RuntimeException("Unable to establish TLS connection with: " + host + ":" + port);
+        }
     }
 }
