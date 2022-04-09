@@ -20,6 +20,8 @@ import java.util.List;
 @Mojo(name = "generate-truststore", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
 public class TruststoreMojo extends ConfigurationMojo {
 
+    private final CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
+    private final CertificateFilter certFilter = new CertificateFilter(includeCertificates);
     private final List<X509Certificate> certs = new ArrayList<>();
 
     @Override
@@ -64,11 +66,9 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     private void loadHttpsCerts() {
-        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
-        URLValidator URLValidator = new URLValidator();
-        CertificateFilter certFilter = new CertificateFilter(includeCertificates);
+        URLValidator urlValidator = new URLValidator();
         for (String url : urls) {
-            URLValidator.validate(url);
+            urlValidator.validate(url);
             getLog().info("Downloading certificates through TLS handshake from URL: " + url);
             List<X509Certificate> downloadedCerts = certDownloader.getHttpsServerCertificates(url);
             List<X509Certificate> filteredCerts = certFilter.filter(downloadedCerts);
@@ -77,8 +77,6 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     private void loadTlsCerts() {
-        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, false);
-        CertificateFilter certFilter = new CertificateFilter(includeCertificates);
         for (String hostPort : hostPorts) {
             int separator = hostPort.indexOf(":");
             String host = hostPort.substring(0, separator);

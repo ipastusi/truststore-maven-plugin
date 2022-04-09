@@ -28,6 +28,8 @@ public class HttpsServer {
         }
 
         WireMockConfiguration config = options()
+                .keystorePath("src/test/resources/keystores/wiremock_server_key_cert.p12")
+                .keystorePassword("password")
                 .httpDisabled(true)
                 .httpsPort(port);
 
@@ -43,17 +45,10 @@ public class HttpsServer {
         return config
                 .needClientAuth(true)
                 .trustStorePath("src/test/resources/truststore/client_auth_cert.p12")
-                .trustStorePassword("changeit")
-                .trustStoreType("PKCS12");
+                .trustStorePassword("changeit");
     }
 
     public int port() {
         return server.httpsPort();
-    }
-
-    public void stop() {
-        if (server != null) {
-            server.stop();
-        }
     }
 }
