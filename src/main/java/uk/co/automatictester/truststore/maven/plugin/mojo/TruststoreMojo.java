@@ -32,7 +32,8 @@ public class TruststoreMojo extends ConfigurationMojo {
         validateScryptConfig();
         loadFileSystemCerts();
         loadFileSystemTruststores();
-        loadWebCerts();
+        loadHttpsCerts();
+        loadTlsCerts();
         loadDefaultTruststore();
         createTruststore();
     }
@@ -62,14 +63,28 @@ public class TruststoreMojo extends ConfigurationMojo {
         }
     }
 
-    private void loadWebCerts() {
+    private void loadHttpsCerts() {
         CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
         URLValidator URLValidator = new URLValidator();
         CertificateFilter certFilter = new CertificateFilter(includeCertificates);
         for (String url : urls) {
             URLValidator.validate(url);
             getLog().info("Downloading certificates through TLS handshake from URL: " + url);
-            List<X509Certificate> downloadedCerts = certDownloader.getServerCertificates(url);
+            List<X509Certificate> downloadedCerts = certDownloader.getHttpsServerCertificates(url);
+            List<X509Certificate> filteredCerts = certFilter.filter(downloadedCerts);
+            certs.addAll(filteredCerts);
+        }
+    }
+
+    private void loadTlsCerts() {
+        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, false);
+        CertificateFilter certFilter = new CertificateFilter(includeCertificates);
+        for (String hostPort : hostPorts) {
+            int separator = hostPort.indexOf(":");
+            String host = hostPort.substring(0, separator);
+            int port = Integer.parseInt(hostPort.substring(separator + 1));
+            getLog().info("Downloading certificates through TLS handshake from server: " + host + ":" + port);
+            List<X509Certificate> downloadedCerts = certDownloader.getTlsServerCertificates(host, port);
             List<X509Certificate> filteredCerts = certFilter.filter(downloadedCerts);
             certs.addAll(filteredCerts);
         }

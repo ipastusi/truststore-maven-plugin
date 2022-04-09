@@ -53,6 +53,9 @@
                         <url>https://www.amazon.com</url>
                         <url>https://www.akamai.com</url>
                      </urls>
+                     <hostPorts>
+                        <hostPort>imap.gmail.com:993</hostPort>
+                     </hostPorts>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>
                </execution>

@@ -73,10 +73,16 @@ abstract class ConfigurationMojo extends AbstractMojo {
     protected List<String> certificates;
 
     /**
-     * List of URLs to download the certificates from.
+     * List of HTTPS URLs to download the certificates from.
      */
     @Parameter(property = "truststore.urls")
     protected List<String> urls;
+
+    /**
+     * List of non-HTTPS URLs to download the certificates from.
+     */
+    @Parameter(property = "truststore.hostPorts")
+    protected List<String> hostPorts;
 
     /**
      * Set to true to skip plugin execution.

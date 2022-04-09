@@ -14,7 +14,7 @@ public class CertificateDownloaderTest {
     private HttpsServer server;
 
     @Test
-    public void getServerCertificates() {
+    public void getHttpsServerCertificates() {
         server = new HttpsServer();
         int httpsPort = server.port();
 
@@ -23,35 +23,35 @@ public class CertificateDownloaderTest {
 
         String url = String.format("https://localhost:%d", httpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(false, true);
-        List<X509Certificate> certs = certDownloader.getServerCertificates(url);
+        List<X509Certificate> certs = certDownloader.getHttpsServerCertificates(url);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
     }
 
     @Test
-    public void getServerCertificatesTrustAll() {
+    public void getHttpsServerCertificatesTrustAll() {
         server = new HttpsServer();
         int httpsPort = server.port();
 
         String url = String.format("https://localhost:%d", httpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
-        List<X509Certificate> certs = certDownloader.getServerCertificates(url);
+        List<X509Certificate> certs = certDownloader.getHttpsServerCertificates(url);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = ".*Connection refused.*")
-    public void getServerCertificatesConnectionError() {
+    public void getHttpsServerCertificatesConnectionError() {
         server = new HttpsServer();
         int incorrectHttpsPort = server.port() - 1;
 
         String url = String.format("https://localhost:%d", incorrectHttpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
-        certDownloader.getServerCertificates(url);
+        certDownloader.getHttpsServerCertificates(url);
     }
 
     @Test
-    public void getServerCertificatesWithClientAuthAndTrustStore() {
+    public void getHttpsServerCertificatesWithClientAuthAndTrustStore() {
         server = new HttpsServer(true);
         int httpsPort = server.port();
 
@@ -62,13 +62,13 @@ public class CertificateDownloaderTest {
 
         String url = String.format("https://localhost:%d", httpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(false, true);
-        List<X509Certificate> certs = certDownloader.getServerCertificates(url);
+        List<X509Certificate> certs = certDownloader.getHttpsServerCertificates(url);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
     }
 
     @Test
-    public void getServerCertificatesWithClientAuthAndTrustAll() {
+    public void getHttpsServerCertificatesWithClientAuthAndTrustAll() {
         server = new HttpsServer(true);
         int httpsPort = server.port();
 
@@ -77,19 +77,26 @@ public class CertificateDownloaderTest {
 
         String url = String.format("https://localhost:%d", httpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(true, true);
-        List<X509Certificate> certs = certDownloader.getServerCertificates(url);
+        List<X509Certificate> certs = certDownloader.getHttpsServerCertificates(url);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("495529551");
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = ".* unable to find valid certification path to requested target")
-    public void getServerCertificatesWithClientAuthNoKeyStore() {
+    public void getHttpsServerCertificatesWithClientAuthNoKeyStore() {
         server = new HttpsServer(true);
         int httpsPort = server.port();
 
         String url = String.format("https://localhost:%d", httpsPort);
         CertificateDownloader certDownloader = new CertificateDownloader(false, true);
-        certDownloader.getServerCertificates(url);
+        certDownloader.getHttpsServerCertificates(url);
+    }
+
+    @Test
+    public void getTlsServerCertificates() {
+        CertificateDownloader certDownloader = new CertificateDownloader(false, true);
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("imap.gmail.com", 993);
+        assertThat(certs).hasSizeGreaterThanOrEqualTo(1);
     }
 
     @AfterMethod
@@ -99,6 +106,8 @@ public class CertificateDownloaderTest {
         System.clearProperty("javax.net.ssl.trustStore");
         System.clearProperty("javax.net.ssl.trustStorePassword");
 
-        server.stop();
+        if (server != null) {
+            server.stop();
+        }
     }
 }
