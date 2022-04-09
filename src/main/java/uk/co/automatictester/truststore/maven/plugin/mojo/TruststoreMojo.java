@@ -20,8 +20,6 @@ import java.util.List;
 @Mojo(name = "generate-truststore", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
 public class TruststoreMojo extends ConfigurationMojo {
 
-    private final CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
-    private final CertificateFilter certFilter = new CertificateFilter(includeCertificates);
     private final List<X509Certificate> certs = new ArrayList<>();
 
     @Override
@@ -67,6 +65,8 @@ public class TruststoreMojo extends ConfigurationMojo {
 
     private void loadHttpsCerts() {
         URLValidator urlValidator = new URLValidator();
+        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
+        CertificateFilter certFilter = new CertificateFilter(includeCertificates);
         for (String url : urls) {
             urlValidator.validate(url);
             getLog().info("Downloading certificates through TLS handshake from URL: " + url);
@@ -77,10 +77,12 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     private void loadTlsCerts() {
-        for (String hostPort : hostPorts) {
-            int separator = hostPort.indexOf(":");
-            String host = hostPort.substring(0, separator);
-            int port = Integer.parseInt(hostPort.substring(separator + 1));
+        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
+        CertificateFilter certFilter = new CertificateFilter(includeCertificates);
+        for (String server : servers) {
+            int separator = server.indexOf(":");
+            String host = server.substring(0, separator);
+            int port = Integer.parseInt(server.substring(separator + 1));
             getLog().info("Downloading certificates through TLS handshake from server: " + host + ":" + port);
             List<X509Certificate> downloadedCerts = certDownloader.getTlsServerCertificates(host, port);
             List<X509Certificate> filteredCerts = certFilter.filter(downloadedCerts);

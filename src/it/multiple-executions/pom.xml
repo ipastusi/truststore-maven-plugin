@@ -35,9 +35,9 @@
                      <certificates>
                         <certificate>certs/apache-org-chain-1.pem</certificate>
                      </certificates>
-                     <hostPorts>
-                        <hostPort>www.amazon.com:443</hostPort>
-                     </hostPorts>
+                     <servers>
+                        <server>www.amazon.com:443</server>
+                     </servers>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>
                </execution>
