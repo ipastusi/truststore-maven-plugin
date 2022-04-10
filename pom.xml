@@ -5,7 +5,7 @@
 
    <groupId>uk.co.automatictester</groupId>
    <artifactId>truststore-maven-plugin</artifactId>
-   <version>2.6.1-SNAPSHOT</version>
+   <version>3.0.0</version>
    <modelVersion>4.0.0</modelVersion>
    <packaging>maven-plugin</packaging>
    <name>Truststore Maven Plugin</name>
