@@ -10,23 +10,25 @@ Maven plugin generating truststores in multiple formats.
 
 Truststore can be generated from:
 
-- X.509 certificates sent by HTTPS servers during TLS handshakes,
+- X.509 certificates sent by servers during TLS handshakes (including, but not limited to, HTTPS servers),
 - or X.509 certificates stored on disk - both PEM and DER formats are supported,
-- or X.509 certificates extracted from existing truststores stored on disk - truststores in JKS, PKCS12 and BCFKS
-  formats are supported,
+- or X.509 certificates extracted from existing truststores stored on disk - truststores in BCFKS, BKS, JCEKS, JKS,
+  PKCS12 and UBER formats are supported,
 - or any combination of the above.
 
 Sample execution log for the plugin configured to generate truststore only using leaf certificate downloaded from
-`https://www.amazon.com`:
+`www.amazon.com:443`:
 
 ```
+Downloading certificates through TLS handshake from server: www.amazon.com:443
+Generating PKCS12 truststore
 Serial number:       06:01:5d:8f:e3:6b:77:ab:df:66:b9:90:48:7e:da:40
 Subject:             CN=www.amazon.com
 Subject Alt Names:   amazon.com, amzn.com, uedata.amazon.com, us.amazon.com, www.amazon.com, www.amzn.com, corporate.amazon.com, buybox.amazon.com, iphone.amazon.com, yp.amazon.com, home.amazon.com, origin-www.amazon.com, buckeye-retail-website.amazon.com, huddles.amazon.com, p-nt-www-amazon-com-kalias.amazon.com, p-yo-www-amazon-com-kalias.amazon.com, p-y3-www-amazon-com-kalias.amazon.com
 Issuer:              CN=DigiCert Global CA G2,O=DigiCert Inc,C=US
 Valid between:       2021-04-19 00:00:00 and 2022-04-11 23:59:59 (GMT)
 
-Total of 1 certificates saved to target/truststore.jks
+Total of 1 certificates saved to target/truststore.p12
 ```
 
 ## Quick start guide
@@ -50,7 +52,7 @@ Add this plugin to your **pom.xml**:
 
          <configuration>
 
-            <!-- Truststore format: JKS, PKCS12 or BCFKS. Default: JKS -->
+            <!-- Output truststore format: BCFKS, BKS, JCEKS, JKS, PKCS12 and UBER. Default: PKCS12 -->
             <!-- User property: truststore.format -->
             <truststoreFormat>PKCS12</truststoreFormat>
 
@@ -60,7 +62,7 @@ Add this plugin to your **pom.xml**:
 
             <!-- Truststore password. Default: changeit -->
             <!-- User property: truststore.password -->
-            <truststorePassword>topsecret</truststorePassword>
+            <truststorePassword>changeit</truststorePassword>
 
             <!-- List of files with certificates to use. Optional -->
             <!-- User property: truststore.certificates -->
@@ -88,27 +90,45 @@ Add this plugin to your **pom.xml**:
             <!-- User property: truststore.includeDefaultTruststore -->
             <includeDefaultTruststore>true</includeDefaultTruststore>
 
-            <!-- List of URLs to download the certificates from. Optional -->
+            <!-- List of TLS servers to download the certificates from. Optional -->
+            <!-- User property: truststore.servers -->
+            <servers>
+               <server>www.example.com:443</server>
+               <server>www.another.com:443</server>
+            </servers>
+
+            <!-- List of HTTPS URLs to download the certificates from. Optional -->
+            <!-- Deprecated since 3.0.0, will be removed in future versions. Use 'servers' instead -->
             <!-- User property: truststore.urls -->
             <urls>
                <url>https://www.example.com</url>
                <url>https://www.another.com</url>
             </urls>
 
-            <!-- Relevant only when specifying 'urls' -->
+            <!-- Relevant only when specifying 'urls' or 'servers' -->
             <!-- Set to true to trust server certificate when downloading certificates. Default: false -->
             <!-- User property: truststore.trustAllCertificates -->
             <trustAllCertificates>true</trustAllCertificates>
 
-            <!-- Relevant only when specifying 'urls' -->
+            <!-- Relevant only when specifying 'urls'. When using 'servers', no hostname verification is performed -->
             <!-- Set to true to skip hostname verification when downloading certificates. Default: false -->
             <!-- User property: truststore.skipHostnameVerification -->
             <skipHostnameVerification>true</skipHostnameVerification>
 
-            <!-- Relevant only when specifying 'urls' -->
+            <!-- Relevant only when specifying 'urls' or 'servers' -->
             <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->
             <!-- User property: truststore.includeCertificates -->
             <includeCertificates>LEAF</includeCertificates>
+
+            <!-- Custom Scrypt config. Can be optionally specified when 'truststoreFormat' is set to BCFKS -->
+            <!-- Ignored if specified for other types of truststores -->
+            <!-- User property: truststore.scryptConfig -->
+            <scryptConfig>
+               <costParameter>2048</costParameter>
+               <blockSize>16</blockSize>
+               <parallelizationParameter>2</parallelizationParameter>
+               <saltLength>20</saltLength>
+            </scryptConfig>
 
             <!-- Set to true to skip plugin execution. Default: false -->
             <!-- User property: truststore.skip -->
@@ -124,7 +144,7 @@ Add this plugin to your **pom.xml**:
 
 #### Default settings
 
-When downloading certificates from servers, standard Java PKI rules apply:
+When downloading certificates through TLS handshakes, standard Java PKI rules apply:
 
 - Default truststore is used
 - Empty keystore is used
@@ -154,6 +174,18 @@ solution has been implemented. You can specify value of `truststore.truststores`
 
 ```
 [file=truststores/truststore-1.p12,password=changeit],[file=truststores/truststore-2.jks,password=topsecret]
+```
+
+## Custom Scrypt config
+
+There may be reasons for you to pass custom Scrypt config with a user property rather than define it
+using `<scryptConfig>...</scryptConfig>` in `<configuration>...</configuration>` section as documented above. There is
+no documented way to pass a list of complex objects to a Maven plugin as a user property. In order to be able to pass
+them as a property, either on command line or using `<properties>...</properties>` section in your **pom.xml**, a custom
+solution has been implemented. You can specify value of `truststore.scryptConfig` property using the following syntax:
+
+```
+costParameter=4096,blockSize=16,parallelizationParameter=2,saltLength=20
 ```
 
 ## Supported Java versions

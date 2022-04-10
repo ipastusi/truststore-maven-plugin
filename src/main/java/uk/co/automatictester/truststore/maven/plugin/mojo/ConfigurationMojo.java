@@ -12,7 +12,7 @@ import java.util.List;
 abstract class ConfigurationMojo extends AbstractMojo {
 
     /**
-     * Truststore format: JKS, JCEKS, PKCS12, BKS, UBER or BCFKS. Default: PKCS12.
+     * Output truststore format: JKS, JCEKS, PKCS12, BKS, UBER or BCFKS. Default: PKCS12.
      */
     @Parameter(property = "truststore.format", defaultValue = "PKCS12")
     protected TruststoreFormat truststoreFormat;
@@ -74,14 +74,14 @@ abstract class ConfigurationMojo extends AbstractMojo {
 
     /**
      * List of HTTPS URLs to download the certificates from.
-     * Deprecated, use servers instead.
+     * Deprecated since 3.0.0, will be removed in future versions. Use 'servers' instead.
      */
     @Deprecated
     @Parameter(property = "truststore.urls")
     protected List<String> urls;
 
     /**
-     * List of servers to download the certificates from.
+     * List of TLS servers to download the certificates from.
      */
     @Parameter(property = "truststore.servers")
     protected List<String> servers;
