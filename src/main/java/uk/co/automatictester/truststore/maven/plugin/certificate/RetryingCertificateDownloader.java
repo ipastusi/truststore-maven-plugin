@@ -2,6 +2,7 @@ package uk.co.automatictester.truststore.maven.plugin.certificate;
 
 import org.apache.maven.plugin.logging.Log;
 
+import java.net.InetAddress;
 import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.function.Supplier;
@@ -17,8 +18,9 @@ public class RetryingCertificateDownloader implements CertificateDownloader {
     }
 
     @Override
-    public List<X509Certificate> getTlsServerCertificates(String host, int port) {
-        Supplier<List<X509Certificate>> getServerCertsAction = () -> simpleCertificateDownloader.getTlsServerCertificates(host, port);
+    public List<X509Certificate> getTlsServerCertificates(InetAddress address, int port) {
+        Supplier<List<X509Certificate>> getServerCertsAction = () ->
+                simpleCertificateDownloader.getTlsServerCertificates(address, port);
         return executeWithRetry(getServerCertsAction);
     }
 

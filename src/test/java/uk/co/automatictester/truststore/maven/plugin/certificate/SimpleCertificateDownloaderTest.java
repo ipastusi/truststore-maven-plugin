@@ -9,6 +9,8 @@ import uk.co.automatictester.truststore.maven.plugin.testutil.ChaosProxyServer;
 import uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules;
 import uk.co.automatictester.truststore.maven.plugin.testutil.HttpsServer;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class SimpleCertificateDownloaderTest {
     private final int timeout = 1000;
 
     @Test
-    public void getTlsServerCertificates() {
+    public void getTlsServerCertificates() throws UnknownHostException {
         server = new HttpsServer();
         int port = server.port();
 
@@ -30,13 +32,14 @@ public class SimpleCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeout);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", port);
+        InetAddress address = InetAddress.getByName("localhost");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }
 
     @Test(expectedExceptions = RuntimeException.class)
-    public void getTlsServerCertificatesTimeoutTooSmall() throws InterruptedException {
+    public void getTlsServerCertificatesTimeoutTooSmall() throws InterruptedException, UnknownHostException {
         server = new HttpsServer();
         int targetPort = server.port();
         ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY};
@@ -48,31 +51,34 @@ public class SimpleCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeoutTooSmall);
-        certDownloader.getTlsServerCertificates("localhost", proxyPort);
+        InetAddress address = InetAddress.getByName("localhost");
+        certDownloader.getTlsServerCertificates(address, proxyPort);
     }
 
     @Test
-    public void getTlsServerCertificatesTrustAll() {
+    public void getTlsServerCertificatesTrustAll() throws UnknownHostException {
         server = new HttpsServer();
         int port = server.port();
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true, timeout);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", port);
+        InetAddress address = InetAddress.getByName("localhost");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = ".*Connection refused.*")
-    public void getTlsServerCertificatesConnectionError() {
+    public void getTlsServerCertificatesConnectionError() throws UnknownHostException {
         server = new HttpsServer();
         int incorrectport = server.port() - 1;
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true, timeout);
-        certDownloader.getTlsServerCertificates("localhost", incorrectport);
+        InetAddress address = InetAddress.getByName("localhost");
+        certDownloader.getTlsServerCertificates(address, incorrectport);
     }
 
     @Test
-    public void getTlsServerCertificatesWithClientAuthAndTrustStore() {
+    public void getTlsServerCertificatesWithClientAuthAndTrustStore() throws UnknownHostException {
         server = new HttpsServer(true);
         int port = server.port();
 
@@ -82,13 +88,14 @@ public class SimpleCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeout);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", port);
+        InetAddress address = InetAddress.getByName("localhost");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }
 
     @Test
-    public void getTlsServerCertificatesWithClientAuthAndTrustAll() {
+    public void getTlsServerCertificatesWithClientAuthAndTrustAll() throws UnknownHostException {
         server = new HttpsServer(true);
         int port = server.port();
 
@@ -96,27 +103,30 @@ public class SimpleCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true, timeout);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", port);
+        InetAddress address = InetAddress.getByName("localhost");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }
 
-    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Unable to establish TLS connection with localhost:.*")
-    public void getTlsServerCertificatesWithClientAuthNoKeyStore() {
+    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated")
+    public void getTlsServerCertificatesWithClientAuthNoKeyStore() throws UnknownHostException {
         server = new HttpsServer(true);
         int port = server.port();
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeout);
-        certDownloader.getTlsServerCertificates("localhost", port);
+        InetAddress address = InetAddress.getByName("localhost");
+        certDownloader.getTlsServerCertificates(address, port);
     }
 
     @Test
-    public void getTlsServerCertificatesInvalidHostnameIgnoredAtAllTimes() {
+    public void getTlsServerCertificatesInvalidHostnameIgnoredAtAllTimes() throws UnknownHostException {
         server = new HttpsServer();
         int port = server.port();
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true, timeout);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("127.0.0.1", port);
+        InetAddress address = InetAddress.getByName("127.0.0.1");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }

@@ -42,9 +42,10 @@
                         </truststore>
                      </truststores>
                      <servers>
-                        <server>www.akamai.com:443</server>
+                        <server>google.com:443</server>
                      </servers>
                      <includeCertificates>LEAF</includeCertificates>
+                     <dnsResolution>SINGLE</dnsResolution>
                   </configuration>
                </execution>
             </executions>

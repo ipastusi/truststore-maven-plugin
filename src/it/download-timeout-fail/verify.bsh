@@ -6,9 +6,10 @@ while(scanner.hasNextLine()) {
     buildLogContent.add(scanner.nextLine());
 }
 
-boolean contentOneFound = buildLogContent.contains("[WARNING] Error: java.lang.RuntimeException: java.net.SocketTimeoutException: Connect timed out, retrying...");
-boolean contentTwoFound = buildLogContent.contains("[WARNING] Error: java.lang.RuntimeException: java.net.SocketTimeoutException, retrying...");
+boolean contentOneFound = buildLogContent.contains("[WARNING] Error: java.lang.RuntimeException: java.net.SocketTimeoutException: connect timed out, retrying...");
+boolean contentTwoFound = buildLogContent.contains("[WARNING] Error: java.lang.RuntimeException: java.net.SocketTimeoutException: Connect timed out, retrying...");
+boolean contentThreeFound = buildLogContent.contains("[WARNING] Error: java.lang.RuntimeException: java.net.SocketTimeoutException, retrying...");
 
-if (!contentOneFound && !contentTwoFound) {
+if (!contentOneFound && !contentTwoFound && !contentThreeFound) {
     throw new RuntimeException("Content not found!");
 }

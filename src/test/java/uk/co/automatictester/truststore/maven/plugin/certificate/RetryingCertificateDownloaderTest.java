@@ -8,6 +8,8 @@ import uk.co.automatictester.truststore.maven.plugin.testutil.ChaosProxyServer;
 import uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules;
 import uk.co.automatictester.truststore.maven.plugin.testutil.HttpsServer;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class RetryingCertificateDownloaderTest {
     private final int timeout = 1000;
 
     @Test
-    public void getTlsServerCertificatesFirstSucceeded() throws InterruptedException {
+    public void getTlsServerCertificatesFirstSucceeded() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
 
         ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{CONNECT};
@@ -32,13 +34,14 @@ public class RetryingCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new RetryingCertificateDownloader(log, false, timeout);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", proxyPort);
+        InetAddress address = InetAddress.getByName("localhost");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, proxyPort);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }
 
     @Test
-    public void getTlsServerCertificatesFirstFailed() throws InterruptedException {
+    public void getTlsServerCertificatesFirstFailed() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
 
         ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DISCONNECT, CONNECT};
@@ -49,13 +52,14 @@ public class RetryingCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new RetryingCertificateDownloader(log, false, timeout);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", proxyPort);
+        InetAddress address = InetAddress.getByName("localhost");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, proxyPort);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }
 
     @Test
-    public void getTlsServerCertificatesFirstTimedOut() throws InterruptedException {
+    public void getTlsServerCertificatesFirstTimedOut() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
 
         ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY, CONNECT};
@@ -66,13 +70,14 @@ public class RetryingCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new RetryingCertificateDownloader(log, false, timeout);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", proxyPort);
+        InetAddress address = InetAddress.getByName("localhost");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, proxyPort);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }
 
     @Test(expectedExceptions = RuntimeException.class)
-    public void getTlsServerCertificatesBothFailed() throws InterruptedException {
+    public void getTlsServerCertificatesBothFailed() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
         ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DISCONNECT, DISCONNECT};
         ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
@@ -82,11 +87,12 @@ public class RetryingCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new RetryingCertificateDownloader(log, false, timeout);
-        certDownloader.getTlsServerCertificates("localhost", proxyPort);
+        InetAddress address = InetAddress.getByName("localhost");
+        certDownloader.getTlsServerCertificates(address, proxyPort);
     }
 
     @Test(expectedExceptions = RuntimeException.class)
-    public void getTlsServerCertificatesBothTimedOut() throws InterruptedException {
+    public void getTlsServerCertificatesBothTimedOut() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
         ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY, DELAY};
         ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
@@ -96,11 +102,12 @@ public class RetryingCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new RetryingCertificateDownloader(log, false, timeout);
-        certDownloader.getTlsServerCertificates("localhost", proxyPort);
+        InetAddress address = InetAddress.getByName("localhost");
+        certDownloader.getTlsServerCertificates(address, proxyPort);
     }
 
     @Test
-    public void getTlsServerCertificatesTimeoutDisabled() throws InterruptedException {
+    public void getTlsServerCertificatesTimeoutDisabled() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
         ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY, DELAY};
         ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
@@ -111,7 +118,8 @@ public class RetryingCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new RetryingCertificateDownloader(log, false, timeoutDisabled);
-        List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", proxyPort);
+        InetAddress address = InetAddress.getByName("localhost");
+        List<X509Certificate> certs = certDownloader.getTlsServerCertificates(address, proxyPort);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
     }

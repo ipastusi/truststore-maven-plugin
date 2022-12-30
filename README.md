@@ -108,13 +108,21 @@ Add this plugin to your **pom.xml**:
             <!-- User property: truststore.retryDownloadOnFailure -->
             <retryDownloadOnFailure>false</retryDownloadOnFailure>
 
-           <!-- IN FUTURE RELEASE -->
-           <!-- Relevant only when specifying 'servers' -->
-           <!-- Timeout, in milliseconds, when downloading certificates -->
-           <!-- Used as both connect and read timeout -->
-           <!-- Default: 0 (no timeout) -->
-           <!-- User property: truststore.downloadTimeout -->
-           <downloadTimeout>5000</downloadTimeout>
+            <!-- IN FUTURE RELEASE -->
+            <!-- Relevant only when specifying 'servers' -->
+            <!-- Timeout, in milliseconds, when downloading certificates -->
+            <!-- Used as both connect and read timeout -->
+            <!-- Default: 0 (no timeout) -->
+            <!-- User property: truststore.downloadTimeout -->
+            <downloadTimeout>5000</downloadTimeout>
+
+            <!-- IN FUTURE RELEASE -->
+            <!-- Relevant only when specifying 'servers' -->
+            <!-- DNS resolution options: SINGLE or ALL. Default: SINGLE -->
+            <!-- Set to ALL to download certificates from all IP addresses the hostname resolves to -->
+            <!-- Relevant when DNS is configured to resolve given hostname to more than one IP address, -->
+            <!-- and different servers might be configured to use different X.509 certificates -->
+            <dnsResolution>ALL</dnsResolution>
 
             <!-- Relevant only when specifying 'servers' -->
             <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->

@@ -7,6 +7,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.security.cert.X509Certificate;
@@ -26,25 +27,18 @@ public class SimpleCertificateDownloader implements CertificateDownloader {
     }
 
     @Override
-    public List<X509Certificate> getTlsServerCertificates(String host, int port) {
-        log.info("Downloading certificates through TLS handshake from server: " + host + ":" + port);
+    public List<X509Certificate> getTlsServerCertificates(InetAddress address, int port) {
+        log.info("Downloading certificates through TLS handshake from server: " + address + ":" + port);
         X509Certificate[] certs;
         try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket()) {
-            SocketAddress address = new InetSocketAddress(host, port);
+            SocketAddress socketAddress = new InetSocketAddress(address, port);
             socket.setSoTimeout(timeout);
-            socket.connect(address, timeout);
+            socket.connect(socketAddress, timeout);
             SSLSession session = socket.getSession();
-            validateSslSession(session, host, port);
             certs = (X509Certificate[]) session.getPeerCertificates();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return Arrays.asList(certs);
-    }
-
-    private void validateSslSession(SSLSession session, String host, int port) {
-        if (!session.isValid()) {
-            throw new RuntimeException("Unable to establish TLS connection with " + host + ":" + port);
-        }
     }
 }

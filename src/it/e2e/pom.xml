@@ -38,11 +38,12 @@
                   </goals>
                   <phase>pre-integration-test</phase>
                   <configuration>
-                     <truststoreFile>target/truststore_www_amazon_com.p12</truststoreFile>
+                     <truststoreFile>target/truststore_www_google_com.p12</truststoreFile>
                      <servers>
-                        <server>www.amazon.com:443</server>
+                        <server>www.google.com:443</server>
                      </servers>
                      <includeCertificates>LEAF</includeCertificates>
+                     <dnsResolution>ALL</dnsResolution>
                   </configuration>
                </execution>
             </executions>

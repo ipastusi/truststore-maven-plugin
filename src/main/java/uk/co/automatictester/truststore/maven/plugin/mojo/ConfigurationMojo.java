@@ -5,6 +5,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import uk.co.automatictester.truststore.maven.plugin.certificate.IncludeCertificates;
 import uk.co.automatictester.truststore.maven.plugin.config.ScryptConfigSelector;
 import uk.co.automatictester.truststore.maven.plugin.config.TruststoreSelector;
+import uk.co.automatictester.truststore.maven.plugin.dns.DnsResolution;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 
 import java.util.List;
@@ -85,6 +86,16 @@ abstract class ConfigurationMojo extends AbstractMojo {
      */
     @Parameter(property = "truststore.downloadTimeout", defaultValue = "0")
     protected int downloadTimeout;
+
+    /**
+     * Relevant only when specifying 'servers'.
+     * DNS resolution option: SINGLE or ALL. Default: SINGLE.
+     * Set to ALL to download certificates from all IP addresses the hostname resolves to.
+     * Relevant when DNS is configured to resolve given hostname to more than one IP address,
+     * and different servers might be configured to use different X.509 certificates.
+     */
+    @Parameter(property = "truststore.dnsResolution", defaultValue = "SINGLE")
+    protected DnsResolution dnsResolution;
 
     /**
      * Relevant only when specifying 'servers'.

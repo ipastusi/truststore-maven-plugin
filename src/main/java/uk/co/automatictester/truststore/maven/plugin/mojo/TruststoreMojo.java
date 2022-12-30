@@ -5,11 +5,14 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import uk.co.automatictester.truststore.maven.plugin.certificate.*;
+import uk.co.automatictester.truststore.maven.plugin.dns.DnsResolver;
+import uk.co.automatictester.truststore.maven.plugin.dns.DnsResolverFactory;
 import uk.co.automatictester.truststore.maven.plugin.file.FileChecker;
 import uk.co.automatictester.truststore.maven.plugin.keystore.KeyStoreReader;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreWriter;
 
+import java.net.InetAddress;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,13 +74,18 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     private void loadTlsCerts() {
+        DnsResolver dnsResolver = DnsResolverFactory.getInstance(dnsResolution);
         CertificateDownloader certDownloader = getCertDownloader();
         CertificateFilter certFilter = new CertificateFilter(includeCertificates);
         for (String server : servers) {
             int separator = server.indexOf(":");
             String host = server.substring(0, separator);
             int port = Integer.parseInt(server.substring(separator + 1));
-            List<X509Certificate> downloadedCerts = certDownloader.getTlsServerCertificates(host, port);
+            List<InetAddress> addresses = dnsResolver.resolve(host);
+            List<X509Certificate> downloadedCerts = null;
+            for (InetAddress address : addresses) {
+                downloadedCerts = certDownloader.getTlsServerCertificates(address, port);
+            }
             List<X509Certificate> filteredCerts = certFilter.filter(downloadedCerts);
             certs.addAll(filteredCerts);
         }
