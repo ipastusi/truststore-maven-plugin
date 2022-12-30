@@ -48,9 +48,9 @@
                            <password>topsecret</password>
                         </truststore>
                      </truststores>
-                     <urls>
-                        <url>https://www.akamai.com</url>
-                     </urls>
+                     <servers>
+                        <server>www.akamai.com:443</server>
+                     </servers>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>
                </execution>

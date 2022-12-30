@@ -29,9 +29,9 @@
                   <phase>pre-integration-test</phase>
                   <configuration>
                      <truststoreFile>target/truststore.jks</truststoreFile>
-                     <urls>
-                        <url>https://www.nonexistent-url.com</url>
-                     </urls>
+                     <servers>
+                        <server>www.nonexistent-domain.com:443</server>
+                     </servers>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>
                </execution>

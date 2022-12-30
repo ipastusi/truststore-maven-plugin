@@ -39,9 +39,9 @@
                   <phase>pre-integration-test</phase>
                   <configuration>
                      <truststoreFile>target/truststore_www_amazon_com.p12</truststoreFile>
-                     <urls>
-                        <url>https://www.amazon.com</url>
-                     </urls>
+                     <servers>
+                        <server>www.amazon.com:443</server>
+                     </servers>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>
                </execution>

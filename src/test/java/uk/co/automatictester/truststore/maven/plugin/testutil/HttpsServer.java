@@ -3,9 +3,6 @@ package uk.co.automatictester.truststore.maven.plugin.testutil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
 public class HttpsServer {
@@ -17,21 +14,11 @@ public class HttpsServer {
     }
 
     public HttpsServer(boolean withClientAuth) {
-        ServerSocket serverSocket;
-        int port;
-        try {
-            serverSocket = new ServerSocket(0);
-            port = serverSocket.getLocalPort();
-            serverSocket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         WireMockConfiguration config = options()
                 .keystorePath("src/test/resources/keystores/wiremock_server_key_cert.p12")
                 .keystorePassword("password")
-                .httpDisabled(true)
-                .httpsPort(port);
+                .dynamicHttpsPort()
+                .httpDisabled(true);
 
         if (withClientAuth) {
             config = addClientAuth(config);

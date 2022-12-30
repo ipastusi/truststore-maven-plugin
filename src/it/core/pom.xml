@@ -49,11 +49,9 @@
                         <certificate>certs/apache-org-chain-2.pem</certificate>
                         <certificate>certs/apache-org-chain-3.pem</certificate>
                      </certificates>
-                     <urls>
-                        <url>https://www.amazon.com</url>
-                        <url>https://www.akamai.com</url>
-                     </urls>
                      <servers>
+                        <server>www.amazon.com:443</server>
+                        <server>www.akamai.com:443</server>
                         <server>imap.gmail.com:993</server>
                      </servers>
                      <includeCertificates>LEAF</includeCertificates>

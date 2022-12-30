@@ -97,25 +97,18 @@ Add this plugin to your **pom.xml**:
                <server>www.another.com:443</server>
             </servers>
 
-            <!-- List of HTTPS URLs to download the certificates from. Optional -->
-            <!-- Deprecated since 3.0.0, will be removed in future versions. Use 'servers' instead -->
-            <!-- User property: truststore.urls -->
-            <urls>
-               <url>https://www.example.com</url>
-               <url>https://www.another.com</url>
-            </urls>
-
-            <!-- Relevant only when specifying 'urls' or 'servers' -->
+            <!-- Relevant only when specifying 'servers' -->
             <!-- Set to true to trust server certificate when downloading certificates. Default: false -->
             <!-- User property: truststore.trustAllCertificates -->
             <trustAllCertificates>true</trustAllCertificates>
 
-            <!-- Relevant only when specifying 'urls'. When using 'servers', no hostname verification is performed -->
-            <!-- Set to true to skip hostname verification when downloading certificates. Default: false -->
-            <!-- User property: truststore.skipHostnameVerification -->
-            <skipHostnameVerification>true</skipHostnameVerification>
+            <!-- IN FUTURE RELEASE -->
+            <!-- Relevant only when specifying 'servers' -->
+            <!-- Set to false to disable retry on failure when downloading certificates. Default: true -->
+            <!-- User property: truststore.retryDownloadOnFailure -->
+            <retryDownloadOnFailure>false</retryDownloadOnFailure>
 
-            <!-- Relevant only when specifying 'urls' or 'servers' -->
+            <!-- Relevant only when specifying 'servers' -->
             <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->
             <!-- User property: truststore.includeCertificates -->
             <includeCertificates>LEAF</includeCertificates>

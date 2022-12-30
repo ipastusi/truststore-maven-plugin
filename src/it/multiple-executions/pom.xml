@@ -54,9 +54,9 @@
                      <certificates>
                         <certificate>certs/apache-org-chain-2.pem</certificate>
                      </certificates>
-                     <urls>
-                        <url>https://akamai.com</url>
-                     </urls>
+                     <servers>
+                        <server>akamai.com:443</server>
+                     </servers>
                      <includeCertificates>LEAF</includeCertificates>
                   </configuration>
                </execution>

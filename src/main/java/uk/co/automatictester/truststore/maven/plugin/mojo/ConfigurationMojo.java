@@ -55,10 +55,10 @@ abstract class ConfigurationMojo extends AbstractMojo {
     protected boolean trustAllCertificates;
 
     /**
-     * Set to true to skip hostname verification when downloading certificates.
+     * Set to false to disable retry on failure when downloading certificates.
      */
-    @Parameter(property = "truststore.skipHostnameVerification", defaultValue = "false")
-    protected boolean skipHostnameVerification;
+    @Parameter(property = "truststore.retryDownloadOnFailure", defaultValue = "true")
+    protected boolean retryDownloadOnFailure;
 
     /**
      * Which certificates to download: ALL, LEAF, CA. Default: ALL.
@@ -71,14 +71,6 @@ abstract class ConfigurationMojo extends AbstractMojo {
      */
     @Parameter(property = "truststore.certificates")
     protected List<String> certificates;
-
-    /**
-     * List of HTTPS URLs to download the certificates from.
-     * Deprecated since 3.0.0, will be removed in future versions. Use 'servers' instead.
-     */
-    @Deprecated
-    @Parameter(property = "truststore.urls")
-    protected List<String> urls;
 
     /**
      * List of TLS servers to download the certificates from.

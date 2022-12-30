@@ -4,10 +4,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateDownloader;
-import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateFilter;
-import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateReader;
-import uk.co.automatictester.truststore.maven.plugin.config.URLValidator;
+import uk.co.automatictester.truststore.maven.plugin.certificate.*;
 import uk.co.automatictester.truststore.maven.plugin.file.FileChecker;
 import uk.co.automatictester.truststore.maven.plugin.keystore.KeyStoreReader;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
@@ -32,7 +29,6 @@ public class TruststoreMojo extends ConfigurationMojo {
         validateScryptConfig();
         loadFileSystemCerts();
         loadFileSystemTruststores();
-        loadHttpsCerts();
         loadTlsCerts();
         loadDefaultTruststore();
         createTruststore();
@@ -63,27 +59,13 @@ public class TruststoreMojo extends ConfigurationMojo {
         }
     }
 
-    private void loadHttpsCerts() {
-        URLValidator urlValidator = new URLValidator();
-        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
-        CertificateFilter certFilter = new CertificateFilter(includeCertificates);
-        for (String url : urls) {
-            urlValidator.validate(url);
-            getLog().info("Downloading certificates through TLS handshake from URL: " + url);
-            List<X509Certificate> downloadedCerts = certDownloader.getHttpsServerCertificates(url);
-            List<X509Certificate> filteredCerts = certFilter.filter(downloadedCerts);
-            certs.addAll(filteredCerts);
-        }
-    }
-
     private void loadTlsCerts() {
-        CertificateDownloader certDownloader = new CertificateDownloader(trustAllCertificates, skipHostnameVerification);
+        CertificateDownloader certDownloader = getCertDownloader();
         CertificateFilter certFilter = new CertificateFilter(includeCertificates);
         for (String server : servers) {
             int separator = server.indexOf(":");
             String host = server.substring(0, separator);
             int port = Integer.parseInt(server.substring(separator + 1));
-            getLog().info("Downloading certificates through TLS handshake from server: " + host + ":" + port);
             List<X509Certificate> downloadedCerts = certDownloader.getTlsServerCertificates(host, port);
             List<X509Certificate> filteredCerts = certFilter.filter(downloadedCerts);
             certs.addAll(filteredCerts);
@@ -121,5 +103,14 @@ public class TruststoreMojo extends ConfigurationMojo {
             truststoreWriter.setScryptConfig(scryptConfig);
         }
         truststoreWriter.write(certs);
+    }
+
+    private CertificateDownloader getCertDownloader() {
+        Log log = getLog();
+        if (retryDownloadOnFailure) {
+            return new RetryingCertificateDownloader(log, trustAllCertificates);
+        } else {
+            return new SimpleCertificateDownloader(log, trustAllCertificates);
+        }
     }
 }
