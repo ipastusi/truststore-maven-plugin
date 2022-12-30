@@ -79,7 +79,8 @@ abstract class ConfigurationMojo extends AbstractMojo {
 
     /**
      * Relevant only when specifying 'servers'.
-     * Socket timeout, in milliseconds, when downloading certificates.
+     * Timeout, in milliseconds, when downloading certificates.
+     * Used as both connect and read timeout.
      * Default: 0 (no timeout).
      */
     @Parameter(property = "truststore.downloadTimeout", defaultValue = "0")

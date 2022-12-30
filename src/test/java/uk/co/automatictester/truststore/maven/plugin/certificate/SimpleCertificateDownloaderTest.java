@@ -5,12 +5,15 @@ import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import uk.co.automatictester.truststore.maven.plugin.testutil.ChaosProxyServer;
+import uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules;
 import uk.co.automatictester.truststore.maven.plugin.testutil.HttpsServer;
 
 import java.security.cert.X509Certificate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules.DELAY;
 
 public class SimpleCertificateDownloaderTest {
 
@@ -33,16 +36,19 @@ public class SimpleCertificateDownloaderTest {
     }
 
     @Test(expectedExceptions = RuntimeException.class)
-    public void getTlsServerCertificatesTimeoutTooSmall() {
+    public void getTlsServerCertificatesTimeoutTooSmall() throws InterruptedException {
         server = new HttpsServer();
-        int port = server.port();
+        int targetPort = server.port();
+        ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY};
+        ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
+        int proxyPort = proxyServer.start();
         int timeoutTooSmall = 1;
 
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
         CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeoutTooSmall);
-        certDownloader.getTlsServerCertificates("localhost", port);
+        certDownloader.getTlsServerCertificates("localhost", proxyPort);
     }
 
     @Test

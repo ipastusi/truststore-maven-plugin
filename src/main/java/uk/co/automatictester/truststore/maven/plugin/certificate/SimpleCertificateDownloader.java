@@ -7,6 +7,8 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
@@ -27,13 +29,13 @@ public class SimpleCertificateDownloader implements CertificateDownloader {
     public List<X509Certificate> getTlsServerCertificates(String host, int port) {
         log.info("Downloading certificates through TLS handshake from server: " + host + ":" + port);
         X509Certificate[] certs;
-        try {
-            SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port);
+        try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket()) {
+            SocketAddress address = new InetSocketAddress(host, port);
             socket.setSoTimeout(timeout);
+            socket.connect(address, timeout);
             SSLSession session = socket.getSession();
             validateSslSession(session, host, port);
             certs = (X509Certificate[]) session.getPeerCertificates();
-            socket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

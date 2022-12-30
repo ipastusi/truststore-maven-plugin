@@ -110,7 +110,8 @@ Add this plugin to your **pom.xml**:
 
            <!-- IN FUTURE RELEASE -->
            <!-- Relevant only when specifying 'servers' -->
-           <!-- Socket timeout, in milliseconds, when downloading certificates -->
+           <!-- Timeout, in milliseconds, when downloading certificates -->
+           <!-- Used as both connect and read timeout -->
            <!-- Default: 0 (no timeout) -->
            <!-- User property: truststore.downloadTimeout -->
            <downloadTimeout>5000</downloadTimeout>

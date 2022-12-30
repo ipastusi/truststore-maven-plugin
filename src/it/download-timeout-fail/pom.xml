@@ -34,7 +34,7 @@
                         <server>amazon.com:443</server>
                      </servers>
                      <includeCertificates>LEAF</includeCertificates>
-                     <downloadTimeout>5</downloadTimeout>
+                     <downloadTimeout>1</downloadTimeout>
                   </configuration>
                </execution>
             </executions>
