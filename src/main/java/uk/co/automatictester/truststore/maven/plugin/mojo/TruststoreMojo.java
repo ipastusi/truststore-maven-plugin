@@ -16,6 +16,7 @@ import java.net.InetAddress;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Mojo(name = "generate-truststore", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
 public class TruststoreMojo extends ConfigurationMojo {
@@ -74,7 +75,8 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     private void loadTlsCerts() {
-        DnsResolver dnsResolver = DnsResolverFactory.getInstance(dnsResolution);
+        Map<String, String> dnsMappings = getDnsMappings();
+        DnsResolver dnsResolver = DnsResolverFactory.getInstance(dnsResolution, dnsMappings);
         CertificateDownloader certDownloader = getCertDownloader();
         CertificateFilter certFilter = new CertificateFilter(includeCertificates);
         for (String server : servers) {

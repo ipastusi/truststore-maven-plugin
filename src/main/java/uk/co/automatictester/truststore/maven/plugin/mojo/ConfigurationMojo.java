@@ -8,7 +8,9 @@ import uk.co.automatictester.truststore.maven.plugin.config.TruststoreSelector;
 import uk.co.automatictester.truststore.maven.plugin.dns.DnsResolution;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 abstract class ConfigurationMojo extends AbstractMojo {
 
@@ -96,6 +98,27 @@ abstract class ConfigurationMojo extends AbstractMojo {
      */
     @Parameter(property = "truststore.dnsResolution", defaultValue = "SINGLE")
     protected DnsResolution dnsResolution;
+
+    /**
+     * Relevant only when specifying 'servers'.
+     * List of custom DNS mappings. Optional.
+     * If provided, and 'servers' include particular hostname,
+     * specified IP will be used instead of default DNS resolution.
+     * Otherwise DNS resolution strategy specified by 'dnsResolution' will be used.
+     */
+    @Parameter(property = "truststore.dnsMappings")
+    private List<String> dnsMappings;
+
+    protected Map<String, String> getDnsMappings() {
+        Map<String, String> mappings = new HashMap<>();
+        for (String mapping : dnsMappings) {
+            int separator = mapping.indexOf(":");
+            String host = mapping.substring(0, separator);
+            String address = mapping.substring(separator + 1);
+            mappings.put(host, address);
+        }
+        return mappings;
+    }
 
     /**
      * Relevant only when specifying 'servers'.

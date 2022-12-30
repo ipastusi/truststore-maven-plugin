@@ -7,8 +7,7 @@ while(scanner.hasNextLine()) {
 }
 
 List expectedBuildLogContent = new ArrayList();
-expectedBuildLogContent.add("[INFO] Generating BCFKS truststore with custom Scrypt parameters:");
-expectedBuildLogContent.add("[INFO] Downloading certificates through TLS handshake from server: dns.google.com/8.8.8.8:443");
+expectedBuildLogContent.add("[INFO] Downloading certificates through TLS handshake from server: dns.google.com/8.8.4.4:443");
 
 boolean contentFound = buildLogContent.containsAll(expectedBuildLogContent);
 

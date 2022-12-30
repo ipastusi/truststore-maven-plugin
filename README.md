@@ -122,7 +122,20 @@ Add this plugin to your **pom.xml**:
             <!-- Set to ALL to download certificates from all IP addresses the hostname resolves to -->
             <!-- Relevant when DNS is configured to resolve given hostname to more than one IP address, -->
             <!-- and different servers might be configured to use different X.509 certificates -->
+            <!-- User property: truststore.dnsResolution -->
             <dnsResolution>ALL</dnsResolution>
+
+            <!-- IN FUTURE RELEASE -->
+            <!-- Relevant only when specifying 'servers' -->
+            <!-- List of custom DNS mappings. Optional -->
+            <!-- If provided, and 'servers' include particular hostname, -->
+            <!-- specified IP will be used instead of default DNS resolution -->
+            <!-- Otherwise DNS resolution strategy specified by 'dnsResolution' will be used -->
+            <!-- User property: truststore.dnsMappings -->
+            <dnsMappings>
+               <dnsMapping>example.com:1.2.3.4</dnsMapping>
+               <dnsMapping>another.com:2.3.4.5</dnsMapping>
+            </dnsMappings>
 
             <!-- Relevant only when specifying 'servers' -->
             <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->

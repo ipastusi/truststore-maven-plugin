@@ -3,17 +3,26 @@ package uk.co.automatictester.truststore.maven.plugin.dns;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AllDnsResolver implements DnsResolver {
+
+    private final CustomDnsResolver customResolver;
+
+    public AllDnsResolver(Map<String, String> mappings) {
+        customResolver = new CustomDnsResolver(mappings);
+    }
 
     @Override
     public List<InetAddress> resolve(String host) {
         try {
-            InetAddress[] addresses = InetAddress.getAllByName(host);
+            Optional<InetAddress> customAddress = customResolver.resolve(host);
+            if (customAddress.isPresent()) {
+                return Collections.singletonList(customAddress.get());
+            }
+            InetAddress[] allAddresses = InetAddress.getAllByName(host);
             List<InetAddress> ipv4Addresses = new ArrayList<>();
-            for (InetAddress address : addresses) {
+            for (InetAddress address : allAddresses) {
                 if (address instanceof Inet4Address) {
                     ipv4Addresses.add(address);
                 }
