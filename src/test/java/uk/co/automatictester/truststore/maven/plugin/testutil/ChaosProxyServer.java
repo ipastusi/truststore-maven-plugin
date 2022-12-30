@@ -15,12 +15,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules.DISCONNECT;
+import static uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules.*;
 
 @Slf4j
-public class ConnectionClosingProxyServer {
+public class ChaosProxyServer {
 
     private static final String HOST = "127.0.0.1";
+    private static final int CONNECTION_READ_DELAY = 1100;
     private final Queue<ConnectionHandlingRules> connectionHandlingRules;
     private final int targetPort;
     private final CountDownLatch latch;
@@ -28,7 +29,7 @@ public class ConnectionClosingProxyServer {
     @Getter
     private int port;
 
-    public ConnectionClosingProxyServer(int targetPort, ConnectionHandlingRules[] connectionHandlingRules) {
+    public ChaosProxyServer(int targetPort, ConnectionHandlingRules[] connectionHandlingRules) {
         this.targetPort = targetPort;
         this.connectionHandlingRules = new LinkedList<>(Arrays.asList(connectionHandlingRules));
         this.latch = new CountDownLatch(1);
@@ -47,7 +48,9 @@ public class ConnectionClosingProxyServer {
         ServerSocket serverSocket = getServerSocket();
         port = serverSocket.getLocalPort();
 
+        int connId = 0;
         while (true) {
+            connId++;
             Socket inSocket = null;
             Socket outSocket = null;
             try {
@@ -56,10 +59,16 @@ public class ConnectionClosingProxyServer {
                 inSocket = serverSocket.accept();
 
                 ConnectionHandlingRules closeConnection = connectionHandlingRules.poll();
-                if (closeConnection != null && closeConnection.equals(DISCONNECT)) {
-                    log.info("Connection closed");
+                if (closeConnection == null || closeConnection.equals(CONNECT)) {
+                    log.info("Connection {} allowed", connId);
+                } else if (closeConnection.equals(DISCONNECT)) {
+                    log.info("Connection {} closed", connId);
                     inSocket.close();
                     continue;
+                } else if (closeConnection.equals(DELAY)) {
+                    // simulates read timeout
+                    log.info("Connection {} delayed by {}ms", connId, CONNECTION_READ_DELAY);
+                    sleep(CONNECTION_READ_DELAY);
                 }
 
                 InputStream clientIn = inSocket.getInputStream();
@@ -69,15 +78,14 @@ public class ConnectionClosingProxyServer {
                 InputStream serverIn = outSocket.getInputStream();
                 OutputStream serverOut = outSocket.getOutputStream();
 
-                Runnable processClientRequests = () -> {
-                    write(clientIn, serverOut);
-                };
+                final int finalConnId = connId;
+                Runnable processClientRequests = () -> write(clientIn, serverOut, finalConnId);
                 executor.execute(processClientRequests);
 
-                write(serverIn, clientOut);
-                log.info("Connection processed");
+                write(serverIn, clientOut, connId);
+                log.info("Connection {} processing finished", connId);
             } catch (IOException e) {
-                log.error("Error processing connection: {}", e.getMessage());
+                log.error("Error processing connection {}: {}", connId, e.getMessage());
             } finally {
                 try {
                     if (inSocket != null) {
@@ -87,7 +95,7 @@ public class ConnectionClosingProxyServer {
                         outSocket.close();
                     }
                 } catch (IOException e) {
-                    log.error("Error closing sockets: {}", e.getMessage());
+                    log.error("Error closing sockets for connection {}: {}", connId, e.getMessage());
                 }
             }
         }
@@ -101,7 +109,7 @@ public class ConnectionClosingProxyServer {
         }
     }
 
-    private void write(InputStream in, OutputStream out) {
+    private void write(InputStream in, OutputStream out, int connId) {
         byte[] buffer = new byte[1024];
         int len;
         try {
@@ -109,7 +117,15 @@ public class ConnectionClosingProxyServer {
                 out.write(buffer, 0, len);
             }
         } catch (IOException e) {
-            log.error("Error converting streams: {}", e.getMessage());
+            log.error("Error converting streams for connection {}: {}", connId, e.getMessage());
+        }
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -26,7 +26,7 @@ public class TruststoreMojo extends ConfigurationMojo {
             return;
         }
 
-        validateScryptConfig();
+        validateConfig();
         loadFileSystemCerts();
         loadFileSystemTruststores();
         loadTlsCerts();
@@ -35,6 +35,17 @@ public class TruststoreMojo extends ConfigurationMojo {
     }
 
     // fail fast on incorrect config
+    private void validateConfig() {
+        validateDownloadTimeout();
+        validateScryptConfig();
+    }
+
+    private void validateDownloadTimeout() {
+        if (downloadTimeout < 0) {
+            throw new RuntimeException("downloadTimeout can not be negative");
+        }
+    }
+
     private void validateScryptConfig() {
         if (scryptConfig != null) {
             scryptConfig.validate();
@@ -108,9 +119,9 @@ public class TruststoreMojo extends ConfigurationMojo {
     private CertificateDownloader getCertDownloader() {
         Log log = getLog();
         if (retryDownloadOnFailure) {
-            return new RetryingCertificateDownloader(log, trustAllCertificates);
+            return new RetryingCertificateDownloader(log, trustAllCertificates, downloadTimeout);
         } else {
-            return new SimpleCertificateDownloader(log, trustAllCertificates);
+            return new SimpleCertificateDownloader(log, trustAllCertificates, downloadTimeout);
         }
     }
 }

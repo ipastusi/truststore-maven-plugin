@@ -16,6 +16,7 @@ public class SimpleCertificateDownloaderTest {
 
     private final Log log = new DefaultLog(new ConsoleLogger());
     private HttpsServer server;
+    private final int timeout = 1000;
 
     @Test
     public void getTlsServerCertificates() {
@@ -25,10 +26,23 @@ public class SimpleCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
-        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false);
+        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeout);
         List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
+    }
+
+    @Test(expectedExceptions = RuntimeException.class)
+    public void getTlsServerCertificatesTimeoutTooSmall() {
+        server = new HttpsServer();
+        int port = server.port();
+        int timeoutTooSmall = 1;
+
+        System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
+        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+
+        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeoutTooSmall);
+        certDownloader.getTlsServerCertificates("localhost", port);
     }
 
     @Test
@@ -36,7 +50,7 @@ public class SimpleCertificateDownloaderTest {
         server = new HttpsServer();
         int port = server.port();
 
-        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true);
+        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true, timeout);
         List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
@@ -47,7 +61,7 @@ public class SimpleCertificateDownloaderTest {
         server = new HttpsServer();
         int incorrectport = server.port() - 1;
 
-        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true);
+        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true, timeout);
         certDownloader.getTlsServerCertificates("localhost", incorrectport);
     }
 
@@ -61,7 +75,7 @@ public class SimpleCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
-        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false);
+        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeout);
         List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
@@ -75,7 +89,7 @@ public class SimpleCertificateDownloaderTest {
         System.setProperty("javax.net.ssl.keyStore", "src/test/resources/keystores/client_auth_key_cert.jks");
         System.setProperty("javax.net.ssl.keyStorePassword", "changeit");
 
-        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true);
+        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true, timeout);
         List<X509Certificate> certs = certDownloader.getTlsServerCertificates("localhost", port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");
@@ -86,7 +100,7 @@ public class SimpleCertificateDownloaderTest {
         server = new HttpsServer(true);
         int port = server.port();
 
-        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false);
+        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, false, timeout);
         certDownloader.getTlsServerCertificates("localhost", port);
     }
 
@@ -95,7 +109,7 @@ public class SimpleCertificateDownloaderTest {
         server = new HttpsServer();
         int port = server.port();
 
-        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true);
+        CertificateDownloader certDownloader = new SimpleCertificateDownloader(log, true, timeout);
         List<X509Certificate> certs = certDownloader.getTlsServerCertificates("127.0.0.1", port);
         assertThat(certs).hasSize(1);
         assertThat((certs.get(0)).getSerialNumber().toString()).isEqualTo("285246514769703101131665982281179467186167826091");

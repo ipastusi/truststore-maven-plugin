@@ -60,7 +60,7 @@ Add this plugin to your **pom.xml**:
             <!-- User property: truststore.file -->
             <truststoreFile>target/truststore.p12</truststoreFile>
 
-            <!-- Truststore password. Default: changeit -->
+            <!-- Password for created truststore. Default: changeit -->
             <!-- User property: truststore.password -->
             <truststorePassword>changeit</truststorePassword>
 
@@ -86,7 +86,7 @@ Add this plugin to your **pom.xml**:
 
             <!-- Set to true to load certificates from the default truststore in either -->
             <!-- <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts -->
-            <!-- (in this order) -->
+            <!-- (in this order). Default: false. -->
             <!-- User property: truststore.includeDefaultTruststore -->
             <includeDefaultTruststore>true</includeDefaultTruststore>
 
@@ -107,6 +107,13 @@ Add this plugin to your **pom.xml**:
             <!-- Set to false to disable retry on failure when downloading certificates. Default: true -->
             <!-- User property: truststore.retryDownloadOnFailure -->
             <retryDownloadOnFailure>false</retryDownloadOnFailure>
+
+           <!-- IN FUTURE RELEASE -->
+           <!-- Relevant only when specifying 'servers' -->
+           <!-- Socket timeout, in milliseconds, when downloading certificates -->
+           <!-- Default: 0 (no timeout) -->
+           <!-- User property: truststore.downloadTimeout -->
+           <downloadTimeout>5000</downloadTimeout>
 
             <!-- Relevant only when specifying 'servers' -->
             <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->

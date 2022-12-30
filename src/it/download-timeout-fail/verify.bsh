@@ -1,0 +1,13 @@
+File buildLog = new File(basedir, "build.log");
+Scanner scanner = new Scanner(buildLog);
+List buildLogContent = new ArrayList();
+
+while(scanner.hasNextLine()) {
+    buildLogContent.add(scanner.nextLine());
+}
+
+boolean contentFound = buildLogContent.contains("[WARNING] Error: java.lang.RuntimeException: Unable to establish TLS connection with amazon.com:443, retrying...");
+
+if (!contentFound) {
+    throw new RuntimeException("Content not found!");
+}

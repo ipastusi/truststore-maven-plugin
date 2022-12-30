@@ -11,8 +11,8 @@ public class RetryingCertificateDownloader implements CertificateDownloader {
     private final SimpleCertificateDownloader simpleCertificateDownloader;
     private final Log log;
 
-    public RetryingCertificateDownloader(Log log, boolean trustAllCerts) {
-        this.simpleCertificateDownloader = new SimpleCertificateDownloader(log, trustAllCerts);
+    public RetryingCertificateDownloader(Log log, boolean trustAllCerts, int timeout) {
+        this.simpleCertificateDownloader = new SimpleCertificateDownloader(log, trustAllCerts, timeout);
         this.log = log;
     }
 

@@ -13,12 +13,14 @@ import java.util.List;
 
 public class SimpleCertificateDownloader implements CertificateDownloader {
 
-    private final SSLSocketFactory sslSocketFactory;
+    private final int timeout;
     private final Log log;
+    private final SSLSocketFactory sslSocketFactory;
 
-    public SimpleCertificateDownloader(Log log, boolean trustAllCerts) {
+    public SimpleCertificateDownloader(Log log, boolean trustAllCerts, int timeout) {
         this.sslSocketFactory = ConfigurableSSLSocketFactory.createInstance(trustAllCerts);
         this.log = log;
+        this.timeout = timeout;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class SimpleCertificateDownloader implements CertificateDownloader {
         X509Certificate[] certs;
         try {
             SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port);
+            socket.setSoTimeout(timeout);
             SSLSession session = socket.getSession();
             validateSslSession(session, host, port);
             certs = (X509Certificate[]) session.getPeerCertificates();

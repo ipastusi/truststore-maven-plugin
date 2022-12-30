@@ -6,7 +6,7 @@
    <groupId>uk.co.automatictester</groupId>
    <artifactId>truststore-maven-plugin-it</artifactId>
    <version>1.0.0-SNAPSHOT</version>
-   <description>basic integration test</description>
+   <description>BCFKS integration test</description>
    <modelVersion>4.0.0</modelVersion>
 
    <properties>
@@ -28,34 +28,19 @@
                   </goals>
                   <phase>pre-integration-test</phase>
                   <configuration>
-                     <truststoreFile>target/truststore.p12</truststoreFile>
+                     <truststoreFormat>BCFKS</truststoreFormat>
+                     <scryptConfig>
+                        <costParameter>2048</costParameter>
+                        <blockSize>16</blockSize>
+                        <parallelizationParameter>2</parallelizationParameter>
+                        <!-- <saltLength>20</saltLength> -->
+                     </scryptConfig>
+                     <truststoreFile>target/truststore.bcsfks</truststoreFile>
                      <truststorePassword>topsecret</truststorePassword>
-                     <truststores>
-                        <truststore>
-                           <file>truststores/private_key_only.p12</file>
-                           <password>changeit</password>
-                        </truststore>
-                        <truststore>
-                           <file>truststores/aws_amazon_com.p12</file>
-                           <password>changeit</password>
-                        </truststore>
-                        <truststore>
-                           <file>truststores/www_github_com.jks</file>
-                           <password>topsecret</password>
-                        </truststore>
-                     </truststores>
-                     <certificates>
-                        <certificate>certs/apache-org-chain-1.pem</certificate>
-                        <certificate>certs/apache-org-chain-2.pem</certificate>
-                        <certificate>certs/apache-org-chain-3.pem</certificate>
-                     </certificates>
                      <servers>
-                        <server>www.amazon.com:443</server>
                         <server>www.akamai.com:443</server>
-                        <server>imap.gmail.com:993</server>
                      </servers>
                      <includeCertificates>LEAF</includeCertificates>
-                     <downloadTimeout>0</downloadTimeout>
                   </configuration>
                </execution>
             </executions>

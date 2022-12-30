@@ -18,7 +18,82 @@ abstract class ConfigurationMojo extends AbstractMojo {
     protected TruststoreFormat truststoreFormat;
 
     /**
-     * Custom Scrypt config. Can be optionally specified for use with BCFKS truststore.
+     * Truststore filename. Required.
+     */
+    @Parameter(property = "truststore.file", required = true)
+    protected String truststoreFile;
+
+    /**
+     * Password for created truststore. Default: changeit.
+     */
+    @Parameter(property = "truststore.password", defaultValue = "changeit")
+    protected String truststorePassword;
+
+    /**
+     * List of files with certificates to use. Optional.
+     */
+    @Parameter(property = "truststore.certificates")
+    protected List<String> certificates;
+
+    /**
+     * List of files with source truststores to use. Optional.
+     */
+    @Parameter
+    private List<Truststore> truststores;
+
+    @Parameter(property = "truststore.truststores")
+    private String truststoresProperty;
+
+    protected List<Truststore> getTruststores() {
+        TruststoreSelector truststoreSelector = new TruststoreSelector();
+        return truststoreSelector.select(truststores, truststoresProperty);
+    }
+
+    /**
+     * Set to true to load certificates from the default truststore in either
+     * <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts
+     * (in this order). Default: false.
+     */
+    @Parameter(property = "truststore.includeDefaultTruststore", defaultValue = "false")
+    protected boolean includeDefaultTruststore;
+
+    /**
+     * List of TLS servers to download the certificates from. Optional.
+     */
+    @Parameter(property = "truststore.servers")
+    protected List<String> servers;
+
+    /**
+     * Relevant only when specifying 'servers'.
+     * Set to true to trust server certificate when downloading certificates. Default: false.
+     */
+    @Parameter(property = "truststore.trustAllCertificates", defaultValue = "false")
+    protected boolean trustAllCertificates;
+
+    /**
+     * Relevant only when specifying 'servers'.
+     * Set to false to disable retry on failure when downloading certificates. Default: true.
+     */
+    @Parameter(property = "truststore.retryDownloadOnFailure", defaultValue = "true")
+    protected boolean retryDownloadOnFailure;
+
+    /**
+     * Relevant only when specifying 'servers'.
+     * Socket timeout, in milliseconds, when downloading certificates.
+     * Default: 0 (no timeout).
+     */
+    @Parameter(property = "truststore.downloadTimeout", defaultValue = "0")
+    protected int downloadTimeout;
+
+    /**
+     * Relevant only when specifying 'servers'.
+     * Which certificates to download: ALL, LEAF, CA. Default: ALL.
+     */
+    @Parameter(property = "truststore.includeCertificates", defaultValue = "ALL")
+    protected IncludeCertificates includeCertificates;
+
+    /**
+     * Custom Scrypt config. Can be optionally specified when 'truststoreFormat' is set to BCFKS.
      * Ignored if specified for other types of truststores.
      */
     @Parameter
@@ -37,72 +112,8 @@ abstract class ConfigurationMojo extends AbstractMojo {
     }
 
     /**
-     * Truststore filename.
-     */
-    @Parameter(property = "truststore.file", required = true)
-    protected String truststoreFile;
-
-    /**
-     * Password for created truststore. Default: changeit.
-     */
-    @Parameter(property = "truststore.password", defaultValue = "changeit")
-    protected String truststorePassword;
-
-    /**
-     * Set to true to trust server certificate when downloading certificates.
-     */
-    @Parameter(property = "truststore.trustAllCertificates", defaultValue = "false")
-    protected boolean trustAllCertificates;
-
-    /**
-     * Set to false to disable retry on failure when downloading certificates.
-     */
-    @Parameter(property = "truststore.retryDownloadOnFailure", defaultValue = "true")
-    protected boolean retryDownloadOnFailure;
-
-    /**
-     * Which certificates to download: ALL, LEAF, CA. Default: ALL.
-     */
-    @Parameter(property = "truststore.includeCertificates", defaultValue = "ALL")
-    protected IncludeCertificates includeCertificates;
-
-    /**
-     * List of files with certificates to use.
-     */
-    @Parameter(property = "truststore.certificates")
-    protected List<String> certificates;
-
-    /**
-     * List of TLS servers to download the certificates from.
-     */
-    @Parameter(property = "truststore.servers")
-    protected List<String> servers;
-
-    /**
-     * Set to true to skip plugin execution.
+     * Set to true to skip plugin execution. Default: false.
      */
     @Parameter(property = "truststore.skip", defaultValue = "false")
     protected boolean skip;
-
-    /**
-     * List of files with truststores to use.
-     */
-    @Parameter
-    private List<Truststore> truststores;
-
-    @Parameter(property = "truststore.truststores")
-    private String truststoresProperty;
-
-    protected List<Truststore> getTruststores() {
-        TruststoreSelector truststoreSelector = new TruststoreSelector();
-        return truststoreSelector.select(truststores, truststoresProperty);
-    }
-
-    /**
-     * Set to true to load certificates from the default truststore
-     * in either <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts
-     * (in this order).
-     */
-    @Parameter(property = "truststore.includeDefaultTruststore", defaultValue = "false")
-    protected boolean includeDefaultTruststore;
 }
