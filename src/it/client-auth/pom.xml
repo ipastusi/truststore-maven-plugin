@@ -30,7 +30,7 @@
          <plugin>
             <groupId>uk.co.automatictester</groupId>
             <artifactId>wiremock-maven-plugin</artifactId>
-            <version>7.0.0</version>
+            <version>7.3.0</version>
             <executions>
                <execution>
                   <goals>
@@ -55,8 +55,8 @@
             <dependencies>
                <dependency>
                   <groupId>com.github.tomakehurst</groupId>
-                  <artifactId>wiremock</artifactId>
-                  <version>2.27.2</version>
+                  <artifactId>wiremock-jre8</artifactId>
+                  <version>2.35.0</version>
                </dependency>
             </dependencies>
          </plugin>
