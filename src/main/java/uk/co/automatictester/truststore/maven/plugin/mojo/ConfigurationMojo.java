@@ -54,7 +54,7 @@ abstract class ConfigurationMojo extends AbstractMojo {
 
     /**
      * Set to true to load certificates from the default truststore in either
-     * <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts
+     * &lt;java.home&gt;/lib/security/jssecacerts or &lt;java.home&gt;/lib/security/cacerts
      * (in this order). Default: false.
      */
     @Parameter(property = "truststore.includeDefaultTruststore", defaultValue = "false")
