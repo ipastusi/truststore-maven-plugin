@@ -83,20 +83,22 @@ abstract class ConfigurationMojo extends AbstractMojo {
     /**
      * Relevant only when specifying 'servers'.
      * Timeout, in milliseconds, when downloading certificates.
+     * Setting to 0 (zero) means no timeout.
      * Used as both connect and read timeout.
-     * Default: 0 (no timeout).
+     * Default: 10000 (10s).
      */
-    @Parameter(property = "truststore.downloadTimeout", defaultValue = "0")
+    @Parameter(property = "truststore.downloadTimeout", defaultValue = "10000")
     protected int downloadTimeout;
 
     /**
      * Relevant only when specifying 'servers'.
-     * DNS resolution option: SINGLE or ALL. Default: SINGLE.
+     * DNS resolution option: SINGLE or ALL. Default: ALL.
+     * Set to SINGLE to download certificates from a single IP address the hostname resolves to.
      * Set to ALL to download certificates from all IP addresses the hostname resolves to.
      * Relevant when DNS is configured to resolve given hostname to more than one IP address,
      * and different servers might be configured to use different X.509 certificates.
      */
-    @Parameter(property = "truststore.dnsResolution", defaultValue = "SINGLE")
+    @Parameter(property = "truststore.dnsResolution", defaultValue = "ALL")
     protected DnsResolution dnsResolution;
 
     /**

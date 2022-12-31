@@ -56,8 +56,6 @@
                         <server>dns.google.com:443</server>
                      </servers>
                      <includeCertificates>LEAF</includeCertificates>
-                     <downloadTimeout>0</downloadTimeout>
-                     <dnsResolution>ALL</dnsResolution>
                      <dnsMappings>
                         <dnsMapping>example.com:1.2.3.4</dnsMapping>
                         <dnsMapping>dns.google.com:8.8.4.4</dnsMapping>

@@ -102,30 +102,28 @@ Add this plugin to your **pom.xml**:
             <!-- User property: truststore.trustAllCertificates -->
             <trustAllCertificates>true</trustAllCertificates>
 
-            <!-- IN FUTURE RELEASE -->
             <!-- Relevant only when specifying 'servers' -->
             <!-- Set to false to disable retry on failure when downloading certificates. Default: true -->
             <!-- User property: truststore.retryDownloadOnFailure -->
             <retryDownloadOnFailure>false</retryDownloadOnFailure>
 
-            <!-- IN FUTURE RELEASE -->
             <!-- Relevant only when specifying 'servers' -->
             <!-- Timeout, in milliseconds, when downloading certificates -->
+            <!-- Setting to 0 (zero) means no timeout -->
             <!-- Used as both connect and read timeout -->
-            <!-- Default: 0 (no timeout) -->
+            <!-- Default: 10000 (10s) -->
             <!-- User property: truststore.downloadTimeout -->
-            <downloadTimeout>5000</downloadTimeout>
+            <downloadTimeout>0</downloadTimeout>
 
-            <!-- IN FUTURE RELEASE -->
             <!-- Relevant only when specifying 'servers' -->
-            <!-- DNS resolution options: SINGLE or ALL. Default: SINGLE -->
+            <!-- DNS resolution options: SINGLE or ALL. Default: ALL -->
+            <!-- Set to SINGLE to download certificates from a single IP address the hostname resolves to -->
             <!-- Set to ALL to download certificates from all IP addresses the hostname resolves to -->
             <!-- Relevant when DNS is configured to resolve given hostname to more than one IP address, -->
             <!-- and different servers might be configured to use different X.509 certificates -->
             <!-- User property: truststore.dnsResolution -->
-            <dnsResolution>ALL</dnsResolution>
+            <dnsResolution>SINGLE</dnsResolution>
 
-            <!-- IN FUTURE RELEASE -->
             <!-- Relevant only when specifying 'servers' -->
             <!-- List of custom DNS mappings. Optional -->
             <!-- If provided, and 'servers' include particular hostname, -->

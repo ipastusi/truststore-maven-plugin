@@ -43,7 +43,6 @@
                         <server>www.google.com:443</server>
                      </servers>
                      <includeCertificates>LEAF</includeCertificates>
-                     <dnsResolution>ALL</dnsResolution>
                   </configuration>
                </execution>
             </executions>
