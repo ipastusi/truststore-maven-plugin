@@ -3,10 +3,12 @@ package uk.co.automatictester.truststore.maven.plugin.certificate;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import uk.co.automatictester.truststore.maven.plugin.testutil.ChaosProxyServer;
-import uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules;
+import uk.co.automatictester.jproxy.JProxy;
+import uk.co.automatictester.jproxy.ProxyConfig;
+import uk.co.automatictester.jproxy.ProxyRuleList;
 import uk.co.automatictester.truststore.maven.plugin.testutil.HttpsServer;
 
 import java.net.InetAddress;
@@ -15,13 +17,21 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules.DELAY;
 
 public class SimpleCertificateDownloaderTest {
 
     private final Log log = new DefaultLog(new ConsoleLogger());
-    private HttpsServer server;
     private final int timeout = 1000;
+    private HttpsServer server;
+    private JProxy proxy;
+
+    @AfterClass
+    public void cleanup() throws InterruptedException {
+        if (proxy != null) {
+            proxy.stop();
+            proxy = null;
+        }
+    }
 
     @Test
     public void getTlsServerCertificates() throws UnknownHostException {
@@ -42,9 +52,14 @@ public class SimpleCertificateDownloaderTest {
     public void getTlsServerCertificatesTimeoutTooSmall() throws InterruptedException, UnknownHostException {
         server = new HttpsServer();
         int targetPort = server.port();
-        ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY};
-        ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
-        int proxyPort = proxyServer.start();
+
+        ProxyRuleList rules = new ProxyRuleList().addDelayConnect(2000);
+        ProxyConfig config = ProxyConfig.builder()
+                .targetPort(targetPort)
+                .build();
+        proxy = new JProxy(config, rules);
+
+        int proxyPort = proxy.start();
         int timeoutTooSmall = 1;
 
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");

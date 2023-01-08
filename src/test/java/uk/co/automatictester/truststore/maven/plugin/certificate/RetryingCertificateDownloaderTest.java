@@ -3,9 +3,11 @@ package uk.co.automatictester.truststore.maven.plugin.certificate;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
-import uk.co.automatictester.truststore.maven.plugin.testutil.ChaosProxyServer;
-import uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules;
+import uk.co.automatictester.jproxy.JProxy;
+import uk.co.automatictester.jproxy.ProxyConfig;
+import uk.co.automatictester.jproxy.ProxyRuleList;
 import uk.co.automatictester.truststore.maven.plugin.testutil.HttpsServer;
 
 import java.net.InetAddress;
@@ -14,21 +16,31 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static uk.co.automatictester.truststore.maven.plugin.testutil.ConnectionHandlingRules.*;
 
 public class RetryingCertificateDownloaderTest {
 
     private final Log log = new DefaultLog(new ConsoleLogger());
     private final HttpsServer server = new HttpsServer();
     private final int timeout = 1000;
+    private JProxy proxy;
+
+    @AfterClass
+    public void cleanup() throws InterruptedException {
+        if (proxy != null) {
+            proxy.stop();
+        }
+    }
 
     @Test
     public void getTlsServerCertificatesFirstSucceeded() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
 
-        ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{CONNECT};
-        ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
-        int proxyPort = proxyServer.start();
+        ProxyRuleList rules = new ProxyRuleList().addConnect();
+        ProxyConfig config = ProxyConfig.builder()
+                .targetPort(targetPort)
+                .build();
+        proxy = new JProxy(config, rules);
+        int proxyPort = proxy.start();
 
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
@@ -44,9 +56,12 @@ public class RetryingCertificateDownloaderTest {
     public void getTlsServerCertificatesFirstFailed() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
 
-        ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DISCONNECT, CONNECT};
-        ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
-        int proxyPort = proxyServer.start();
+        ProxyRuleList rules = new ProxyRuleList().addDisconnect().addConnect();
+        ProxyConfig config = ProxyConfig.builder()
+                .targetPort(targetPort)
+                .build();
+        proxy = new JProxy(config, rules);
+        int proxyPort = proxy.start();
 
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
@@ -62,9 +77,12 @@ public class RetryingCertificateDownloaderTest {
     public void getTlsServerCertificatesFirstTimedOut() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
 
-        ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY, CONNECT};
-        ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
-        int proxyPort = proxyServer.start();
+        ProxyRuleList rules = new ProxyRuleList().addDelayConnect(2000).addConnect();
+        ProxyConfig config = ProxyConfig.builder()
+                .targetPort(targetPort)
+                .build();
+        proxy = new JProxy(config, rules);
+        int proxyPort = proxy.start();
 
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
@@ -79,9 +97,13 @@ public class RetryingCertificateDownloaderTest {
     @Test(expectedExceptions = RuntimeException.class)
     public void getTlsServerCertificatesBothFailed() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
-        ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DISCONNECT, DISCONNECT};
-        ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
-        int proxyPort = proxyServer.start();
+
+        ProxyRuleList rules = new ProxyRuleList().addDisconnect();
+        ProxyConfig config = ProxyConfig.builder()
+                .targetPort(targetPort)
+                .build();
+        proxy = new JProxy(config, rules);
+        int proxyPort = proxy.start();
 
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
@@ -94,9 +116,13 @@ public class RetryingCertificateDownloaderTest {
     @Test(expectedExceptions = RuntimeException.class)
     public void getTlsServerCertificatesBothTimedOut() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
-        ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY, DELAY};
-        ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
-        int proxyPort = proxyServer.start();
+
+        ProxyRuleList rules = new ProxyRuleList().addDelayDisconnect(2000);
+        ProxyConfig config = ProxyConfig.builder()
+                .targetPort(targetPort)
+                .build();
+        proxy = new JProxy(config, rules);
+        int proxyPort = proxy.start();
 
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
         System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
@@ -109,9 +135,13 @@ public class RetryingCertificateDownloaderTest {
     @Test
     public void getTlsServerCertificatesTimeoutDisabled() throws InterruptedException, UnknownHostException {
         int targetPort = server.port();
-        ConnectionHandlingRules[] connectionHandlingRules = new ConnectionHandlingRules[]{DELAY, DELAY};
-        ChaosProxyServer proxyServer = new ChaosProxyServer(targetPort, connectionHandlingRules);
-        int proxyPort = proxyServer.start();
+
+        ProxyRuleList rules = new ProxyRuleList().addDelayConnect(2000);
+        ProxyConfig config = ProxyConfig.builder()
+                .targetPort(targetPort)
+                .build();
+        proxy = new JProxy(config, rules);
+        int proxyPort = proxy.start();
         int timeoutDisabled = 0;
 
         System.setProperty("javax.net.ssl.trustStore", "src/test/resources/truststore/wiremock_server_cert.p12");
