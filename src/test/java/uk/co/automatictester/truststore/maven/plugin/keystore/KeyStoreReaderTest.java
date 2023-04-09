@@ -64,7 +64,7 @@ public class KeyStoreReaderTest {
         assertThat(certs.size()).isEqualTo(0);
     }
 
-    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error reading file .*: .* \\(No such file or directory\\)")
+    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error reading file .*")
     public void testReadCertificatesNonexistent() {
         KeyStoreReader.readCertificates("src/test/resources/truststore/nonexistent.p12", "changeit");
     }

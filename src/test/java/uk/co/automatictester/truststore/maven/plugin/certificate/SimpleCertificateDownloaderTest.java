@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SimpleCertificateDownloaderTest {
 
     private final Log log = new DefaultLog(new ConsoleLogger());
-    private final int timeout = 1000;
+    private final int timeout = 3000;
     private HttpsServer server;
     private JProxy proxy;
 

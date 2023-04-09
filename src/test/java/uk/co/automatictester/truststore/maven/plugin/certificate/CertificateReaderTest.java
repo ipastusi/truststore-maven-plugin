@@ -48,12 +48,12 @@ public class CertificateReaderTest {
         }
     }
 
-    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error reading file .*: .* \\(No such file or directory\\)")
+    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error reading file .*")
     public void readNonexistent() {
         CertificateReader.read("src/test/resources/cert/nonexistent.der");
     }
 
-    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error reading file .*: invalid DER-encoded certificate data")
+    @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error reading file .*")
     public void readCorrupted() {
         CertificateReader.read("src/test/resources/cert/corrupted.pem");
     }

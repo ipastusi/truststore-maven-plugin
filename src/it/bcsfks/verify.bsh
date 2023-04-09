@@ -15,3 +15,30 @@ boolean contentFound = buildLogContent.containsAll(expectedBuildLogContent);
 if (!contentFound) {
     throw new RuntimeException("Content not found!");
 }
+
+// keytool asserts
+
+File targetDir = new File(basedir, "target");
+String targetDirAbsolutePath = targetDir.getAbsolutePath();
+
+List expectedKeytoolOutput = new ArrayList();
+expectedKeytoolOutput.add("Keystore type: BCFKS");
+expectedKeytoolOutput.add("Your keystore contains 7 entries");
+expectedKeytoolOutput.add("06:7f:94:4a:2a:27:cd:f3:fa:c2:ae:2b:01:f9:08:ee:b9:c4:c6");
+expectedKeytoolOutput.add("06:7f:94:57:85:87:e8:ac:77:de:b2:53:32:5b:bc:99:8b:56:0d");
+expectedKeytoolOutput.add("08:13:34:34:48:07:64:27:4d:bc:cb:14:4d:af:f2:11");
+expectedKeytoolOutput.add("a7:0e:4a:4c:34:82:b7:7f");
+expectedKeytoolOutput.add("04:e1:e7:a4:dc:5c:f2:f3:6d:c0:2b:42:b8:5d:15:9f");
+expectedKeytoolOutput.add("05:57:c8:0b:28:26:83:a1:7b:0a:11:44:93:29:6b:79");
+
+String command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore.bcsfks -storetype bcfks -storepass topsecret -providerpath " + targetDirAbsolutePath + "/../../../../bin/bcprov-jdk18on-1.72.jar -provider org.bouncycastle.jce.provider.BouncyCastleProvider";
+
+Scanner scanner = new Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
+String keytoolOutput = scanner.hasNext() ? scanner.next() : "";
+for (String expectedOutput : expectedKeytoolOutput) {
+    if (keytoolOutput.toLowerCase().contains(expectedOutput.toLowerCase())) {
+        System.out.println("Expected output '" + expectedOutput + "' found");
+    } else {
+        throw new RuntimeException("Expected output '" + expectedOutput + "' not found");
+    }
+}

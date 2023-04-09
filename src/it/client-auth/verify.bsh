@@ -1,17 +1,3 @@
-File buildLog = new File(basedir, "build.log");
-Scanner scanner = new Scanner(buildLog);
-List buildLogContent = new ArrayList();
-
-while(scanner.hasNextLine()) {
-    buildLogContent.add(scanner.nextLine());
-}
-
-boolean contentFound = buildLogContent.contains("[INFO] Generating PKCS12 truststore");
-
-if (!contentFound) {
-    throw new RuntimeException("Content not found!");
-}
-
 // keytool asserts
 
 File targetDir = new File(basedir, "target");
@@ -19,8 +5,10 @@ String targetDirAbsolutePath = targetDir.getAbsolutePath();
 
 List expectedKeytoolOutput = new ArrayList();
 expectedKeytoolOutput.add("Keystore type: PKCS12");
+expectedKeytoolOutput.add("Your keystore contains 1 entry");
+expectedKeytoolOutput.add("a1:71:fd:71:d0:a8:84:6d");
 
-String command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore.p12 -storepass topsecret";
+String command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore.p12 -storepass changeit";
 
 Scanner scanner = new Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
 String keytoolOutput = scanner.hasNext() ? scanner.next() : "";

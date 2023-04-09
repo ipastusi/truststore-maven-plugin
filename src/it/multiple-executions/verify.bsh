@@ -1,0 +1,40 @@
+// keytool asserts - 1
+
+File targetDir = new File(basedir, "target");
+String targetDirAbsolutePath = targetDir.getAbsolutePath();
+
+List expectedKeytoolOutput = new ArrayList();
+expectedKeytoolOutput.add("Keystore type: PKCS12");
+expectedKeytoolOutput.add("Your keystore contains 2 entries");
+expectedKeytoolOutput.add("89:3c:56:46:8f:7b:4c:24:f8:03:17:d2:70:05:6a:5b");
+
+String command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore-1.p12 -storepass changeit";
+
+Scanner scanner = new Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
+String keytoolOutput = scanner.hasNext() ? scanner.next() : "";
+for (String expectedOutput : expectedKeytoolOutput) {
+    if (keytoolOutput.toLowerCase().contains(expectedOutput.toLowerCase())) {
+        System.out.println("Expected output '" + expectedOutput + "' found");
+    } else {
+        throw new RuntimeException("Expected output '" + expectedOutput + "' not found");
+    }
+}
+
+// keytool asserts - 2
+
+expectedKeytoolOutput.clear();
+expectedKeytoolOutput.add("Keystore type: JKS");
+expectedKeytoolOutput.add("Your keystore contains 2 entries");
+expectedKeytoolOutput.add("7d:5b:51:26:b4:76:ba:11:db:74:16:0b:bc:53:0d:a7");
+
+command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore-2.jks -storepass topsecret";
+
+scanner = new Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
+keytoolOutput = scanner.hasNext() ? scanner.next() : "";
+for (String expectedOutput : expectedKeytoolOutput) {
+    if (keytoolOutput.toLowerCase().contains(expectedOutput.toLowerCase())) {
+        System.out.println("Expected output '" + expectedOutput + "' found");
+    } else {
+        throw new RuntimeException("Expected output '" + expectedOutput + "' not found\n" + keytoolOutput);
+    }
+}

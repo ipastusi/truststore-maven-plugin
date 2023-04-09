@@ -11,3 +11,24 @@ boolean contentFound = buildLogContent.contains("[INFO] Generating JKS truststor
 if (!contentFound) {
     throw new RuntimeException("Content not found!");
 }
+
+// keytool asserts
+
+File targetDir = new File(basedir, "target");
+String targetDirAbsolutePath = targetDir.getAbsolutePath();
+
+List expectedKeytoolOutput = new ArrayList();
+expectedKeytoolOutput.add("Keystore type: JKS");
+expectedKeytoolOutput.add("Your keystore contains 2 entries");
+
+String command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore.jks -storepass topsecret";
+
+Scanner scanner = new Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
+String keytoolOutput = scanner.hasNext() ? scanner.next() : "";
+for (String expectedOutput : expectedKeytoolOutput) {
+    if (keytoolOutput.toLowerCase().contains(expectedOutput.toLowerCase())) {
+        System.out.println("Expected output '" + expectedOutput + "' found");
+    } else {
+        throw new RuntimeException("Expected output '" + expectedOutput + "' not found");
+    }
+}

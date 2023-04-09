@@ -65,40 +65,6 @@
             </executions>
          </plugin>
 
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>3.0.0</version>
-            <executions>
-               <execution>
-                  <id>keytool-check-1</id>
-                  <phase>integration-test</phase>
-                  <configuration>
-                     <executable>bash</executable>
-                     <arguments>
-                        <argument>bin/keytool_asserts_1.sh</argument>
-                     </arguments>
-                  </configuration>
-                  <goals>
-                     <goal>exec</goal>
-                  </goals>
-               </execution>
-               <execution>
-                  <id>keytool-check-2</id>
-                  <phase>integration-test</phase>
-                  <configuration>
-                     <executable>bash</executable>
-                     <arguments>
-                        <argument>bin/keytool_asserts_2.sh</argument>
-                     </arguments>
-                  </configuration>
-                  <goals>
-                     <goal>exec</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
-
       </plugins>
    </build>
 </project>
