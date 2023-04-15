@@ -40,6 +40,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
       <slf4j.version>2.0.6</slf4j.version>
+      <bc.version>1.72</bc.version>
    </properties>
 
    <build>
@@ -88,7 +89,7 @@
                <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                <settingsFile>src/it/settings.xml</settingsFile>
                <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
-               <postBuildHookScript>verify.bsh</postBuildHookScript>
+               <postBuildHookScript>verify</postBuildHookScript>
                <streamLogs>true</streamLogs>
             </configuration>
             <executions>
@@ -225,7 +226,8 @@
       <dependency>
          <groupId>org.bouncycastle</groupId>
          <artifactId>bcpkix-jdk18on</artifactId>
-         <version>1.72</version>
+         <version>${bc.version}</version>
+         <scope>provided</scope>
       </dependency>
       <dependency>
          <groupId>org.apache.maven</groupId>

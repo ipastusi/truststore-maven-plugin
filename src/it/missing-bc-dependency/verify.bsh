@@ -1,0 +1,20 @@
+File buildLog = new File(basedir, "build.log");
+Scanner scanner = new Scanner(buildLog);
+List buildLogContent = new ArrayList();
+
+while(scanner.hasNextLine()) {
+    buildLogContent.add(scanner.nextLine());
+}
+
+boolean contentFound = false;
+
+for (String entry : buildLogContent) {
+    if (entry.contains("A required class was missing") &&
+        entry.contains("org/bouncycastle/jce/provider/BouncyCastleProvider")) {
+        contentFound = true;
+    }
+}
+
+if (!contentFound) {
+    throw new RuntimeException("Content not found!");
+}

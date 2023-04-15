@@ -6,7 +6,7 @@
    <groupId>uk.co.automatictester</groupId>
    <artifactId>truststore-maven-plugin-it</artifactId>
    <version>1.0.0-SNAPSHOT</version>
-   <description>UBER integration test</description>
+   <description>BKS integration test</description>
    <modelVersion>4.0.0</modelVersion>
 
    <properties>
@@ -21,13 +21,6 @@
             <groupId>@project.groupId@</groupId>
             <artifactId>@project.artifactId@</artifactId>
             <version>@project.version@</version>
-            <dependencies>
-               <dependency>
-                  <groupId>org.bouncycastle</groupId>
-                  <artifactId>bcpkix-jdk18on</artifactId>
-                  <version>1.72</version>
-               </dependency>
-            </dependencies>
             <executions>
                <execution>
                   <goals>
@@ -35,22 +28,10 @@
                   </goals>
                   <phase>pre-integration-test</phase>
                   <configuration>
-                     <truststoreFormat>UBER</truststoreFormat>
-                     <truststoreFile>target/truststore.uber</truststoreFile>
+                     <truststoreFormat>BKS</truststoreFormat>
+                     <truststoreFile>target/truststore.bks</truststoreFile>
                      <truststorePassword>topsecret</truststorePassword>
-                     <truststores>
-                        <truststore>
-                           <file>truststores/aws_amazon_com.p12</file>
-                           <password>changeit</password>
-                        </truststore>
-                        <truststore>
-                           <file>truststores/www_github_com.uber</file>
-                           <password>topsecret</password>
-                        </truststore>
-                     </truststores>
                      <servers>
-                        <!-- duplicated cert check -->
-                        <server>www.akamai.com:443</server>
                         <server>www.akamai.com:443</server>
                      </servers>
                      <includeCertificates>LEAF</includeCertificates>

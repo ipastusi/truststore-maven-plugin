@@ -2,7 +2,7 @@ package uk.co.automatictester.truststore.maven.plugin.keystore;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import uk.co.automatictester.truststore.maven.plugin.bc.BouncyCastleKeyStore;
 import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreFormat;
 
 import java.security.KeyStore;
@@ -16,7 +16,7 @@ public class KeyStoreFactory {
             case BKS:
             case UBER:
             case BCFKS:
-                return KeyStore.getInstance(format.toString(), new BouncyCastleProvider());
+                return BouncyCastleKeyStore.getInstance(format.toString());
             case JKS:
             case JCEKS:
             case PKCS12:

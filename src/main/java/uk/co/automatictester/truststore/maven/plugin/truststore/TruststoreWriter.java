@@ -3,6 +3,7 @@ package uk.co.automatictester.truststore.maven.plugin.truststore;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.maven.plugin.logging.Log;
+import uk.co.automatictester.truststore.maven.plugin.bc.BouncyCastleKeyStoreLoader;
 import uk.co.automatictester.truststore.maven.plugin.certificate.CertificateInspector;
 import uk.co.automatictester.truststore.maven.plugin.keystore.KeyStoreFactory;
 import uk.co.automatictester.truststore.maven.plugin.mojo.CustomScryptConfig;
@@ -69,7 +70,7 @@ public class TruststoreWriter {
         if (keyStore.getType().equals(TruststoreFormat.BCFKS.toString()) && scryptConfig != null) {
             log.info("Generating " + format + " truststore with custom Scrypt parameters:");
             log.info(scryptConfig.toString());
-            return KeyStoreLoader.load(keyStore, scryptConfig);
+            return BouncyCastleKeyStoreLoader.load(keyStore, scryptConfig);
         } else {
             log.info("Generating " + format + " truststore");
             return KeyStoreLoader.load(keyStore);

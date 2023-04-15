@@ -21,6 +21,13 @@
             <groupId>@project.groupId@</groupId>
             <artifactId>@project.artifactId@</artifactId>
             <version>@project.version@</version>
+            <dependencies>
+               <dependency>
+                  <groupId>org.bouncycastle</groupId>
+                  <artifactId>bcpkix-jdk18on</artifactId>
+                  <version>1.72</version>
+               </dependency>
+            </dependencies>
             <executions>
                <execution>
                   <goals>

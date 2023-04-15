@@ -20,14 +20,14 @@ public class KeyStoreReader {
 
     public static KeyStore readKeyStore(String file, String password) {
         KeyStoreHandler jksKeyStoreHandler = new JksKeyStoreHandler();
-        KeyStoreHandler bcfskHandler = new BcfksKeyStoreHandler();
         KeyStoreHandler jceksKeyStoreHandler = new JceksKeyStoreHandler();
+        KeyStoreHandler bcfskHandler = new BcfksKeyStoreHandler();
         KeyStoreHandler uberKeyStoreHandler = new UberKeyStoreHandler();
         KeyStoreHandler bksKeyStoreHandler = new BksKeyStoreHandler();
 
-        jksKeyStoreHandler.setNextHandler(bcfskHandler);
-        bcfskHandler.setNextHandler(jceksKeyStoreHandler);
-        jceksKeyStoreHandler.setNextHandler(uberKeyStoreHandler);
+        jksKeyStoreHandler.setNextHandler(jceksKeyStoreHandler);
+        jceksKeyStoreHandler.setNextHandler(bcfskHandler);
+        bcfskHandler.setNextHandler(uberKeyStoreHandler);
         uberKeyStoreHandler.setNextHandler(bksKeyStoreHandler);
 
         return jksKeyStoreHandler.handleRequest(file, password);

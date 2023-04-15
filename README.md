@@ -41,6 +41,16 @@ Add this plugin to your **pom.xml**:
    <groupId>uk.co.automatictester</groupId>
    <artifactId>truststore-maven-plugin</artifactId>
    <version><!-- see above badge for most recent version number --></version>
+  
+   <!-- define BouncyCastle dependency if you need to work with BCFKS, BKS or UBER truststore formats -->
+   <dependencies>
+      <dependency>
+         <groupId>org.bouncycastle</groupId>
+         <artifactId>bcpkix-jdk18on</artifactId>
+         <version><!-- specify BouncyCastle version to use --></version>
+      </dependency>
+   </dependencies>
+  
    <executions>
       <execution>
          <goals>
