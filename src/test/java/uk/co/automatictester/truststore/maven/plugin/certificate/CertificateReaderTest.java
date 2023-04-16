@@ -48,6 +48,25 @@ public class CertificateReaderTest {
         }
     }
 
+    @Test
+    public void readCertChainPkcs7() {
+        List<X509Certificate> certs = CertificateReader.read("src/test/resources/cert/www-google-com-chain.p7b");
+        assertThat(certs.size()).isEqualTo(3);
+
+        List<SimpleEntry<Integer, String>> expectedCerts = new ArrayList<SimpleEntry<Integer, String>>() {{
+            add(new SimpleEntry<>(0, "22730745842063135219043124570350083121"));
+            add(new SimpleEntry<>(1, "149699596615803609916394524856"));
+            add(new SimpleEntry<>(2, "4835703278459682885658125"));
+        }};
+
+        for (int i = 0; i < expectedCerts.size(); i++) {
+            X509Certificate cert = certs.get(i);
+            String actualSerialNumber = cert.getSerialNumber().toString();
+            String expectedSerialNumber = expectedCerts.get(i).getValue();
+            assertThat(actualSerialNumber).isEqualTo(expectedSerialNumber);
+        }
+    }
+
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error reading file .*")
     public void readNonexistent() {
         CertificateReader.read("src/test/resources/cert/nonexistent.der");

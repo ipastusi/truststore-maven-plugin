@@ -1,0 +1,37 @@
+File buildLog = new File(basedir, "build.log");
+Scanner scanner = new Scanner(buildLog);
+List buildLogContent = new ArrayList();
+
+while(scanner.hasNextLine()) {
+    buildLogContent.add(scanner.nextLine());
+}
+
+boolean contentFound = buildLogContent.contains("[INFO] Generating PKCS12 truststore");
+
+if (!contentFound) {
+    throw new RuntimeException("Content not found!");
+}
+
+// keytool asserts
+
+File targetDir = new File(basedir, "target");
+String targetDirAbsolutePath = targetDir.getAbsolutePath();
+
+List expectedKeytoolOutput = new ArrayList();
+expectedKeytoolOutput.add("Keystore type: PKCS12");
+expectedKeytoolOutput.add("Your keystore contains 3 entries");
+expectedKeytoolOutput.add("01:e3:b4:9a:a1:8d:8a:a9:81:25:69:50:b8");
+expectedKeytoolOutput.add("04:00:00:00:00:01:0f:86:26:e6:0d");
+expectedKeytoolOutput.add("11:19:c8:4b:dc:70:f8:97:03:00:00:00:00:ba:dc:31");
+
+String command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore.p12 -storepass changeit";
+
+Scanner scanner = new Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
+String keytoolOutput = scanner.hasNext() ? scanner.next() : "";
+for (String expectedOutput : expectedKeytoolOutput) {
+    if (keytoolOutput.toLowerCase().contains(expectedOutput.toLowerCase())) {
+        System.out.println("Expected output '" + expectedOutput + "' found");
+    } else {
+        throw new RuntimeException("Expected output '" + expectedOutput + "' not found");
+    }
+}

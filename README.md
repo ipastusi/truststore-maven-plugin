@@ -11,7 +11,7 @@ Maven plugin generating truststores in multiple formats.
 Truststore can be generated from:
 
 - X.509 certificates sent by servers during TLS handshakes (including, but not limited to, HTTPS servers),
-- or X.509 certificates stored on disk - both PEM and DER formats are supported,
+- or X.509 certificates stored on disk - PEM, DER and PKCS7 formats are supported,
 - or X.509 certificates extracted from existing truststores stored on disk - truststores in BCFKS, BKS, JCEKS, JKS,
   PKCS12 and UBER formats are supported,
 - or any combination of the above.
@@ -79,6 +79,7 @@ Add this plugin to your **pom.xml**:
             <certificates>
                <certificate>certs/cert-to-add.pem</certificate>
                <certificate>certs/cert-to-add.der</certificate>
+               <certificate>certs/cert-to-add.p7b</certificate>
             </certificates>
 
             <!-- List of files with source truststores to use. Optional -->
