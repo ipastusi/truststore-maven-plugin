@@ -4,6 +4,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import uk.co.automatictester.truststore.maven.plugin.bc.BouncyCastleKeyStore;
 import uk.co.automatictester.truststore.maven.plugin.certificate.*;
 import uk.co.automatictester.truststore.maven.plugin.dns.DnsResolver;
 import uk.co.automatictester.truststore.maven.plugin.dns.DnsResolverFactory;
@@ -14,9 +15,7 @@ import uk.co.automatictester.truststore.maven.plugin.truststore.TruststoreWriter
 
 import java.net.InetAddress;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Mojo(name = "generate-truststore", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
 public class TruststoreMojo extends ConfigurationMojo {
@@ -42,6 +41,7 @@ public class TruststoreMojo extends ConfigurationMojo {
     private void validateConfig() {
         validateDownloadTimeout();
         validateScryptConfig();
+        validateProviderDependency();
     }
 
     private void validateDownloadTimeout() {
@@ -53,6 +53,17 @@ public class TruststoreMojo extends ConfigurationMojo {
     private void validateScryptConfig() {
         if (scryptConfig != null) {
             scryptConfig.validate();
+        }
+    }
+
+    private void validateProviderDependency() {
+        Set<TruststoreFormat> bouncycastleFormats = new HashSet<TruststoreFormat>() {{
+            add(TruststoreFormat.BKS);
+            add(TruststoreFormat.BCFKS);
+            add(TruststoreFormat.UBER);
+        }};
+        if (bouncycastleFormats.contains(truststoreFormat)) {
+            BouncyCastleKeyStore.getProvider();
         }
     }
 
