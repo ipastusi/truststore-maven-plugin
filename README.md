@@ -42,7 +42,7 @@ Add this plugin to your **pom.xml**:
    <artifactId>truststore-maven-plugin</artifactId>
    <version><!-- see above badge for most recent version number --></version>
   
-   <!-- define BouncyCastle dependency if you need to work with BCFKS, BKS or UBER truststore formats -->
+   <!-- add BouncyCastle dependency if you need to work with BCFKS, BKS or UBER truststore formats -->
    <dependencies>
       <dependency>
          <groupId>org.bouncycastle</groupId>
