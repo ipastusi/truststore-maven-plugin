@@ -20,14 +20,6 @@ jobs:
             os: ubuntu-latest
             java: 17
             maven_opts: --add-opens=java.base/java.lang=ALL-UNNAMED
-          - name: windows-java8
-            os: windows-latest
-            java: 8
-            maven_opts: ""
-          - name: windows-java11
-            os: windows-latest
-            java: 11
-            maven_opts: --add-opens=java.base/java.lang=ALL-UNNAMED
           - name: windows-java17
             os: windows-latest
             java: 17
