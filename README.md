@@ -221,4 +221,5 @@ costParameter=4096,blockSize=16,parallelizationParameter=2,saltLength=20
 
 ## Supported Java versions
 
-Truststore Maven Plugin is tested against Java LTS versions 11 and 17.
+Truststore Maven Plugin 6.0.0 and later is tested against Java LTS versions 11 and 17.
+Truststore Maven Plugin before 6.0.0 was tested against Java LTS versions 8, 11 and 17.
