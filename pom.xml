@@ -10,7 +10,7 @@
    <packaging>maven-plugin</packaging>
    <name>Truststore Maven Plugin</name>
    <description>Maven plugin generating truststores in multiple formats</description>
-   <url>https://github.com/automatictester/truststore-maven-plugin</url>
+   <url>https://github.com/ipastusi/truststore-maven-plugin</url>
    <inceptionYear>2020</inceptionYear>
 
    <licenses>
@@ -25,14 +25,14 @@
       <developer>
          <name>Ireneusz Pastusiak</name>
          <email>ireneusz.pastusiak@gmail.com</email>
-         <organizationUrl>https://github.com/automatictester</organizationUrl>
+         <organizationUrl>https://github.com/ipastusi</organizationUrl>
       </developer>
    </developers>
 
    <scm>
-      <connection>scm:git:git@github.com:automatictester/truststore-maven-plugin.git</connection>
-      <developerConnection>scm:git:git@github.com:automatictester/truststore-maven-plugin.git</developerConnection>
-      <url>git@github.com:automatictester/truststore-maven-plugin.git</url>
+      <connection>scm:git:git@github.com:ipastusi/truststore-maven-plugin.git</connection>
+      <developerConnection>scm:git:git@github.com:ipastusi/truststore-maven-plugin.git</developerConnection>
+      <url>git@github.com:ipastusi/truststore-maven-plugin.git</url>
       <tag>HEAD</tag>
    </scm>
 
