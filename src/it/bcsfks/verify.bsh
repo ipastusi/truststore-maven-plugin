@@ -31,7 +31,7 @@ expectedKeytoolOutput.add("a7:0e:4a:4c:34:82:b7:7f");
 expectedKeytoolOutput.add("04:e1:e7:a4:dc:5c:f2:f3:6d:c0:2b:42:b8:5d:15:9f");
 expectedKeytoolOutput.add("05:57:c8:0b:28:26:83:a1:7b:0a:11:44:93:29:6b:79");
 
-String command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore.bcsfks -storetype bcfks -storepass topsecret -providerpath " + targetDirAbsolutePath + "/../../../../bin/bcprov-jdk18on-1.72.jar -provider org.bouncycastle.jce.provider.BouncyCastleProvider";
+String command = "keytool -list -keystore " + targetDirAbsolutePath + "/truststore.bcsfks -storetype bcfks -storepass topsecret -providerpath " + targetDirAbsolutePath + "/../../../../bin/bcprov-jdk18on-1.77.jar -provider org.bouncycastle.jce.provider.BouncyCastleProvider";
 
 Scanner scanner = new Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
 String keytoolOutput = scanner.hasNext() ? scanner.next() : "";
