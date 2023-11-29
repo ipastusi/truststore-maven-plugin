@@ -1,8 +1,8 @@
 # Truststore Maven Plugin
 
-[![Central status](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/uk.co.automatictester/truststore-maven-plugin)
-[![Java](https://github.com/automatictester/truststore-maven-plugin/actions/workflows/maven.yml/badge.svg)](https://github.com/automatictester/truststore-maven-plugin/actions/workflows/maven.yml)
-[![CodeQL](https://github.com/automatictester/truststore-maven-plugin/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/automatictester/truststore-maven-plugin/actions/workflows/codeql-analysis.yml)
+[![Central status](https://maven-badges.herokuapp.com/maven-central/io.buildlogic/truststore-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.buildlogic/truststore-maven-plugin)
+[![Java](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/maven.yml/badge.svg)](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/codeql-analysis.yml)
 
 Maven plugin generating truststores in multiple formats.
 
@@ -38,7 +38,7 @@ Add this plugin to your **pom.xml**:
 ```xml
 
 <plugin>
-   <groupId>uk.co.automatictester</groupId>
+   <groupId>io.buildlogic</groupId>
    <artifactId>truststore-maven-plugin</artifactId>
    <version><!-- see above badge for most recent version number --></version>
   
