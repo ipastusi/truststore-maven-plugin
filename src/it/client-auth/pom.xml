@@ -28,9 +28,9 @@
          </plugin>
 
          <plugin>
-            <groupId>uk.co.automatictester</groupId>
+            <groupId>io.buildlogic</groupId>
             <artifactId>wiremock-maven-plugin</artifactId>
-            <version>7.3.0</version>
+            <version>8.0.0</version>
             <executions>
                <execution>
                   <goals>
