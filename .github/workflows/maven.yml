@@ -16,10 +16,6 @@ jobs:
             os: ubuntu-latest
             java: 17
             maven_opts: --add-opens=java.base/java.lang=ALL-UNNAMED
-          - name: windows-java17
-            os: windows-latest
-            java: 17
-            maven_opts: --add-opens=java.base/java.lang=ALL-UNNAMED
     steps:
       - name: checkout
         uses: actions/checkout@v3

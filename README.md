@@ -221,4 +221,4 @@ costParameter=4096,blockSize=16,parallelizationParameter=2,saltLength=20
 
 ## Supported Java versions
 
-WireMock Maven Plugin is tested against Java LTS versions 11 and 17.
+Truststore Maven Plugin is tested against Java LTS versions 11 and 17.
