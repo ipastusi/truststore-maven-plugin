@@ -40,7 +40,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
       <slf4j.version>2.0.9</slf4j.version>
-      <bc.version>1.77</bc.version>
+      <bc.version>1.78</bc.version>
    </properties>
 
    <build>
