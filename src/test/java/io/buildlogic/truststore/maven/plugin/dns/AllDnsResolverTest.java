@@ -22,13 +22,13 @@ public class AllDnsResolverTest {
     @Test
     public void testResolveSingle() {
         DnsResolver resolver = new AllDnsResolver(null);
-        List<InetAddress> addresses = resolver.resolve("akamai.com");
+        List<InetAddress> addresses = resolver.resolve("cisco.com");
         assertThat(addresses.size()).isEqualTo(1);
     }
 
     @Test
     public void testResolveCustom() throws UnknownHostException {
-        Map<String, String> mapping = new HashMap<String, String>() {{
+        Map<String, String> mapping = new HashMap<>() {{
             put("dns.google.com", "8.8.8.8");
         }};
         byte[] ip = new byte[]{8, 8, 8, 8};
@@ -40,12 +40,12 @@ public class AllDnsResolverTest {
 
     @Test
     public void testResolveCustomUndefined() {
-        Map<String, String> mapping = new HashMap<String, String>() {{
+        Map<String, String> mapping = new HashMap<>() {{
             put("google.com", "142.250.148.104");
         }};
         byte[] ip = new byte[]{(byte) 142, (byte) 250, (byte) 148, (byte) 104};
         DnsResolver resolver = new AllDnsResolver(mapping);
-        List<InetAddress> addresses = resolver.resolve("akamai.com");
+        List<InetAddress> addresses = resolver.resolve("cisco.com");
         assertThat(addresses.size()).isEqualTo(1);
         assertThat(addresses.get(0).getAddress()).isNotEqualTo(ip);
     }
