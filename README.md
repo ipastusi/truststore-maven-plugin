@@ -36,138 +36,137 @@ Total of 1 certificates saved to target/truststore.p12
 Add this plugin to your **pom.xml**:
 
 ```xml
-
 <plugin>
-   <groupId>io.buildlogic</groupId>
-   <artifactId>truststore-maven-plugin</artifactId>
-   <version><!-- see above badge for most recent version number --></version>
-  
-   <!-- add BouncyCastle dependency if you need to work with BCFKS, BKS or UBER truststore formats -->
-   <dependencies>
-      <dependency>
-         <groupId>org.bouncycastle</groupId>
-         <artifactId>bcpkix-jdk18on</artifactId>
-         <version><!-- specify BouncyCastle version to use --></version>
-      </dependency>
-   </dependencies>
-  
-   <executions>
-      <execution>
-         <goals>
-            <goal>generate-truststore</goal>
-         </goals>
+    <groupId>io.buildlogic</groupId>
+    <artifactId>truststore-maven-plugin</artifactId>
+    <version><!-- see above badge for most recent version number --></version>
 
-         <!-- Maven lifecycle phase when this plugin should run -->
-         <phase>pre-integration-test</phase>
+    <!-- add BouncyCastle dependency if you need to work with BCFKS, BKS or UBER truststore formats -->
+    <dependencies>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version><!-- specify BouncyCastle version to use --></version>
+        </dependency>
+    </dependencies>
 
-         <configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>generate-truststore</goal>
+            </goals>
 
-            <!-- Output truststore format: BCFKS, BKS, JCEKS, JKS, PKCS12 and UBER. Default: PKCS12 -->
-            <!-- User property: truststore.format -->
-            <truststoreFormat>PKCS12</truststoreFormat>
+            <!-- Maven lifecycle phase when this plugin should run -->
+            <phase>pre-integration-test</phase>
 
-            <!-- Truststore filename. Required -->
-            <!-- User property: truststore.file -->
-            <truststoreFile>target/truststore.p12</truststoreFile>
+            <configuration>
 
-            <!-- Password for created truststore. Default: changeit -->
-            <!-- User property: truststore.password -->
-            <truststorePassword>changeit</truststorePassword>
+                <!-- Output truststore format: BCFKS, BKS, JCEKS, JKS, PKCS12 and UBER. Default: PKCS12 -->
+                <!-- User property: truststore.format -->
+                <truststoreFormat>PKCS12</truststoreFormat>
 
-            <!-- List of files with certificates to use. Optional -->
-            <!-- User property: truststore.certificates -->
-            <certificates>
-               <certificate>certs/cert-to-add.pem</certificate>
-               <certificate>certs/cert-to-add.der</certificate>
-               <certificate>certs/cert-to-add.p7b</certificate>
-            </certificates>
+                <!-- Truststore filename. Required -->
+                <!-- User property: truststore.file -->
+                <truststoreFile>target/truststore.p12</truststoreFile>
 
-            <!-- List of files with source truststores to use. Optional -->
-            <!-- User property: truststore.truststores -->
-            <truststores>
-               <truststore>
-                  <file>truststores/truststore-1.p12</file>
-                  <password>changeit</password>
-               </truststore>
-               <truststore>
-                  <file>truststores/truststore-2.jks</file>
-                  <password>topsecret</password>
-               </truststore>
-            </truststores>
+                <!-- Password for created truststore. Default: changeit -->
+                <!-- User property: truststore.password -->
+                <truststorePassword>changeit</truststorePassword>
 
-            <!-- Set to true to load certificates from the default truststore in either -->
-            <!-- <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts -->
-            <!-- (in this order). Default: false. -->
-            <!-- User property: truststore.includeDefaultTruststore -->
-            <includeDefaultTruststore>true</includeDefaultTruststore>
+                <!-- List of files with certificates to use. Optional -->
+                <!-- User property: truststore.certificates -->
+                <certificates>
+                    <certificate>certs/cert-to-add.pem</certificate>
+                    <certificate>certs/cert-to-add.der</certificate>
+                    <certificate>certs/cert-to-add.p7b</certificate>
+                </certificates>
 
-            <!-- List of TLS servers to download the certificates from. Optional -->
-            <!-- User property: truststore.servers -->
-            <servers>
-               <server>www.example.com:443</server>
-               <server>www.another.com:443</server>
-            </servers>
+                <!-- List of files with source truststores to use. Optional -->
+                <!-- User property: truststore.truststores -->
+                <truststores>
+                    <truststore>
+                        <file>truststores/truststore-1.p12</file>
+                        <password>changeit</password>
+                    </truststore>
+                    <truststore>
+                        <file>truststores/truststore-2.jks</file>
+                        <password>topsecret</password>
+                    </truststore>
+                </truststores>
 
-            <!-- Relevant only when specifying 'servers' -->
-            <!-- Set to true to trust server certificate when downloading certificates. Default: false -->
-            <!-- User property: truststore.trustAllCertificates -->
-            <trustAllCertificates>true</trustAllCertificates>
+                <!-- Set to true to load certificates from the default truststore in either -->
+                <!-- <java.home>/lib/security/jssecacerts or <java.home>/lib/security/cacerts -->
+                <!-- (in this order). Default: false. -->
+                <!-- User property: truststore.includeDefaultTruststore -->
+                <includeDefaultTruststore>true</includeDefaultTruststore>
 
-            <!-- Relevant only when specifying 'servers' -->
-            <!-- Set to false to disable retry on failure when downloading certificates. Default: true -->
-            <!-- User property: truststore.retryDownloadOnFailure -->
-            <retryDownloadOnFailure>false</retryDownloadOnFailure>
+                <!-- List of TLS servers to download the certificates from. Optional -->
+                <!-- User property: truststore.servers -->
+                <servers>
+                    <server>www.example.com:443</server>
+                    <server>www.another.com:443</server>
+                </servers>
 
-            <!-- Relevant only when specifying 'servers' -->
-            <!-- Timeout, in milliseconds, when downloading certificates -->
-            <!-- Setting to 0 (zero) means no timeout -->
-            <!-- Used as both connect and read timeout -->
-            <!-- Default: 10000 (10s) -->
-            <!-- User property: truststore.downloadTimeout -->
-            <downloadTimeout>0</downloadTimeout>
+                <!-- Relevant only when specifying 'servers' -->
+                <!-- Set to true to trust server certificate when downloading certificates. Default: false -->
+                <!-- User property: truststore.trustAllCertificates -->
+                <trustAllCertificates>true</trustAllCertificates>
 
-            <!-- Relevant only when specifying 'servers' -->
-            <!-- DNS resolution options: SINGLE or ALL. Default: ALL -->
-            <!-- Set to SINGLE to download certificates from a single IP address the hostname resolves to -->
-            <!-- Set to ALL to download certificates from all IP addresses the hostname resolves to -->
-            <!-- Relevant when DNS is configured to resolve given hostname to more than one IP address, -->
-            <!-- and different servers might be configured to use different X.509 certificates -->
-            <!-- User property: truststore.dnsResolution -->
-            <dnsResolution>SINGLE</dnsResolution>
+                <!-- Relevant only when specifying 'servers' -->
+                <!-- Set to false to disable retry on failure when downloading certificates. Default: true -->
+                <!-- User property: truststore.retryDownloadOnFailure -->
+                <retryDownloadOnFailure>false</retryDownloadOnFailure>
 
-            <!-- Relevant only when specifying 'servers' -->
-            <!-- List of custom DNS mappings. Optional -->
-            <!-- If provided, and 'servers' include particular hostname, -->
-            <!-- specified IP will be used instead of default DNS resolution -->
-            <!-- Otherwise DNS resolution strategy specified by 'dnsResolution' will be used -->
-            <!-- User property: truststore.dnsMappings -->
-            <dnsMappings>
-               <dnsMapping>example.com:1.2.3.4</dnsMapping>
-               <dnsMapping>another.com:2.3.4.5</dnsMapping>
-            </dnsMappings>
+                <!-- Relevant only when specifying 'servers' -->
+                <!-- Timeout, in milliseconds, when downloading certificates -->
+                <!-- Setting to 0 (zero) means no timeout -->
+                <!-- Used as both connect and read timeout -->
+                <!-- Default: 10000 (10s) -->
+                <!-- User property: truststore.downloadTimeout -->
+                <downloadTimeout>0</downloadTimeout>
 
-            <!-- Relevant only when specifying 'servers' -->
-            <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->
-            <!-- User property: truststore.includeCertificates -->
-            <includeCertificates>LEAF</includeCertificates>
+                <!-- Relevant only when specifying 'servers' -->
+                <!-- DNS resolution options: SINGLE or ALL. Default: ALL -->
+                <!-- Set to SINGLE to download certificates from a single IP address the hostname resolves to -->
+                <!-- Set to ALL to download certificates from all IP addresses the hostname resolves to -->
+                <!-- Relevant when DNS is configured to resolve given hostname to more than one IP address, -->
+                <!-- and different servers might be configured to use different X.509 certificates -->
+                <!-- User property: truststore.dnsResolution -->
+                <dnsResolution>SINGLE</dnsResolution>
 
-            <!-- Custom Scrypt config. Can be optionally specified when 'truststoreFormat' is set to BCFKS -->
-            <!-- Ignored if specified for other types of truststores -->
-            <!-- User property: truststore.scryptConfig -->
-            <scryptConfig>
-               <costParameter>2048</costParameter>
-               <blockSize>16</blockSize>
-               <parallelizationParameter>2</parallelizationParameter>
-               <saltLength>20</saltLength>
-            </scryptConfig>
+                <!-- Relevant only when specifying 'servers' -->
+                <!-- List of custom DNS mappings. Optional -->
+                <!-- If provided, and 'servers' include particular hostname, -->
+                <!-- specified IP will be used instead of default DNS resolution -->
+                <!-- Otherwise DNS resolution strategy specified by 'dnsResolution' will be used -->
+                <!-- User property: truststore.dnsMappings -->
+                <dnsMappings>
+                    <dnsMapping>example.com:1.2.3.4</dnsMapping>
+                    <dnsMapping>another.com:2.3.4.5</dnsMapping>
+                </dnsMappings>
 
-            <!-- Set to true to skip plugin execution. Default: false -->
-            <!-- User property: truststore.skip -->
-            <skip>true</skip>
+                <!-- Relevant only when specifying 'servers' -->
+                <!-- Which certificates to download: ALL, LEAF, CA. Default: ALL. -->
+                <!-- User property: truststore.includeCertificates -->
+                <includeCertificates>LEAF</includeCertificates>
 
-         </configuration>
-      </execution>
-   </executions>
+                <!-- Custom Scrypt config. Can be optionally specified when 'truststoreFormat' is set to BCFKS -->
+                <!-- Ignored if specified for other types of truststores -->
+                <!-- User property: truststore.scryptConfig -->
+                <scryptConfig>
+                    <costParameter>2048</costParameter>
+                    <blockSize>16</blockSize>
+                    <parallelizationParameter>2</parallelizationParameter>
+                    <saltLength>20</saltLength>
+                </scryptConfig>
+
+                <!-- Set to true to skip plugin execution. Default: false -->
+                <!-- User property: truststore.skip -->
+                <skip>true</skip>
+
+            </configuration>
+        </execution>
+    </executions>
 </plugin>
 ```
 
