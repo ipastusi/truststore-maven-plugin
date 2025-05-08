@@ -1,4 +1,6 @@
-# Next release
+# 6.1.0
+
+Date: 8 May 2025
 
 - Compiled against BouncyCastle `bcpkix-jdk18on` version `1.80`.
 - Upgraded dependency versions.
