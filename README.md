@@ -4,7 +4,7 @@
 [![Java](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/maven.yml/badge.svg)](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/codeql-analysis.yml)
 
-Maven plugin generating truststores in multiple formats.
+Maven plugin generating truststores in BCFKS, BKS, JCEKS, JKS, PKCS12 and UBER formats.
 
 ## How it works
 
