@@ -9,7 +9,7 @@
    <modelVersion>4.0.0</modelVersion>
    <packaging>maven-plugin</packaging>
    <name>Truststore Maven Plugin</name>
-   <description>Maven plugin generating truststores in multiple formats</description>
+   <description>Maven plugin generating truststores in BCFKS, BKS, JCEKS, JKS, PKCS12 and UBER formats</description>
    <url>https://github.com/ipastusi/truststore-maven-plugin</url>
    <inceptionYear>2020</inceptionYear>
 
