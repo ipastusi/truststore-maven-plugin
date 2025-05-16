@@ -1,7 +1,7 @@
 # Truststore Maven Plugin
 
 [![Central status](https://maven-badges.herokuapp.com/maven-central/io.buildlogic/truststore-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.buildlogic/truststore-maven-plugin)
-[![Java](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/maven.yml/badge.svg)](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/maven.yml)
+[![Java](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ipastusi/truststore-maven-plugin/actions/workflows/codeql-analysis.yml)
 
 Maven plugin generating truststores in BCFKS, BKS, JCEKS, JKS, PKCS12 and UBER formats.

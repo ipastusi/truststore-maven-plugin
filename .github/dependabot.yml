@@ -1,0 +1,46 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directories:
+      - "/"
+      - "/src/it/bcfks"
+      - "/src/it/bcsfks"
+      - "/src/it/bks"
+      - "/src/it/client-auth"
+      - "/src/it/core"
+      - "/src/it/default-truststore"
+      - "/src/it/download-timeout-fail"
+      - "/src/it/download-timeout-properties-fail"
+      - "/src/it/e2e"
+      - "/src/it/goal"
+      - "/src/it/invalid-config-scrypt-fail"
+      - "/src/it/invalid-config-timeout-fail"
+      - "/src/it/jceks"
+      - "/src/it/missing-bc-dependency-on-read"
+      - "/src/it/missing-bc-dependency-on-write"
+      - "/src/it/multiple-executions"
+      - "/src/it/non-unique-certificate-serial-numbers"
+      - "/src/it/pkcs7"
+      - "/src/it/properties"
+      - "/src/it/skip"
+      - "/src/it/uber"
+    schedule:
+      interval: "quarterly"
+    groups:
+      general:
+        applies-to: "version-updates"
+        patterns: [ "*" ]
+      security:
+        applies-to: "security-updates"
+        patterns: [ "*" ]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "quarterly"
+    groups:
+      actions-general:
+        applies-to: "version-updates"
+        patterns: [ "*" ]
+      actions-security:
+        applies-to: "security-updates"
+        patterns: [ "*" ]
