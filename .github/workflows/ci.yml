@@ -25,6 +25,10 @@ jobs:
             os: ubuntu-latest
             java: 17
             maven_opts: --add-opens=java.base/java.lang=ALL-UNNAMED
+          - name: linux-java21
+            os: ubuntu-latest
+            java: 21
+            maven_opts: --add-opens=java.base/java.lang=ALL-UNNAMED
     steps:
       - name: checkout
         uses: actions/checkout@v4
