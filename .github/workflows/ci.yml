@@ -31,9 +31,9 @@ jobs:
             maven_opts: --add-opens=java.base/java.lang=ALL-UNNAMED
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: set up jdk
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.platform.java }}
           distribution: temurin
